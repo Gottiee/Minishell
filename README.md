@@ -35,12 +35,12 @@
 				<strong>ATTENTION</strong> stocker les chiffres dans un long long;
 		</ul>
 	- [ ] creer une recherche par le nom pour trouver la structure dans la liste chainee (fonction dans les deux listes) theo
-- [ ]initialser liste chaine des variables d'env;
-- [ ]gerer les signaux avec les controls.
-- [ ]coder echo:
+- [ ] initialser liste chaine des variables d'env;
+- [ ] gerer les signaux avec les controls.
+- [ ] coder echo:
 	- le tiret enleve le \n a la fin du echo
-- [ ]coder cd:
-- [ ]coder export and unset:
+- [ ] coder cd:
+- [ ] coder export and unset:
 	- modifier la lister chainee 
 	- modifier les variables d'environnement 
 <strong>ATTENTION</strong> revoyer dans la variable global la valeur de sortie: int	return_value;
