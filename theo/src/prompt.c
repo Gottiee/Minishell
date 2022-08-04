@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:37:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/04 14:28:44 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/04 19:47:05 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	*clear_str(char *str)
 
 /*
 Prompt qui recupere l'entree de l'utilisateur et de lancer les commandes necessaire
+Mettre plusieurs read jusqua un \n pour lire tout les caractere (bsq)
 */
 void	start_prompt()
 {

@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:57:58 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/04 17:35:51 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/04 19:52:44 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,11 @@ void parsing(char *cmd)
 	printf("Is var %i\n", is_var_cmd(cmd));
 	if (is_var_cmd(cmd))
 	{
-		
+		t_lcl_var *var;
+
+		var = create_lclvar(cmd);
+		free_lclvar(var);
+		//l'ajouter au dictionnaire de variables locales
 	}
 	else
 	{

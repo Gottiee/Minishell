@@ -4,7 +4,7 @@ SRC_DIR = src/
 
 BONUS_SRC_DIR = src_bonus/
 
-SRC_FILES = main prompt cmd_type parsing ../libft/*
+SRC_FILES = main prompt cmd_type parsing t_local_var t_str ../libft/*
 
 SRC =	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 

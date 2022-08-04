@@ -18,6 +18,7 @@
 - [ ] promp theo 
 	- [X] recuperer l'entree utilisateur et la clean
 	- [X] l'envoyer au parsing
+	- [ ] Mettre plusieurs read jusqua un \n pour lire tout les caractere (bsq)
 	- [ ] rajouter un historique des commandes pour pourvoir reprendre les commandes d'avant(fleche du haut)
 - [ ] parsing: theo
 	- [X]  si presence de \ ou de "' non fermer ou de ; marquer error syntax;
@@ -25,21 +26,21 @@
 	- [ ]  si un meta charcheter il doit etre afficher seulement s'il est dans des quotes (dans les double quote faut gerer les $ ` \$ \' \" \\ All other \ characters are literal (not special)) (dans les simple quotes tout les meta character sont desactiver / du coup il faut reactiver le $)(https://www.tutorialspoint.com/unix/unix-quoting-mechanisms.htm)
 	<strong>ATTENTION</strong> si "" le dollar rester une variable
 	- [ ]  si detection de =
-		<ul>
-			<li>verifier qu'il soit pas dans des quotes</li>
-				- si l'est envoie a pipex sans les quotes
-			<li>si l'est pas:</li>
-				- regarder si l'argument passer avant est entre double quote si oui, envoyer a pipex sans les quotes.
-				- verifier si apres le egal il y a un caratere autre que espace envoyer ce qu'il y apres les espaces a pipex
-				- pas d'espace entre le nom de la variable et l'egal sinon pipex;
-			<li>si tout vas bien</li>$
-				- tchequer si la variable existe dans les variables d'environnement et la modifier si le cas present et ne pas la creer
-					- sinon ajouter la variable dans une litse chaines de void etoiles; creer la stucture static et mettre
-				- checker si la declaration de var est la derniere cmd de la ligne ("ok=5 | ls" >> ne fait pas la declaration de var // "ls | ok=5" fait la declaration de var mais pas le ls)
-				<strong>ATTENTION</strong> stocker les chiffres dans un long long;
-			</ul>
+			- [ ] verifier qu'il soit pas dans des quotes</li>
+				- [ ] si l'est envoie a pipex sans les quotes
+			- [ ] si l'est pas:</li>
+				- [ ] regarder si l'argument passer avant est entre double quote si oui, envoyer a pipex sans les quotes.
+				- [ ] verifier si apres le egal il y a un caratere autre que espace envoyer ce qu'il y apres les espaces a pipex
+				- [ ] pas d'espace entre le nom de la variable et l'egal sinon pipex;
+			- [ ] si tout vas bien</li>$
+				- [ ] tchequer si la variable existe dans les variables d'environnement et la modifier si le cas present et ne pas la creer
+					- [ ] sinon ajouter la variable dans une litse chaines de void etoiles; creer la stucture static et mettre
+				- [ ] checker si la declaration de var est la derniere cmd de la ligne ("ok=5 | ls" >> ne fait pas la declaration de var // "ls | ok=5" fait la declaration de var mais pas le ls)
+				- [ ] <strong>ATTENTION</strong> stocker les chiffres dans un long long;(a faire lors de la convertion)
+	- [ ] prendre en compte les operations (ex oui=$((4+5))) + calcul dans export
 	- [ ]  creer une recherche par le nom pour trouver la structure dans la liste chainee (fonction dans les deux listes) :theo
-	- [ ]  gerer pour le here 
+	- [ ]  gerer pour le here doc
+	- [ ] traduire les variable locale et env quand elle existe
 - [ ] initialser liste chaine des variables d'env;
 - [ ] gerer les signaux avec les controls.
 - [ ] coder echo:

@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 14:34:15 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/04 19:04:13 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/04 19:43:31 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	add_back_tstr(t_str **first, t_str *new)
 void	free_tstr(t_str *tstr)
 {
 	if (tstr->next)
-		free_all_pipex(tstr->next);
+		free_tstr(tstr->next);
 	free(tstr);
 }
 
