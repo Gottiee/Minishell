@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 14:34:15 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/04 18:48:57 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/04 19:04:13 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_str	*create_tstr(char c)
 	res = ft_calloc(1, sizeof(t_str));
 	res->c = c;
 	res->next = NULL;
-	return (NULL);
+	return (res);
 }
 
 void	add_back_tstr(t_str **first, t_str *new)
