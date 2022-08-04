@@ -40,6 +40,7 @@
 				<strong>ATTENTION</strong> stocker les chiffres dans un long long;
 			</ul>
 	- [ ]  creer une recherche par le nom pour trouver la structure dans la liste chainee (fonction dans les deux listes) :theo
+	- [ ]  gerer pour le here 
 - [ ] initialser liste chaine des variables d'env;
 - [ ] gerer les signaux avec les controls.
 - [ ] coder echo:
