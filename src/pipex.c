@@ -6,11 +6,12 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/03 17:49:30 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/04 13:17:08 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/eliot.h"
+#include "../includes/minishell.h"
 
 int	pipex(char *cmd, char *path)
 {
@@ -47,6 +48,8 @@ int	pipex(char *cmd, char *path)
 	//attente des process dans le main
 	if (id != 0)
 		wait(0);
+	close(pipex.fd[0]);
+	close(pipex.fd[1]);
 	free_all_pipex(&pipex);
 	printf("la valeur de retour de printf est = %d", pipex.return_value_var_global);
 	return (pipex.return_value_var_global);
@@ -54,25 +57,23 @@ int	pipex(char *cmd, char *path)
 
 int	manage_process(t_pipex *pipex, int index)
 {
-	int	return_value;
+	int	return_value_parsing;
+
 	// stock dans cmd_splited toute la comande numero index, une nouvelle string par espace
 	pipex->cmd_splited = split(pipex->cmd_splited[index], ' ');
+	pipex->cmd = pipex->cmd_splited[index];
 
 	// verifie les << < > >>
-	return_value = parsing_fork(pipex);
-
+	return_value_parsing = parsing_fork(pipex);
+	pipex->return_value_var_global = return_value;
 	// differentes possibilite de return value
 	
-	if (return_value == 0) //pas trouver de truc
-	if (return_value == 258) // < & << syntax error
-		return (258);
-	if (return_value == 1) // < && << infile plus cmd : < file cmd -option....
-		return (infile_plus_cmd(pipex)); // return pas si execve ou autre pour les problems: si execve modifier la valeur de la var global avant d'exec
-	if (return_valuee == 2) // < && << infile: < file
-		return (infile(pipex)); //return (0) si reussi a ouvrire le fichier et 1 si pas trouver le fichier
-	if (return_value == 3) // < && << infile + cmd : cmd -option.. < file -option...
-		return (infile_plus_cmd_reverse(pipex)); // return pas si execve ou autre pour les problems: si execve modifier la valeur de la var global avant d'exec
-
+	if (return_value_parsing == 1) // $ <
+	{
+		printf("bash: syntax error near unexpected token `newline'\n");
+		return (pipex->return_value_var_global);
+	}
+	if ()
 	return (0);
 }
 
@@ -80,14 +81,24 @@ int	parsing_fork(t_pipex *pipex)
 {
 	int	i;
 
-	// check < first
+	// cherche avant tout l'entre
+	// check < & << first
+	// !! attention il doit essayer d'ouvire chaque fichier 
+	// mais ne recup que le dernier
+	// !! gerer <> infile et outfile en meme temps
+
+	//d'abbord je tchque si la commande commence par <
+	if (pipex->cmd_splited[0][0] = '<')
+		if (!pipex->cmd_splited[0][1] && !pipex->cmd_splited[1]) //si j'ai ecris $ <
+			return (1);
 	i = -1;
 	while (pipex->cmd_splited[++i])
 	{
-		if (pipex->cmd_splited[i][0] == '<')
-			if (!pipex->cmd_splited[i][1])
-				return (check_postion_<(pipex, i));
+		
 	}
+
+	//si aucune infile check le out file et exectuer la cmd
+	
 	return (0);
 }
 

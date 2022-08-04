@@ -7,6 +7,7 @@
 # include <fcntl.h>
 # include <strings.h>
 # include <sys/wait.h>
+# include <errno.h>
 
 /*	stucture pipex	*/
 typedef struct s_pipex
@@ -17,8 +18,8 @@ typedef struct s_pipex
 
 	//dans chaque process
 	char	**cmd_splited;
+	char	*cmd;
 	int		return_value_var_global;
-
 }				t_pipex;
 
 /*          --- Fonctions qui gere pipex ---     */

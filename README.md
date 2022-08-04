@@ -14,9 +14,9 @@
 			- si >> // faire la commande et ecrire a la suite O_APPEND
 			- <strong>ATTENTION</strong> si pipe apres > ou >> ne pas rediriger dans le pipe mets dans le fichier
 	</ul>
-- [ ]int	cmd_type(char *arg); ->return 1 si execve et 0 une commande qu'on a codee. theo
-- [ ]prompt: theo
-- [ ]parsing:teho
+- [ ] int	cmd_type(char *arg); ->return 1 si execve et 0 une commande qu'on a codee. theo
+- [ ] prompt: theo
+- [ ] parsing: theo
 	- [ ] verifier et supprimer les quotes.
 	- [ ] si presence de \ ou de "' non fermer ou de ; marquer error syntax; 
 	- [ ] si un meta charcheter il doit etre afficher seulement s'il est dans des quotes
