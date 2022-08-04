@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
+/*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/04 13:17:08 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/04 15:38:54 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	parsing_fork(t_pipex *pipex)
 	// check < & << first
 	// !! attention il doit essayer d'ouvire chaque fichier 
 	// mais ne recup que le dernier
-	// !! gerer <> infile et outfile en meme temps
 
 	//d'abbord je tchque si la commande commence par <
 	if (pipex->cmd_splited[0][0] = '<')

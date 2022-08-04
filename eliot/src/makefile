@@ -1,5 +1,7 @@
 NAME  = minishell
 
+LIBFT = -L libft/ -lft
+
 BONUS_NAME = minishell_bonus
 
 SRC_DIR = src/
@@ -30,7 +32,8 @@ FLAGS =  -g -c $< -o $@
 all: $(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ) -o $(NAME)
+	make -C ./libft
+	$(CC) $(OBJ) -o $(NAME) $(LIBFT) -g
 
 debug: $(NAME_DEBUG)
 
@@ -41,10 +44,12 @@ debug: $(NAME_DEBUG)
 clean :
 	rm -f $(OBJ)
 	rm -f $(BONUS_OBJ)
+	make clean -C ./libft
 
 fclean : clean
 	rm -f $(NAME)
 	rm -f $(BONUS_NAME)
+	make fclean -C ./libft
 
 bonus: $(BONUS_NAME)
 

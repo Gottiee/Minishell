@@ -1,35 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
+/*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/03 13:58:15 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/03 14:20:38 by eedy             ###   ########.fr       */
+/*   Created: 2022/05/11 11:23:14 by tokerman          #+#    #+#             */
+/*   Updated: 2022/05/11 11:23:33 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eliot.h"
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void			*res;
-	void			*temp;
-	unsigned int	i;
-
-	res = malloc(size * count);
-	if (res == NULL)
-		return (NULL);
-	temp = res;
-	i = 0;
-	while (i < count * size)
-	{
-		*((char *)temp++) = 0;
-		i++;
-	}
-	return (res);
-}
+#include "libft.h"
 
 static void	ft_strncpy(char *dest, const char *src, unsigned int n)
 {
@@ -49,7 +30,9 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 
 	count = 0;
 	while (src[count] != '\0')
+	{
 		count++;
+	}
 	if (count + 1 < size)
 	{
 		ft_strncpy(dest, src, count + 1);

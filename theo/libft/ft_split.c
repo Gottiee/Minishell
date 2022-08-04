@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split.c                                            :+:      :+:    :+:   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
+/*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/03 12:48:11 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/03 13:52:50 by eedy             ###   ########.fr       */
+/*   Created: 2022/05/11 11:29:12 by tokerman          #+#    #+#             */
+/*   Updated: 2022/05/11 17:36:39 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eliot.h"
+#include "libft.h"
+#include <stdlib.h>
 
 static int	get_nb_word(char const *s, char c)
 {
