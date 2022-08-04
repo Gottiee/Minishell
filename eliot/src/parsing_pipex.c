@@ -6,18 +6,23 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:43:53 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/04 14:26:19 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/04 19:41:43 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/eliot.h"
 
-int	check_position_<(t_pipex *pipex, int i)
+truc a faire pour demain: 
+	- coder les fonctiosn pour les listes chainees (init, add, clear)
+	- recuperer la fonction pour ajouter des char et la struc de theo
+	- creer une foncion qui lit tout une fois et ajoute au fur et a mesure dans la lister chainee
+
+int	parsing_fork(t_pipex *pipex) // je recommence pour parser tout d'abbord pour faciliter les choses
 {
 	
 }
 
-int	check_outfile(t_pipex *pipex)
+int	detect_here_doc(t_pipex *pipex)
 {
 
 }

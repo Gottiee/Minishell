@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/04 15:38:54 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/04 17:31:09 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,44 +60,21 @@ int	manage_process(t_pipex *pipex, int index)
 	int	return_value_parsing;
 
 	// stock dans cmd_splited toute la comande numero index, une nouvelle string par espace
-	pipex->cmd_splited = split(pipex->cmd_splited[index], ' ');
+	pipex->cmd_splited = ft_split(pipex->cmd_splited[index], ' ');
 	pipex->cmd = pipex->cmd_splited[index];
 
-	// verifie les << < > >>
-	return_value_parsing = parsing_fork(pipex);
+	return_value_parsing = parsing_fork(pipex); // mets tout bines dans ma struct
 	pipex->return_value_var_global = return_value;
 	// differentes possibilite de return value
-	
-	if (return_value_parsing == 1) // $ <
+
+	if (return_value_parsing == 1) 
 	{
 		printf("bash: syntax error near unexpected token `newline'\n");
 		return (pipex->return_value_var_global);
 	}
-	if ()
-	return (0);
-}
-
-int	parsing_fork(t_pipex *pipex)
-{
-	int	i;
-
-	// cherche avant tout l'entre
-	// check < & << first
-	// !! attention il doit essayer d'ouvire chaque fichier 
-	// mais ne recup que le dernier
-
-	//d'abbord je tchque si la commande commence par <
-	if (pipex->cmd_splited[0][0] = '<')
-		if (!pipex->cmd_splited[0][1] && !pipex->cmd_splited[1]) //si j'ai ecris $ <
-			return (1);
-	i = -1;
-	while (pipex->cmd_splited[++i])
-	{
-		
-	}
-
-	//si aucune infile check le out file et exectuer la cmd
 	
+	//free la cmd splited stp
+	free_in_fork(pipex); // a coder dans end and free
 	return (0);
 }
 

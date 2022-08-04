@@ -11,6 +11,16 @@
 # include "../libft/libft.h"
 
 /*	stucture pipex	*/
+
+typedef struct s_list_pipex
+{
+	struct s_list_pipex	*next;
+	struct t_str		*str_pipex;
+	int					start;
+	int					end;
+	int					index;
+} t_list_pipex;
+
 typedef struct s_pipex
 {
 	char	**pipe_splited;
@@ -21,7 +31,18 @@ typedef struct s_pipex
 	char	**cmd_splited;
 	char	*cmd;
 	int		return_value_var_global;
+
+
+	//parsing de la cmd
+	t_list_pipex	*here_doc;
+	t_list_pipex	*infile ;
+	t_list_pipex	*redirection ;
+	t_list_pipex	*dbl_redirection ;
+	t_list_pipex	*cmd;
+	
 }				t_pipex;
+
+
 
 /*          --- Fonctions qui gere pipex ---     */
 
