@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:57:58 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/04 15:29:29 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/04 17:35:51 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,53 +43,48 @@ int	check_spe_char(char *cmd)
 	return (1);
 }
 
-int	get_size_cmd_without_quotes(char *cmd)
+/*
+Fonction qui regarde si la cmd est un declaration ou update de variable
+*/
+int	is_var_cmd(char *cmd)
 {
-	int	size;
 	int	i;
-	int	s_cmd;
+	int	size;
+	int quotes;
 
-	s_cmd = ft_strlen(cmd);
-	size = 0;
 	i = 0;
-	while (cmd[i] == ' ' && i++ < s_cmd)
-		cmd++;
-	while (cmd[i] != ' ' && i < s_cmd)
+	size = ft_strlen(cmd);
+	quotes = 0;
+	while (i < size && cmd[i] == ' ')//skip les espaces au debut
+		i++;
+	while (i < size && cmd[i] != '=')//le pointeur avnce jusqua '='
 	{
-		if (*cmd != '\'' && *cmd != '"')
-			size++;
+		if (cmd[i] == '"' || cmd[i] == '\'' || cmd[i] == ' ')
+			return (0);
 		i++;
 	}
-	while (cmd[i] != '\0' && i++ < s_cmd)
-		size++;
-	return (size);
-}
-/*
-fonction qui va enlever les quotes de la cmd
-*/
-char	*remove_quotes_frm_cmd(char	*cmd)
-{
-	int	size;
-	int i;
-	char	*res;
-	int	word;
-	t_str	*temp;
-
-	size = get_size_cmd_without_quotes(cmd);
-	res = ft_calloc(size + 1, sizeof(char));
-	i = 0;
-	while (*cmd == ' ')
-		cmd++;
-	word = 0;
-	while (*cmd)
+	if (i == 0 || cmd[i - 1] == ' ')//verifi si le egal est pas le premier caractere apres les espaces du debut
+		return (0);
+	i++;
+	if (i >= size)//verifi si il n'y a rien apres le egal
+		return (0);
+	if (i < size && (cmd[i] == '"' || cmd[i] == '\''))//verifi si il y a une quotes apres le egal et le prend en compte
+		quotes = '"' - 33;
+	if (i < size && cmd[i] == ' ')//si il n'y a pas un espace apres le egal
+		return (0);
+	while (i < size)//parcours jusqua fermer la quote ou jusqua ce qu'il y ai un espace si il n'y pas de quote
 	{
-		if (*cmd == ' ')
-			word = 1;
-		if (*cmd != '\'' && *cmd != '"' || word)
-			res[i++] = *cmd;
-		cmd++;
+		if (quotes > 0 && cmd[i] - 33 == quotes && cmd[i - 1] != '\\' && cmd[i - 1] != '=' )
+			break;
+		if (cmd[i] == ' ' && quotes == 0)
+			break;
+		i++;
 	}
-	return (res);
+	i++;
+	while (i < size)//verifi qu'il n'y a pas de caractere a part espace apres la fin de la valeur de la var
+		if (cmd[i++] != ' ')
+			return (0);
+	return (1);
 }
 
 /*
@@ -99,6 +94,16 @@ fonction qui va verifier si il n'y pas d'erreur
 void parsing(char *cmd)
 {
 	if (check_spe_char(cmd) == 0)
-		return (NULL);
-	remove_quotes_frm_cmd(cmd);
+		return ;
+	printf("Is var %i\n", is_var_cmd(cmd));
+	if (is_var_cmd(cmd))
+	{
+		
+	}
+	else
+	{
+		//enlever la declaration de variable si il y en a une au milieu de pipi (ok=89 | ls) (le remplacer par "echo ''")
+		//si c'est avec une autre cmd(ex : ls ok=89) le laisser car c'est un 
+			//parametre de cmd et pas une declaration de variable
+	}
 }

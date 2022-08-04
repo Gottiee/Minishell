@@ -18,11 +18,10 @@
 - [ ] promp theo 
 	- [X] recuperer l'entree utilisateur et la clean
 	- [X] l'envoyer au parsing
-	- [ ] l'envoyer a pipex
-	- [ ] rajouter un historique des commandes pour pourvoir reprendre les commandes d'avant(readline history)
+	- [ ] rajouter un historique des commandes pour pourvoir reprendre les commandes d'avant(fleche du haut)
 - [ ] parsing: theo
-	- [X]  verifier et supprimer les quotes de la cmd.
 	- [X]  si presence de \ ou de "' non fermer ou de ; marquer error syntax;
+	- [ ] l'envoyer a pipex
 	- [ ]  si un meta charcheter il doit etre afficher seulement s'il est dans des quotes (dans les double quote faut gerer les $ ` \$ \' \" \\ All other \ characters are literal (not special)) (dans les simple quotes tout les meta character sont desactiver / du coup il faut reactiver le $)(https://www.tutorialspoint.com/unix/unix-quoting-mechanisms.htm)
 	<strong>ATTENTION</strong> si "" le dollar rester une variable
 	- [ ]  si detection de =

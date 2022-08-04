@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:48:49 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/03 18:56:03 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/04 16:58:40 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 /*
 Fonction qui retourne 1 si c'est une commande a executer avec execve 
 	et 0 si c'est une commande qu'on doit coder nous meme
+*/
+/*
+fix le pbm de echo "export"
 */
 int	cmd_type(char *cmd)
 {

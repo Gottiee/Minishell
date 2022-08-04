@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 14:34:15 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/04 15:30:02 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/04 18:48:57 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,37 @@ void	add_back_tstr(t_str **first, t_str *new)
 	}
 	else if (first)
 		*first = new;
+}
+
+void	free_tstr(t_str *tstr)
+{
+	if (tstr->next)
+		free_all_pipex(tstr->next);
+	free(tstr);
+}
+
+char	*get_str_with_tstr(t_str *first)
+{
+	int		size;
+	t_str	*temp;
+	char	*res;
+
+	size = 0;
+	temp = first;
+	while (temp)
+	{
+		size++;
+		temp = temp->next;
+	}
+	res = ft_calloc(size + 1, sizeof(char));
+	size = 0;
+	temp = first;
+	while (temp)
+	{
+		res[size] = temp->c;
+		size++;
+		temp = temp->next;
+	}
+	free_tstr(first);
+	return (res);
 }
