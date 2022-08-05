@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/05 13:12:44 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/05 16:49:29 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	pipex(char *cmd, char *path)
 	int		i;
 	int		id;
 	int		index_process;
+	char	valeur;
 
 	(void)path;
 
@@ -29,17 +30,29 @@ int	pipex(char *cmd, char *path)
 	//creation du pipe ?
 	if (pipex.nbr_of_pipe > 1)
 		pipe(pipex.fd_pipe);
-	 
+	
 	//avant de fork il faut check la synatx
-
-	if (parsing_error_syntax(cmd) == 1) // verifie que pas de << < > >> snas rien a la suite
+	valeur = parsing_error_syntax(cmd);
+	if (valeur != 'q') // verifie que pas de << < > >> snas rien a la suite
 	{
-		// a la place de new line il faut mettre | si jamais on est dans un pipe
-		printf("bash: syntax error near unexpected token `newline'\n");
+		// si y'as un probleme et que pas de pipe ca va d'abord tester le here doc avant de dire que ca marche pas 
+		// si y'as des pipes ca dit d'abord que ca marche pas avant de tester le here doc su premier pipe seulement
+		if (pipex.nbr_of_pipe == 1)
+		{
+			printf("ici je vais executer un her doc pas encore coder\n");
+			//exec_here_doc();
+		}
+		if (valeur == 'n')
+			printf("bash: syntax error near unexpected token `newline'\n");
+		else
+			printf("bash: syntax error near unexpected token `%c'\n", valeur);
+		if (pipex.nbr_of_pipe != 1)
+			printf("ici je vais executer un her doc pas encore coder\n");
+			//exec_here_doc();
 		free_all_pipex(&pipex);
 		return (1);
 	}
-		;
+
 	//creatio des processes
 	id = 1;
 	i = -1;

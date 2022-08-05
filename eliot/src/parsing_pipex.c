@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:43:53 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/05 13:17:24 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/05 15:32:08 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,27 @@ int	parsing_fork(t_pipex *pipex)
 	return (0);
 }
 
-int	detect_here_doc(t_list_pipex *here_doc, t_pipex *pipex)
+/*int	detect_here_doc(t_list_pipex *here_doc, t_pipex *pipex)
 {
 	int	i;
-	(void)here_doc;
-	(void)pipex;
+	int	j;
 
 	i = -1;
 	while (pipex->cmd[++i])
 	{
+		if (pipex->cmd[i] == '<' || pipex->cmd[i + 1] == '<')
+		{
+			j = i + 2;	
+		}
 	}
 	return (0);
-}
+}*/
 
-int	parsing_error_syntax(char *cmd)
+char	parsing_error_syntax(char *cmd)
 {
 	int	i;
 	int	j;
+	char	value;
 
 	i = -1;
 	while (cmd[++i])
@@ -63,18 +67,74 @@ int	parsing_error_syntax(char *cmd)
 			j = i + 1;
 			while (cmd[j] == ' ')
 				j ++;
-			if (!cmd[j] || cmd[j] == '|')
-				return (1);
+			if (!cmd[j]|| cmd[j] == '>' || cmd[j] == '|')			
+				return(return_value_parsing(j, cmd, 2));
 		}
-		if (cmd[i] == '<')
-			if (cmd[i + 1] == '<' && !cmd[i + 2])
-				return (1);
-		if (cmd[i] == '>')
-			if (!cmd[i + 1])
-				return (1);
-		if (cmd[i] == '>')
-			if (cmd[i + 1] == '>' && !cmd[i + 2])
-				return (1);
+		value = parsing_error_syntax3(cmd, i ,j);
+		if (value != 'q')
+			return (value);
+		value = parsing_error_syntax2(cmd, i, j);
+		if (value != 'q')
+			return (value);
 	}
-	return (0);
+	return ('q');
+}
+
+char	parsing_error_syntax2(char *cmd, int i, int j)
+{
+	if (cmd[i] == '>')
+	{
+		j = i + 1;
+		while (cmd[j] == ' ')
+			j ++;
+		if (!cmd[j] || cmd[j] == '<'|| cmd[j] == '|')			
+			return (return_value_parsing(j, cmd, 0));
+	}
+	if (cmd[i] == '>')
+	{
+		if (cmd[i + 1] == '>')
+		{
+			j = i + 2;
+			while (cmd[j] == ' ')
+				j ++;
+			if (!cmd[j] || cmd[j] == '<' || cmd[j] == '>' || cmd[j] == '|')			
+				return(return_value_parsing(j, cmd, 1));
+		}
+	}
+	return ('q');
+}
+
+char	parsing_error_syntax3(char *cmd, int i, int j)
+{
+	if (cmd[i] == '<')
+	{
+		if (cmd[i + 1] == '<')
+		{
+			j = i + 2;
+			while (cmd[j] == ' ')
+				j ++;
+			if (!cmd[j] || cmd[j] == '<' || cmd[j] == '>' || cmd[j] == '|')			
+				return (return_value_parsing(j, cmd, 1));
+		}
+	}
+	return ('q');
+}
+
+char	return_value_parsing(int j, char *cmd, int bolo)
+{
+	if (!cmd[j])
+		return ('n');
+	if (cmd[j] == '|')
+		return ('|');
+	if (bolo != 2)
+	{
+		if (cmd[j] == '<')
+			return ('<');
+	}
+	if (bolo != 0)
+	{
+		if (cmd[j] == '>')
+			return ('>');
+	}
+	return ('q');
 }

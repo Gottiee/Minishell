@@ -64,3 +64,32 @@ struct s_var_(local)/(env)
 }
 
 - [ ] ON DOIT GERER CA ? \ exp: "<     \|" essaye d'ouvire | 
+
+bon c'est la merde ! on a plein de nouvelle commande a la con a gerer: 
+
+$: <<test"" cat
+$USER
+> test
+$USER
+
+$: <<test cat
+$USER
+test
+eedy
+
+export ls="ls -la"
+$ls
+export a=$ls
+export"" b=$ls
+echo $b
+export c=ls -la
+export c=ls =la
+export c=ls d=oui
+env
+export c=ls -la
+echo $ls
+exp"o"rt c=$ls
+<< test << ok > | << fle
+
+
+
