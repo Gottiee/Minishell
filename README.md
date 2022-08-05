@@ -7,6 +7,7 @@
 		<li>fork pour chaque </li>
 		<li>split par les espaces</li>
 		<li>parsing: '<<' / '<' / '>' / '>>' </li>
+			- si pipe mettre la sortie sur le pipe (sortie modifiable apres si > ou >>)
 			- si < tcheck dabord le fd puis apres la commande
 			- si << doc_here
 			- apres avoir effectuer un << ou < regerder la sortie
@@ -61,3 +62,5 @@ struct s_var_(local)/(env)
 	char 	*var_name;
 	void	*content;
 }
+
+- [ ] ON DOIT GERER CA ? \ exp: "<     \|" essaye d'ouvire | 

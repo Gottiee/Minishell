@@ -10,10 +10,10 @@ BONUS_SRC_DIR = src_bonus/
 
 SRC_FILES = main \
 pipex \
-split \
 end_and_free \
-utils \
-parsing_pipex
+parsing_pipex \
+fork_process \
+struct_manage_pipex
 
 BONUS_SRC_FILES = 
 
@@ -27,7 +27,7 @@ BONUS_OBJ = $(BONUS_SRC:.c=.o)
 
 CC = gcc
 
-FLAGS =  -g -c $< -o $@
+FLAGS = -Wall -Werror -Wextra -g -c $< -o $@
 
 all: $(NAME)
 

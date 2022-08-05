@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/04 17:31:09 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/05 13:12:44 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	pipex(char *cmd, char *path)
 	int		id;
 	int		index_process;
 
+	(void)path;
+
 	//premier split : division des pipes
 	pipex.pipe_splited = ft_split(cmd, '|');
 	pipex.nbr_of_pipe = how_many_pipe(pipex.pipe_splited);
@@ -27,7 +29,17 @@ int	pipex(char *cmd, char *path)
 	//creation du pipe ?
 	if (pipex.nbr_of_pipe > 1)
 		pipe(pipex.fd_pipe);
+	 
+	//avant de fork il faut check la synatx
 
+	if (parsing_error_syntax(cmd) == 1) // verifie que pas de << < > >> snas rien a la suite
+	{
+		// a la place de new line il faut mettre | si jamais on est dans un pipe
+		printf("bash: syntax error near unexpected token `newline'\n");
+		free_all_pipex(&pipex);
+		return (1);
+	}
+		;
 	//creatio des processes
 	id = 1;
 	i = -1;
@@ -51,30 +63,23 @@ int	pipex(char *cmd, char *path)
 	close(pipex.fd[0]);
 	close(pipex.fd[1]);
 	free_all_pipex(&pipex);
-	printf("la valeur de retour de printf est = %d", pipex.return_value_var_global);
-	return (pipex.return_value_var_global);
+	return (0);
 }
 
 int	manage_process(t_pipex *pipex, int index)
 {
 	int	return_value_parsing;
+	(void)return_value_parsing;
 
 	// stock dans cmd_splited toute la comande numero index, une nouvelle string par espace
-	pipex->cmd_splited = ft_split(pipex->cmd_splited[index], ' ');
-	pipex->cmd = pipex->cmd_splited[index];
+	pipex->cmd_splited = ft_split(pipex->pipe_splited[index], ' ');
+	pipex->cmd = pipex->pipe_splited[index];
 
 	return_value_parsing = parsing_fork(pipex); // mets tout bines dans ma struct
 	pipex->return_value_var_global = return_value;
 	// differentes possibilite de return value
 
-	if (return_value_parsing == 1) 
-	{
-		printf("bash: syntax error near unexpected token `newline'\n");
-		return (pipex->return_value_var_global);
-	}
 	
-	//free la cmd splited stp
-	free_in_fork(pipex); // a coder dans end and free
 	return (0);
 }
 
