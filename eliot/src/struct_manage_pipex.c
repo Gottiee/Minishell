@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 10:50:38 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/08 16:56:46 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/08 17:04:12 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	add_struct_pipex(t_list_pipex *start, int type)
 	tmp->next = new;
 	new->next = NULL;
 	new->type = type;
+	new->str_pipex = NULL;
 	return (0);
 }
 
