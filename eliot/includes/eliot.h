@@ -9,6 +9,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include "../libft/libft.h"
+# include "minishell.h"
 
 /*	stucture pipex	*/
 
@@ -41,10 +42,7 @@ typedef struct s_pipex
 	int		fd[2];
 
 	//parsing de la cmd
-	t_list_pipex	*here_doc;
-	t_list_pipex	*infile ;
-	t_list_pipex	*redirection ;
-	t_list_pipex	*dbl_redirection ;
+	t_list_pipex	*lexeur;
 	t_list_pipex	*cmd_list;
 	
 }				t_pipex;

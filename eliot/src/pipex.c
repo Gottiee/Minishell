@@ -6,12 +6,27 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/05 16:49:29 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/08 14:24:00 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/eliot.h"
-#include "../includes/minishell.h"
+
+int g_return_value;
+
+/*chose a faire: 
+-	faire le lexer qui met tout les arguments dans les structure: 
+	-	mettre dans UNE structure tous les arguments les uns apres les autres commes ils sont appele
+		- << < > >>
+	-	 dans une struct a part metre les commandes
+- 	lire dans l'ordre les instsrucition et verifier s'ils sont executables et que ca marche correctment 
+	- faire les heres doc s'ils sont appele
+	- attention aux "" dans les here doc (ajouter au README)
+- ATTENTION: a partire de la return si error
+- 	ouvrire les < 
+-	ouvrire les >> et > suivant l'ordre de gauche a droite 
+-	tester et exuter les commandes de gauche a droite
+	- !! un pipe = fork donc si un rate les autres s'execute*/
 
 int	pipex(char *cmd, char *path)
 {
@@ -27,32 +42,17 @@ int	pipex(char *cmd, char *path)
 	pipex.pipe_splited = ft_split(cmd, '|');
 	pipex.nbr_of_pipe = how_many_pipe(pipex.pipe_splited);
 
+	//creation du lexeur: mettre tout dans les stucts;
+	if (lexeur_pipex(&pipex) == -1)
+	{
+		printf("error malloc\n");
+		return (1);
+	}
+
 	//creation du pipe ?
 	if (pipex.nbr_of_pipe > 1)
 		pipe(pipex.fd_pipe);
 	
-	//avant de fork il faut check la synatx
-	valeur = parsing_error_syntax(cmd);
-	if (valeur != 'q') // verifie que pas de << < > >> snas rien a la suite
-	{
-		// si y'as un probleme et que pas de pipe ca va d'abord tester le here doc avant de dire que ca marche pas 
-		// si y'as des pipes ca dit d'abord que ca marche pas avant de tester le here doc su premier pipe seulement
-		if (pipex.nbr_of_pipe == 1)
-		{
-			printf("ici je vais executer un her doc pas encore coder\n");
-			//exec_here_doc();
-		}
-		if (valeur == 'n')
-			printf("bash: syntax error near unexpected token `newline'\n");
-		else
-			printf("bash: syntax error near unexpected token `%c'\n", valeur);
-		if (pipex.nbr_of_pipe != 1)
-			printf("ici je vais executer un her doc pas encore coder\n");
-			//exec_here_doc();
-		free_all_pipex(&pipex);
-		return (1);
-	}
-
 	//creatio des processes
 	id = 1;
 	i = -1;
@@ -75,6 +75,7 @@ int	pipex(char *cmd, char *path)
 		wait(0);
 	close(pipex.fd[0]);
 	close(pipex.fd[1]);
+	del_list(&pipex);
 	free_all_pipex(&pipex);
 	return (0);
 }
@@ -87,11 +88,6 @@ int	manage_process(t_pipex *pipex, int index)
 	// stock dans cmd_splited toute la comande numero index, une nouvelle string par espace
 	pipex->cmd_splited = ft_split(pipex->pipe_splited[index], ' ');
 	pipex->cmd = pipex->pipe_splited[index];
-
-	return_value_parsing = parsing_fork(pipex); // mets tout bines dans ma struct
-	pipex->return_value_var_global = return_value;
-	// differentes possibilite de return value
-
 	
 	return (0);
 }

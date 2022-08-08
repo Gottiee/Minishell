@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 10:50:38 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/05 12:12:52 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/08 14:28:49 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	free_tstr(t_str *tstr)
 	free(tstr);
 }
 
-int	add_char_pipex(t_str *start)
+int	add_char_pipex(t_str *start, char char_p)
 {
 	t_str	*new;
 	t_str	*tmp;
@@ -75,5 +75,6 @@ int	add_char_pipex(t_str *start)
 		tmp = tmp->next;
 	tmp->next = new;
 	new->next = NULL;
+	new->c = char_p;
 	return (0);
 }
