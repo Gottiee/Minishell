@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 13:08:06 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/08 13:46:36 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/08 16:11:21 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,4 @@ void	free_all_pipex(t_pipex *pipex)
 void	del_list(t_pipex *pipex)
 {
 	del_list_pipex(pipex->lexeur);
-	del_list_pipex(cmd_list);
 }

@@ -11,6 +11,13 @@
 # include "../libft/libft.h"
 # include "minishell.h"
 
+# define HERE_DOC 1
+# define INFILE 2
+# define OUTFILE 3
+# define DBL_OUTFILE 4
+# define CMD 5
+# define PIPE 6
+
 /*	stucture pipex	*/
 
 typedef struct s_str
@@ -22,11 +29,8 @@ typedef struct s_str
 typedef struct s_list_pipex
 {
 	struct s_list_pipex	*next;
-	t_str		*str_pipex;
-	int					start;
-	int					end;
-	int					index;
-	int					nbr_of_element;
+	t_str				*str_pipex;
+	int					type; // stock ce que c'est : here doc ... avec le define la haut
 }				 t_list_pipex;
 
 typedef struct s_pipex
@@ -43,7 +47,6 @@ typedef struct s_pipex
 
 	//parsing de la cmd
 	t_list_pipex	*lexeur;
-	t_list_pipex	*cmd_list;
 	
 }				t_pipex;
 

@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 10:50:38 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/08 14:28:49 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/08 16:56:46 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_list_pipex	*init_struct_pipex(void)
 	return (new);
 }
 
-int	add_struct_pipex(t_list_pipex *start)
+int	add_struct_pipex(t_list_pipex *start, int type)
 {
 	t_list_pipex	*new;
 	t_list_pipex	*tmp;
@@ -32,13 +32,13 @@ int	add_struct_pipex(t_list_pipex *start)
 	new = malloc(sizeof(t_list_pipex));
 	if (!new)
 		return (-1);
-	start->nbr_of_element++;
 	tmp = start;
 
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
 	new->next = NULL;
+	new->type = type;
 	return (0);
 }
 
@@ -62,15 +62,20 @@ void	free_tstr(t_str *tstr)
 	free(tstr);
 }
 
-int	add_char_pipex(t_str *start, char char_p)
+int	add_char_pipex(t_list_pipex *start, char char_p)
 {
-	t_str	*new;
-	t_str	*tmp;
+	t_list_pipex	*tmp_p;
+	t_str			*new;
+	t_str			*tmp;
 
 	new = malloc(sizeof(t_str));
 	if (!new)
 		return (-1);
-	tmp = start;	
+	tmp_p = start;
+	while (tmp_p ->next)
+		tmp_p = tmp_p->next;
+	
+	tmp = tmp_p->str_pipex;
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
