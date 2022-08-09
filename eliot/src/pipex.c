@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/08 14:24:00 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/09 17:07:22 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	pipex(char *cmd, char *path)
 	int		i;
 	int		id;
 	int		index_process;
-	char	valeur;
 
 	(void)path;
 
@@ -43,12 +42,13 @@ int	pipex(char *cmd, char *path)
 	pipex.nbr_of_pipe = how_many_pipe(pipex.pipe_splited);
 
 	//creation du lexeur: mettre tout dans les stucts;
-	if (lexeur_pipex(&pipex) == -1)
+	if (lexeur_pipex(&pipex, cmd) == -1)
 	{
 		printf("error malloc\n");
 		return (1);
 	}
 
+	print_struc(pipex.lexeur);
 	//creation du pipe ?
 	if (pipex.nbr_of_pipe > 1)
 		pipe(pipex.fd_pipe);
@@ -87,8 +87,7 @@ int	manage_process(t_pipex *pipex, int index)
 
 	// stock dans cmd_splited toute la comande numero index, une nouvelle string par espace
 	pipex->cmd_splited = ft_split(pipex->pipe_splited[index], ' ');
-	pipex->cmd = pipex->pipe_splited[index];
-	
+	pipex->cmd = pipex->pipe_splited[index];	
 	return (0);
 }
 

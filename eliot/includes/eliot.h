@@ -66,18 +66,14 @@ void	del_list(t_pipex *pipex);
 /*Fichier: fork_process.c*/
 
 /*Fichier: parsing_pipex.c*/
-int		parsing_fork(t_pipex *pipex);
-int		detect_here_doc(t_list_pipex *here_doc, t_pipex *pipex);
-char	parsing_error_syntax(char *cmd);
-char	parsing_error_syntax2(char *cmd, int i, int j);
-char	parsing_error_syntax3(char *cmd, int i, int j);
-char	return_value_parsing(int j, char *cmd, int bolo);
+int		lexeur_pipex(t_pipex *pipex, char *cmd);
 
 /*Fichier: stuct_manage_pipex.c*/
 t_list_pipex	*init_struct_pipex(void);
-int	add_struct_pipex(t_list_pipex *start);
+int	add_struct_pipex(t_list_pipex *start, int type);
 void	del_list_pipex(t_list_pipex *start);
 void	free_tstr(t_str *tstr);
-int	add_char_pipex(t_str *start);
+int	add_char_pipex(t_list_pipex *start, char char_p);
+void	print_struc(t_list_pipex *start);
 
 #endif

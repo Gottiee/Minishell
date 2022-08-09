@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 10:50:38 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/08 17:04:12 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/09 17:33:45 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_list_pipex	*init_struct_pipex(void)
 	if (!new)
 		return (NULL);
 	new->next = NULL;
-	new->nbr_of_element = 0;
 	return (new);
 }
 
@@ -58,9 +57,15 @@ void	del_list_pipex(t_list_pipex *start)
 
 void	free_tstr(t_str *tstr)
 {
-	if (tstr->next)
-		free_tstr(tstr->next);
-	free(tstr);
+	t_str	*tmp;
+
+	tmp = tstr;
+	while (tstr)
+	{
+		tmp = tstr;
+		tstr = tstr->next;
+		free(tmp);
+	}
 }
 
 int	add_char_pipex(t_list_pipex *start, char char_p)
@@ -77,10 +82,39 @@ int	add_char_pipex(t_list_pipex *start, char char_p)
 		tmp_p = tmp_p->next;
 	
 	tmp = tmp_p->str_pipex;
+	if (!tmp)
+	{
+		tmp_p->str_pipex = new;
+		new->next = NULL;
+		new->c = char_p;
+		return (0);
+	}
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
 	new->next = NULL;
 	new->c = char_p;
 	return (0);
+}
+
+void	print_struc(t_list_pipex *start)
+{
+	t_list_pipex	*tmp;
+	t_str			*tmp_str;
+
+	tmp = start->next;
+
+	while (tmp)
+	{
+		tmp_str = tmp->str_pipex;			
+		printf("le numero de son type %d\n", tmp->type);
+		printf("chaine de cara enregistre :");
+		while (tmp_str)
+		{
+			printf("%c",tmp_str->c);
+			tmp_str = tmp_str->next;
+		}
+		printf("\n\n"); 
+		tmp = tmp->next;
+	}
 }
