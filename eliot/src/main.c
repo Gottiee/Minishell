@@ -6,15 +6,15 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 02:30:59 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/03 14:41:46 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/08 13:16:01 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
 #include "../includes/eliot.h"
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	pipex("test ok | test ok | test", NULL);
+	(void)argc;
+	pipex(argv[1], NULL);
 	return (0);
 }

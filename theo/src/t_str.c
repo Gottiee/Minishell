@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 14:34:15 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/04 19:43:31 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/09 16:54:26 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,12 @@ void	add_back_tstr(t_str **first, t_str *new)
 
 void	free_tstr(t_str *tstr)
 {
-	if (tstr->next)
-		free_tstr(tstr->next);
-	free(tstr);
+	if (tstr)
+	{
+		if (tstr->next)
+			free_tstr(tstr->next);
+		free(tstr);
+	}
 }
 
 char	*get_str_with_tstr(t_str *first)

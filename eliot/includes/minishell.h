@@ -1,6 +1,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-int	return_value;
+extern int	g_return_value;
 
 #endif
