@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 19:12:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/09 03:58:47 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/09 19:00:04 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,54 @@ char	*get_text_val(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
 	while (*cmd != '=')
 		cmd++;
 	cmd++;
+	/*
 	if (*cmd == '"' || *cmd == '\'')
-		quotes = *(cmd++) - 33;
+		quotes = *(cmd++);
 	while (*cmd)
 	{
-		if ((*cmd == '"' || *cmd == '\'') && quotes == *cmd - 33)
+		if (quotes == 0 && (*cmd == '"' || *cmd == '\''))
+		{
+			quotes = *(cmd++);
+			continue;
+		}
+		else if (quotes > 0 && *cmd == quotes)
+			quotes = 0;
+		else if (*cmd == ' ' && quotes == 0)
 			break;
-		add_back_tstr(&tstr, create_tstr(*cmd));
+		if ((quotes == 0 && *cmd != '"' && *cmd != '\'') || quotes > 0)
+			add_back_tstr(&tstr, create_tstr(*cmd));
 		cmd++;
 	}
+	*/
+	/*
+	$test		variable test
+	$(test)		commande test
+	$((test))	operation test	traduit test
+
+	ne pas avoir de de '(' ou de ')' directement apres un des trois cas
+	*/
+	///////////////////////////////////////////////////
+	while (*cmd)
+	{
+		if (quotes == 0 && (*cmd == '"' || *cmd == '\''))
+		{
+			quotes = *(cmd++);
+			continue;
+		}
+		else if (quotes > 0 && *cmd == quotes)
+			quotes = 0;
+		else if (*cmd == ' ' && quotes == 0)
+			break;
+		if (quotes == '\'' || *cmd != '$')
+			add_back_tstr(&tstr, create_tstr(*cmd));
+		else
+		{
+			
+		}
+		cmd++;
+	}
+
+	///////////////////////////////////////////////////
 	res = get_str_with_tstr(tstr);
 	if (is_operation(res))
 		printf("Operation\n");

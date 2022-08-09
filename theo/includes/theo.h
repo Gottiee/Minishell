@@ -11,7 +11,7 @@ typedef struct s_str
 	char	c;
 	struct s_str	*next;
 }	t_str;
-// 
+ 
 typedef struct s_lcl_var
 {
 	char	*name;
@@ -20,13 +20,24 @@ typedef struct s_lcl_var
 	struct s_lcl_var	*next;
 }	t_lcl_var;
 
+typedef struct s_hist_cmd
+{
+	char	*cmd;
+	struct s_hist_cmd	*next;
+}	t_hist_cmd;
+
 
 void		start_prompt(char **envp);
 int			cmd_type(char *cmd);
 
+//hist_cmd
+void	add_back_histcmd(t_hist_cmd **first, t_hist_cmd *new);
+t_hist_cmd	*create_histcmd(char *cmd);
+void	free_histcmd(t_hist_cmd *histcmd);
+
 //parsing
 int			check_spe_char(char *cmd);
-void 		parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
+char 		*parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
 int			is_var_cmd(char *cmd);
 
 //t_str

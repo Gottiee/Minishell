@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:37:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/09 03:57:52 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/09 18:13:47 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,12 @@ void	start_prompt(char **envp)
 	char	*prt;
 	t_lcl_var	*lclvar;
 	t_lcl_var	*envvar;
+	t_hist_cmd	*histcmd;
 	
 	res = malloc(10000);
 	ft_bzero(res, 10000);
 	lclvar = NULL;
+	histcmd = NULL;
 	envvar = generate_envvar_list(envp);
 	while (1)
 	{
@@ -82,7 +84,7 @@ void	start_prompt(char **envp)
 		temp = lclvar;
 		while (temp)
 		{
-			printf("%s=%s\n", temp->name, temp->val);
+			printf("%s=%s|\n", temp->name, temp->val);
 			temp = temp->next;
 		}
 		ft_putstr_fd("Minishell$ ", 1);
@@ -92,13 +94,14 @@ void	start_prompt(char **envp)
 			free(res);
 			free_lclvar(lclvar);
 			free_lclvar(envvar);
+			free_histcmd(histcmd);
 			break;
 		}
 		//Vrai commande a envoyer au parsing et a pipex
 		prt = clear_str(res);
+		add_back_histcmd(&histcmd, create_histcmd(prt));
 		//Envoyer au parsing
 		parsing(prt, &lclvar, &envvar);
-		free(prt);
 		ft_bzero(res, 10000);
 	}	
 }

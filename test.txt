@@ -820,3 +820,197 @@ src")
 tokerman@e1r8p2:~/MNSHL/theo$ ok=$((5*8+$(echo 4)))
 tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
 44
+
+
+
+
+
+
+
+
+
+
+
+tokerman@e1r8p10:~/MNSHL/theo$ te"st"=8
+test=8: command not found
+tokerman@e1r8p10:~/MNSHL/theo$ te"st"=8 ls
+test=8: command not found
+tokerman@e1r8p10:~/MNSHL/theo$ te'st'=8
+test=8: command not found
+tokerman@e1r8p10:~/MNSHL/theo$ te'st\'=8
+test\=8: command not found
+tokerman@e1r8p10:~/MNSHL/theo$ te'st'=8
+test=8: command not found
+tokerman@e1r8p10:~/MNSHL/theo$ man ls
+tokerman@e1r8p10:~/MNSHL/theo$ l's' -\a
+.  ..  includes  libft  makefile  minishell  src
+tokerman@e1r8p10:~/MNSHL/theo$ l's' -'a'
+.  ..  includes  libft  makefile  minishell  src
+tokerman@e1r8p10:~/MNSHL/theo$ l's' -'\'a
+ls: invalid option -- '\'
+Try 'ls --help' for more information.
+tokerman@e1r8p10:~/MNSHL/theo$ ok=a
+tokerman@e1r8p10:~/MNSHL/theo$ ls -$ok
+.  ..  includes  libft  makefile  minishell  src
+tokerman@e1r8p10:~/MNSHL/theo$ ok=\
+> ^C
+tokerman@e1r8p10:~/MNSHL/theo$ ok='\'
+tokerman@e1r8p10:~/MNSHL/theo$ ls -$ok
+ls: invalid option -- '\'
+Try 'ls --help' for more information.
+
+
+
+
+
+
+
+
+
+
+
+tokerman@e1r8p10:~/MNSHL/theo$ l" s"
+
+Command 'l s' not found, did you mean:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokerman@e1r8p10:~/MNSHL/theo$ f=a=f
+tokerman@e1r8p10:~/MNSHL/theo$ echo $f
+a=f
+tokerman@e1r8p10:~/MNSHL/theo$ echo $a
+
+tokerman@e1r8p10:~/MNSHL/theo$ a=5
+tokerman@e1r8p10:~/MNSHL/theo$ echo $a
+5
+tokerman@e1r8p10:~/MNSHL/theo$ f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ echo $f
+5
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f
+tokerman@e1r8p10:~/MNSHL/theo$ echo $f
+=5
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ echo $f
+==5=5
+tokerman@e1r8p10:~/MNSHL/theo$ f=$((b=5))
+tokerman@e1r8p10:~/MNSHL/theo$ f=$((b=8))
+tokerman@e1r8p10:~/MNSHL/theo$ echo $f
+8
+tokerman@e1r8p10:~/MNSHL/theo$ echo $b
+8
+tokerman@e1r8p10:~/MNSHL/theo$ b=1
+tokerman@e1r8p10:~/MNSHL/theo$ a=2
+tokerman@e1r8p10:~/MNSHL/theo$ f=3
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ eecho $f
+
+Command 'eecho' not found, did you mean:
+
+  command 'echo' from deb coreutils (8.30-3ubuntu2)
+
+Try: apt install <deb name>
+
+tokerman@e1r8p10:~/MNSHL/theo$ echo $f
+1=3=2
+tokerman@e1r8p10:~/MNSHL/theo$ echo $f
+1=3=2
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ echo $f
+1=1=3=2=2
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ f=$b=$f=$a
+tokerman@e1r8p10:~/MNSHL/theo$ echo $f
+1=1=1=1=1=1=1=1=1=1=1=3=2=2=2=2=2=2=2=2=2=2=2
+tokerman@e1r8p10:~/MNSHL/theo$ t=8
+tokerman@e1r8p10:~/MNSHL/theo$ p=$t$(ls)
+tokerman@e1r8p10:~/MNSHL/theo$ echo $p
+8includes libft makefile minishell src
+tokerman@e1r8p10:~/MNSHL/theo$ t_p=9
+tokerman@e1r8p10:~/MNSHL/theo$ t=8
+tokerman@e1r8p10:~/MNSHL/theo$ p=$t_p89
+tokerman@e1r8p10:~/MNSHL/theo$ echo $p
+
+tokerman@e1r8p10:~/MNSHL/theo$ p=$t_p=$((5*8))
+tokerman@e1r8p10:~/MNSHL/theo$ echo $p
+9=40
+tokerman@e1r8p10:~/MNSHL/theo$ p='$t_p'="$t_p"=$((5*8))
+tokerman@e1r8p10:~/MNSHL/theo$ echo $p
+$t_p=9=40
+tokerman@e1r8p10:~/MNSHL/theo$ p="'$t_p'"="$t_p"=$((5*8))
+tokerman@e1r8p10:~/MNSHL/theo$ echo $p
+'9'=9=40
+tokerman@e1r8p10:~/MNSHL/theo$ p='$t_p'="$t_p"='$((5*8))'
+tokerman@e1r8p10:~/MNSHL/theo$ echo $p
+$t_p=9=$((5*8))
+tokerman@e1r8p10:~/MNSHL/theo$ p='$t_p'="$t_p"=$(ls)=$((5*8))
+tokerman@e1r8p10:~/MNSHL/theo$ echo $p
+$t_p=9=includes libft makefile minishell src=40
+tokerman@e1r8p10:~/MNSHL/theo$ p='$t_p'="$t_p"=$(lss)=$((5*8))
+
+Command 'lss' not found, did you mean:
+
+  command 'lsd' from snap lsd (0.16.0)
+  command 'lsh' from deb lsh-client (2.1-12build3)
+  command 'lsw' from deb suckless-tools (44-1)
+  command 'lsm' from deb lsm (1.0.4-1)
+  command 'lsns' from deb util-linux (2.34-0.1ubuntu9.3)
+  command 'ass' from deb irpas (0.10-7)
+  command 'les' from deb atm-tools (1:2.5.1-4)
+  command 'lvs' from deb lvm2 (2.03.07-1ubuntu1)
+  command 'ss' from deb iproute2 (5.5.0-1ubuntu1)
+  command 'lsc' from deb livescript (1.6.0+dfsg-1)
+  command 'lrs' from deb lrslib (0.70-3)
+  command 'lssu' from deb nilfs-tools (2.2.8-1)
+  command 'ls' from deb coreutils (8.30-3ubuntu2)
+  command 'less' from deb less (551-1ubuntu0.1)
+  command 'gss' from deb libgss-dev (1.0.3-4)
+
+See 'snap info <snapname>' for additional versions.
+
+tokerman@e1r8p10:~/MNSHL/theo$ echo $p
+$t_p=9==40
+tokerman@e1r8p10:~/MNSHL/theo$ test=5*8
+tokerman@e1r8p10:~/MNSHL/theo$ b=5*8
+tokerman@e1r8p10:~/MNSHL/theo$ a=$((b))
+tokerman@e1r8p10:~/MNSHL/theo$ echo $a
+40
+tokerman@e1r8p10:~/MNSHL/theo$ a=$((test))
+tokerman@e1r8p10:~/MNSHL/theo$ echo $a
+40
+tokerman@e1r8p10:~/MNSHL/theo$ a=$b((b))
+bash: syntax error near unexpected token `('
+tokerman@e1r8p10:~/MNSHL/theo$ a="$b((b))C"
+tokerman@e1r8p10:~/MNSHL/theo$ a="$b((b))"
+tokerman@e1r8p10:~/MNSHL/theo$ echo $a
+5*8((b))
+tokerman@e1r8p10:~/MNSHL/theo$ a="$5((b))"
+tokerman@e1r8p10:~/MNSHL/theo$ a=$5((b))
+bash: syntax error near unexpected token `('
+tokerman@e1r8p10:~/MNSHL/theo$ a=$5()
+bash: syntax error near unexpected token `('
+tokerman@e1r8p10:~/MNSHL/theo$ a=$5[]
+tokerman@e1r8p10:~/MNSHL/theo$ echo $a
+[]
+tokerman@e1r8p10:~/MNSHL/theo$ a=$5{}
+tokerman@e1r8p10:~/MNSHL/theo$ a=$b((b))
+bash: syntax error near unexpected token `('
+tokerman@e1r8p10:~/MNSHL/theo$ echo $a
+{}
