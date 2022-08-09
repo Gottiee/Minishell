@@ -65,7 +65,7 @@ void	del_list(t_pipex *pipex);
 
 /*Fichier: fork_process.c*/
 
-/*Fichier: parsing_pipex.c*/
+/*Fichier: lexeur_pipex.c*/
 int		lexeur_pipex(t_pipex *pipex, char *cmd);
 
 /*Fichier: stuct_manage_pipex.c*/

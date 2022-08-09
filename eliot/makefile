@@ -11,7 +11,7 @@ BONUS_SRC_DIR = src_bonus/
 SRC_FILES = main \
 pipex \
 end_and_free \
-parsing_pipex \
+lexeur_pipex \
 fork_process \
 struct_manage_pipex
 
