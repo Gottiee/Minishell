@@ -16,25 +16,37 @@ typedef struct s_lcl_var
 {
 	char	*name;
 	char	*val;
-	int		type;//1 = string 0 = long long int
+	int		type;
 	struct s_lcl_var	*next;
 }	t_lcl_var;
 
-void	start_prompt();
-int		cmd_type(char *cmd);
+
+void		start_prompt(char **envp);
+int			cmd_type(char *cmd);
 
 //parsing
-int		check_spe_char(char *cmd);
-void 	parsing(char *cmd);
-int		is_var_cmd(char *cmd);
+int			check_spe_char(char *cmd);
+void 		parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
+int			is_var_cmd(char *cmd);
 
 //t_str
-t_str	*create_tstr(char c);
-void	add_back_tstr(t_str **first, t_str *new);
-char	*get_str_with_tstr(t_str *first);
+t_str		*create_tstr(char c);
+void		add_back_tstr(t_str **first, t_str *new);
+char		*get_str_with_tstr(t_str *first);
+
+//utils
+char	*remove_dquotes(char *str);
+
+//operation
+int			is_operation(char *val);
+char	*operate(char *val, t_lcl_var **lclvar, t_lcl_var **envvar);
 
 //t_lcl_var
-t_lcl_var	*create_lclvar(char	*cmd);
-void	free_lclvar(t_lcl_var *var);
+char		*get_name_var(char	*cmd);
+int			get_type_val(char *text);
+t_lcl_var	*create_lclvar(char	*cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
+void		free_lclvar(t_lcl_var *var);
+void		add_back_lclvar(t_lcl_var **first, t_lcl_var *new);
+t_lcl_var	*get_lclvar_by_name(t_lcl_var **lclvar, char *tofind);
 
 #endif

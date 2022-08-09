@@ -1,0 +1,822 @@
+e1r8p2% ok=5*8
+e1r8p2% echo $ok
+5*8
+e1r8p2% ok=$(5*8)
+zsh: no matches found: 5*8
+e1r8p2% ok=$5*8  
+e1r8p2% echo $ok 
+*8
+e1r8p2% echo $5
+
+e1r8p2% ok=$(5*8)
+zsh: no matches found: 5*8
+e1r8p2% ok=$((5*8)
+cmdsubst> 
+cmdsubst> 
+e1r8p2% echo $ok 
+
+e1r8p2% ok=$(5*8))
+zsh: parse error near `)'
+e1r8p2% ok=$((5*8))
+e1r8p2% echo $ok   
+40
+e1r8p2% ok=test*8 
+e1r8p2% echo $ok   
+test*8
+e1r8p2% test=8
+e1r8p2% ok=$test
+e1r8p2% echo $ok
+8
+e1r8p2% ok=$(test)
+e1r8p2% echo $ok  
+
+e1r8p2% tst=9     
+e1r8p2% ok=$(test)
+e1r8p2% echo $ok  
+
+e1r8p2% ok=$((test))
+e1r8p2% echo $ok    
+8
+e1r8p2% ok=$((tst)) 
+e1r8p2% echo $ok   
+9
+e1r8p2% ok=$(est)   
+zsh: command not found: est
+e1r8p2% ok=$(tst)
+zsh: command not found: tst
+e1r8p2% echo $ok 
+
+e1r8p2% ok=$(ls)
+e1r8p2% echo $ok 
+includes
+libft
+makefile
+minishell
+src
+e1r8p2% ok=$(echo 8)
+e1r8p2% echo $ok    
+8
+e1r8p2% 
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((5*8)
+> )
+5*8: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((ls)
+> )
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+includes libft makefile minishell src
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+
+tokerman@e1r8p2:~/MNSHL/theo$ ok=5*8
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+5*8
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$(5*8)
+5*8: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$(ls)
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+includes libft makefile minishell src
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$5*8
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+*8
+tokerman@e1r8p2:~/MNSHL/theo$ non=oui
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$ouinon
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$oui*non
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+*non
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$oui+non
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
++non
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$oui8non
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$oui/non
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+/non
+tokerman@e1r8p2:~/MNSHL/theo$ 
+
+A variable name can have letter/s.
+A variable name can have numbers, underscores, and digits.
+On peux coller un variable et du text avec un caractere non accepter dans un nom de variable
+
+Penser au $? dnas les declarations de variables
+ex : ok=$?*8 // ok=$((?*8))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokerman@e1r8p2:~/MNSHL/theo$ te$st=8
+te=8: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ te_st=8
+tokerman@e1r8p2:~/MNSHL/theo$ echo te_st=8
+te_st=8
+tokerman@e1r8p2:~/MNSHL/theo$ ok=8
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+8
+tokerman@e1r8p2:~/MNSHL/theo$ echo $te_st
+8
+tokerman@e1r8p2:~/MNSHL/theo$ _=9
+tokerman@e1r8p2:~/MNSHL/theo$ echo $_
+
+tokerman@e1r8p2:~/MNSHL/theo$ __=9
+tokerman@e1r8p2:~/MNSHL/theo$ echo $__
+9
+tokerman@e1r8p2:~/MNSHL/theo$ 8=58
+8=58: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ 84564123=58
+84564123=58: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ ___=89
+tokerman@e1r8p2:~/MNSHL/theo$ echo $___
+89
+tokerman@e1r8p2:~/MNSHL/theo$ __="$((8*5))"
+tokerman@e1r8p2:~/MNSHL/theo$ echo $__
+40
+tokerman@e1r8p2:~/MNSHL/theo$ __='$((8*5))'
+tokerman@e1r8p2:~/MNSHL/theo$ echo $__
+$((8*5))
+tokerman@e1r8p2:~/MNSHL/theo$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokerman@e1r8p2:~/MNSHL/theo$ ok=test
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$(($ok*8))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tst
+64
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+test
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$(($ok*8))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tst
+64
+tokerman@e1r8p2:~/MNSHL/theo$ phrase="ceci est un test"
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$(($phrase*8))
+bash: ceci est un test*8: syntax error in expression (error token is "est un test*8")
+tokerman@e1r8p2:~/MNSHL/theo$ cmd=ls
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$(($ls*8))
+bash: *8: syntax error: operand expected (error token is "*8")
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$((test*8))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tst
+64
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$((ls*8))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tst
+0
+tokerman@e1r8p2:~/MNSHL/theo$ test
+tokerman@e1r8p2:~/MNSHL/theo$ $?
+1: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ ls
+includes  libft  makefile  minishell  src
+tokerman@e1r8p2:~/MNSHL/theo$ $?
+0: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ asasas
+asasas: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ $?
+127: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$((asasasa*8))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tst
+0
+tokerman@e1r8p2:~/MNSHL/theo$ echo $test
+8
+tokerman@e1r8p2:~/MNSHL/theo$ ok=2
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$((ok*8))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tst
+16
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$(($ok*8))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tst
+16
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tstt
+
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tstt
+
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$((tsts*8))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tst
+0
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$(  (2*8))
+2*8: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$(2*8))
+bash: syntax error near unexpected token `)'
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$((2*8))
+tokerman@e1r8p2:~/MNSHL/theo$ tst="$((2*8))"
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tst
+16
+tokerman@e1r8p2:~/MNSHL/theo$ tst="$(  (2*8))"
+2*8: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$(("2"*8))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tst
+16
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$(("2*"8))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $tst
+16
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$(('2*'8))
+bash: '2*'8: syntax error: operand expected (error token is "'2*'8")
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$(('2'*8))
+bash: '2'*8: syntax error: operand expected (error token is "'2'*8")
+tokerman@e1r8p2:~/MNSHL/theo$ tst=$(('2*8'))
+bash: '2*8': syntax error: operand expected (error token is "'2*8'")
+tokerman@e1r8p2:~/MNSHL/theo$ ok="   $((8*5))    "
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+40
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$(())
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((8&6))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+0
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe&6))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+0
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe+6))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+6
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe++6))
+bash: pepepeppe++6: syntax error in expression (error token is "6")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe+=6))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+7
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe+=6))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+13
+tokerman@e1r8p2:~/MNSHL/theo$ echo $pepepeppe
+13
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=6*8))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $pepepeppe
+48
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((6&8+9))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+0
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=6*(tst=8)))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+48
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=6*tst=4))
+bash: pepepeppe=6*tst=4: attempted assignment to non-variable (error token is "=4")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=6*\8))
+bash: pepepeppe=6*\8: syntax error: operand expected (error token is "\8")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=6\*8))
+bash: pepepeppe=6\*8: syntax error: invalid arithmetic operator (error token is "\*8")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=6\*(tst=5*\9)))
+bash: pepepeppe=6\*(tst=5*\9): syntax error: invalid arithmetic operator (error token is "\*(tst=5*\9)")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=6*\(tst=5*\9)))
+bash: syntax error near unexpected token `)'
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=6*$(tst=5*\9)))
+bash: pepepeppe=6*: syntax error: operand expected (error token is "*")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=6*$(tst=5)))
+bash: pepepeppe=6*: syntax error: operand expected (error token is "*")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=$(tst)))
+
+Command 'tst' not found, but can be installed with:
+
+apt install pvm-examples
+
+bash: pepepeppe=Please ask your administrator.: syntax error: invalid arithmetic operator (error token is ".")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=$tst))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+8
+tokerman@e1r8p2:~/MNSHL/theo$ tst=89
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=$tst))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+89
+tokerman@e1r8p2:~/MNSHL/theo$ echo $pepeppe
+
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$(($pepepeppe=$tst))
+bash: 89=89: attempted assignment to non-variable (error token is "=89")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=tst))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $pepeppe
+
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+89
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=$(tst=74)))
+bash: pepepeppe=: syntax error: operand expected (error token is "=")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=$(tst*74)))
+tst*74: command not found
+bash: pepepeppe=: syntax error: operand expected (error token is "=")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=$((tst*74))))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+6586
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=$((tst=74))))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+74
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=$tst*9))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+666
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=$(ls)*9))
+bash: pepepeppe=includes
+libft
+makefile
+minishell
+src*9: syntax error in expression (error token is "libft
+makefile
+minishell
+src*9")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=$(cat makefile)*9))
+bash: pepepeppe=NAME  = minishell
+
+SRC_DIR = src/
+
+BONUS_SRC_DIR = src_bonus/
+
+SRC_FILES = main prompt cmd_type parsing t_local_var t_str operation utils ../libft/*
+
+SRC =   $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+
+OBJ = $(SRC:.c=.o)
+
+CC = gcc
+
+FLAGS = -Wall -Wextra -Werror -g $< -o $@
+
+LIB = -lreadline
+
+all: $(NAME)
+
+$(NAME) :
+        $(CC) $(SRC) -o $(NAME) $(LIB) -g
+
+debug: $(NAME_DEBUG)
+
+
+%.o: %.c
+        $(CC) $(FLAGS)
+
+clean :
+        rm -f $(OBJ)
+        rm -f $(BONUS_OBJ)
+
+fclean : clean
+        rm -f $(NAME)
+        rm -f $(BONUS_NAME)
+
+re : fclean all*9: syntax error in expression (error token is "SRC_DIR = src/
+
+BONUS_SRC_DIR = src_bonus/
+
+SRC_FILES = main prompt cmd_type parsing t_local_var t_str operation utils ../libft/*
+
+SRC =   $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+
+OBJ = $(SRC:.c=.o)
+
+CC = gcc
+
+FLAGS = -Wall -Wextra -Werror -g $< -o $@
+
+LIB = -lreadline
+
+all: $(NAME)
+
+$(NAME) :
+        $(CC) $(SRC) -o $(NAME) $(LIB) -g
+
+debug: $(NAME_DEBUG)
+
+
+%.o: %.c
+        $(CC) $(FLAGS)
+
+clean :
+        rm -f $(OBJ)
+        rm -f $(BONUS_OBJ)
+
+fclean : clean
+        rm -f $(NAME)
+        rm -f $(BONUS_NAME)
+
+re : fclean all*9")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((pepepeppe=$(cat makefile)))
+bash: pepepeppe=NAME  = minishell
+
+SRC_DIR = src/
+
+BONUS_SRC_DIR = src_bonus/
+
+SRC_FILES = main prompt cmd_type parsing t_local_var t_str operation utils ../libft/*
+
+SRC =   $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+
+OBJ = $(SRC:.c=.o)
+
+CC = gcc
+
+FLAGS = -Wall -Wextra -Werror -g $< -o $@
+
+LIB = -lreadline
+
+all: $(NAME)
+
+$(NAME) :
+        $(CC) $(SRC) -o $(NAME) $(LIB) -g
+
+debug: $(NAME_DEBUG)
+
+
+%.o: %.c
+        $(CC) $(FLAGS)
+
+clean :
+        rm -f $(OBJ)
+        rm -f $(BONUS_OBJ)
+
+fclean : clean
+        rm -f $(NAME)
+        rm -f $(BONUS_NAME)
+
+re : fclean all: syntax error in expression (error token is "SRC_DIR = src/
+
+BONUS_SRC_DIR = src_bonus/
+
+SRC_FILES = main prompt cmd_type parsing t_local_var t_str operation utils ../libft/*
+
+SRC =   $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+
+OBJ = $(SRC:.c=.o)
+
+CC = gcc
+
+FLAGS = -Wall -Wextra -Werror -g $< -o $@
+
+LIB = -lreadline
+
+all: $(NAME)
+
+$(NAME) :
+        $(CC) $(SRC) -o $(NAME) $(LIB) -g
+
+debug: $(NAME_DEBUG)
+
+
+%.o: %.c
+        $(CC) $(FLAGS)
+
+clean :
+        rm -f $(OBJ)
+        rm -f $(BONUS_OBJ)
+
+fclean : clean
+        rm -f $(NAME)
+        rm -f $(BONUS_NAME)
+
+re : fclean all")
+tokerman@e1r8p2:~/MNSHL/theo$ echo $pepeppe
+
+tokerman@e1r8p2:~/MNSHL/theo$ echo $pepepeppe
+0
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+666
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((peppe=$(ls)))
+bash: peppe=includes
+libft
+makefile
+minishell
+src: syntax error in expression (error token is "libft
+makefile
+minishell
+src")
+tokerman@e1r8p2:~/MNSHL/theo$ echo $peppe
+0
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+666
+tokerman@e1r8p2:~/MNSHL/theo$ tst=ls
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((peppe=$(tst)))
+
+Command 'tst' not found, but can be installed with:
+
+apt install pvm-examples
+
+bash: peppe=Please ask your administrator.: syntax error: invalid arithmetic operator (error token is ".")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((peppe=$tst))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $peppe
+0
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+0
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((peppe=tst))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $peppe
+0
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+0
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((peppe=ls))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $peppe
+0
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+0
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((peppe=apap))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $peppe
+0
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+0
+tokerman@e1r8p2:~/MNSHL/theo$ peppe=5
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((peppe=apap))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $peppe
+0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tokerman@e1r8p2:~/MNSHL/theo$ mkfl=makefile
+tokerman@e1r8p2:~/MNSHL/theo$ echo $((5*8+$(cat mkfl)))
+cat: mkfl: No such file or directory
+bash: 5*8+: syntax error: operand expected (error token is "+")
+tokerman@e1r8p2:~/MNSHL/theo$ echo $((5*8+$(cat $mkfl)))
+bash: 5*8+NAME  = minishell
+
+SRC_DIR = src/
+
+BONUS_SRC_DIR = src_bonus/
+
+SRC_FILES = main prompt cmd_type parsing t_local_var t_str operation utils ../libft/*
+
+SRC =   $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+
+OBJ = $(SRC:.c=.o)
+
+CC = gcc
+
+FLAGS = -Wall -Wextra -Werror -g $< -o $@
+
+LIB = -lreadline
+
+all: $(NAME)
+
+$(NAME) :
+        $(CC) $(SRC) -o $(NAME) $(LIB) -g
+
+debug: $(NAME_DEBUG)
+
+
+%.o: %.c
+        $(CC) $(FLAGS)
+
+clean :
+        rm -f $(OBJ)
+        rm -f $(BONUS_OBJ)
+
+fclean : clean
+        rm -f $(NAME)
+        rm -f $(BONUS_NAME)
+
+re : fclean all: attempted assignment to non-variable (error token is "= minishell
+
+SRC_DIR = src/
+
+BONUS_SRC_DIR = src_bonus/
+
+SRC_FILES = main prompt cmd_type parsing t_local_var t_str operation utils ../libft/*
+
+SRC =   $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+
+OBJ = $(SRC:.c=.o)
+
+CC = gcc
+
+FLAGS = -Wall -Wextra -Werror -g $< -o $@
+
+LIB = -lreadline
+
+all: $(NAME)
+
+$(NAME) :
+        $(CC) $(SRC) -o $(NAME) $(LIB) -g
+
+debug: $(NAME_DEBUG)
+
+
+%.o: %.c
+        $(CC) $(FLAGS)
+
+clean :
+        rm -f $(OBJ)
+        rm -f $(BONUS_OBJ)
+
+fclean : clean
+        rm -f $(NAME)
+        rm -f $(BONUS_NAME)
+
+re : fclean all")
+tokerman@e1r8p2:~/MNSHL/theo$ $?
+1: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((5*8+$(cat $mkfl)))
+bash: 5*8+NAME  = minishell
+
+SRC_DIR = src/
+
+BONUS_SRC_DIR = src_bonus/
+
+SRC_FILES = main prompt cmd_type parsing t_local_var t_str operation utils ../libft/*
+
+SRC =   $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+
+OBJ = $(SRC:.c=.o)
+
+CC = gcc
+
+FLAGS = -Wall -Wextra -Werror -g $< -o $@
+
+LIB = -lreadline
+
+all: $(NAME)
+
+$(NAME) :
+        $(CC) $(SRC) -o $(NAME) $(LIB) -g
+
+debug: $(NAME_DEBUG)
+
+
+%.o: %.c
+        $(CC) $(FLAGS)
+
+clean :
+        rm -f $(OBJ)
+        rm -f $(BONUS_OBJ)
+
+fclean : clean
+        rm -f $(NAME)
+        rm -f $(BONUS_NAME)
+
+re : fclean all: attempted assignment to non-variable (error token is "= minishell
+
+SRC_DIR = src/
+
+BONUS_SRC_DIR = src_bonus/
+
+SRC_FILES = main prompt cmd_type parsing t_local_var t_str operation utils ../libft/*
+
+SRC =   $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+
+OBJ = $(SRC:.c=.o)
+
+CC = gcc
+
+FLAGS = -Wall -Wextra -Werror -g $< -o $@
+
+LIB = -lreadline
+
+all: $(NAME)
+
+$(NAME) :
+        $(CC) $(SRC) -o $(NAME) $(LIB) -g
+
+debug: $(NAME_DEBUG)
+
+
+%.o: %.c
+        $(CC) $(FLAGS)
+
+clean :
+        rm -f $(OBJ)
+        rm -f $(BONUS_OBJ)
+
+fclean : clean
+        rm -f $(NAME)
+        rm -f $(BONUS_NAME)
+
+re : fclean all")
+tokerman@e1r8p2:~/MNSHL/theo$ $?
+1: command not found
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+includes libft makefile minishell src
+tokerman@e1r8p2:~/MNSHL/theo$ echo $((5*8+$(ls)))
+bash: 5*8+includes
+libft
+makefile
+minishell
+src: syntax error in expression (error token is "libft
+makefile
+minishell
+src")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((5*8+$(ls)))
+bash: 5*8+includes
+libft
+makefile
+minishell
+src: syntax error in expression (error token is "libft
+makefile
+minishell
+src")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((5*8+$(ls))) | cat makefile
+NAME  = minishell
+
+SRC_DIR = src/
+
+BONUS_SRC_DIR = src_bonus/
+
+SRC_FILES = main prompt cmd_type parsing t_local_var t_str operation utils ../libft/*
+
+SRC =   $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+
+OBJ = $(SRC:.c=.o)
+
+CC = gcc
+
+FLAGS = -Wall -Wextra -Werror -g $< -o $@
+
+LIB = -lreadline
+
+all: $(NAME)
+
+$(NAME) :
+        $(CC) $(SRC) -o $(NAME) $(LIB) -g
+
+debug: $(NAME_DEBUG)
+
+
+%.o: %.c
+        $(CC) $(FLAGS)
+
+clean :
+        rm -f $(OBJ)
+        rm -f $(BONUS_OBJ)
+
+fclean : clean
+        rm -f $(NAME)
+        rm -f $(BONUS_NAME)
+
+re : fclean all
+bash: 5*8+includes
+libft
+makefile
+minishell
+src: syntax error in expression (error token is "libft
+makefile
+minishell
+src")
+tokerman@e1r8p2:~/MNSHL/theo$ ls=98
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((5*8+$(ls)))
+bash: 5*8+includes
+libft
+makefile
+minishell
+src: syntax error in expression (error token is "libft
+makefile
+minishell
+src")
+tokerman@e1r8p2:~/MNSHL/theo$ ok=$((5*8+$(echo 4)))
+tokerman@e1r8p2:~/MNSHL/theo$ echo $ok
+44

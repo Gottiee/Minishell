@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:57:58 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/04 19:52:44 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/09 05:34:05 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,40 @@ int	check_spe_char(char *cmd)
 }
 
 /*
+retourne 0 si le nom de la variable contient des characteres autre que que des lettres, des chiffres ou des uderscore
+et retourne 1 sinon
++ gestion de quelque cas particulier faux
+	le nom de la var c'est "_"
+	le nom ne comporte que des chiffres
+*/
+int	check_lclvar_name(char *cmd)
+{
+	char	*name;
+	int		i;
+	int		size;
+	
+	name = get_name_var(cmd);
+	size = ft_strlen(name);
+	if ((size == 1 && name[0] == '_') || get_type_val(name) == 0)
+	{
+		free(name);
+		return (0);
+	}
+	i = 0;
+	while (i < size)
+	{
+		if (ft_isalnum(name[i]) == 0 && name[i] != '_')
+		{
+			free(name);
+			return (0);
+		}
+		i++;
+	}
+	free(name);
+	return (1);
+}
+
+/*
 Fonction qui regarde si la cmd est un declaration ou update de variable
 */
 int	is_var_cmd(char *cmd)
@@ -55,14 +89,8 @@ int	is_var_cmd(char *cmd)
 	i = 0;
 	size = ft_strlen(cmd);
 	quotes = 0;
-	while (i < size && cmd[i] == ' ')//skip les espaces au debut
-		i++;
 	while (i < size && cmd[i] != '=')//le pointeur avnce jusqua '='
-	{
-		if (cmd[i] == '"' || cmd[i] == '\'' || cmd[i] == ' ')
-			return (0);
 		i++;
-	}
 	if (i == 0 || cmd[i - 1] == ' ')//verifi si le egal est pas le premier caractere apres les espaces du debut
 		return (0);
 	i++;
@@ -84,30 +112,67 @@ int	is_var_cmd(char *cmd)
 	while (i < size)//verifi qu'il n'y a pas de caractere a part espace apres la fin de la valeur de la var
 		if (cmd[i++] != ' ')
 			return (0);
-	return (1);
+	return (check_lclvar_name(cmd));
+}
+
+/*
+fonction qui gere la declaration d'une variable via une commande
+ex : ok=89
+*/
+void	var_cmd(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
+{
+	t_lcl_var *var;
+	t_lcl_var *temp_lcl;
+	t_lcl_var *temp_env;
+
+	var = create_lclvar(cmd, lclvar, envvar);
+	temp_lcl = get_lclvar_by_name(lclvar, var->name);
+	temp_env = get_lclvar_by_name(envvar, var->name);
+	if (temp_lcl != NULL)
+	{
+		free(temp_lcl->val);
+		temp_lcl->val = ft_strdup(var->val);
+		free_lclvar(var);
+	}
+	else if (temp_env != NULL)
+	{
+		//modification de la variable d'environnement
+	}
+	else
+		add_back_lclvar(lclvar, var);
 }
 
 /*
 fonction qui va verifier si il n'y pas d'erreur
 	et qui va clean la cmd
 */
-void parsing(char *cmd)
+void parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
 {
 	if (check_spe_char(cmd) == 0)
 		return ;
 	printf("Is var %i\n", is_var_cmd(cmd));
 	if (is_var_cmd(cmd))
-	{
-		t_lcl_var *var;
-
-		var = create_lclvar(cmd);
-		free_lclvar(var);
-		//l'ajouter au dictionnaire de variables locales
-	}
+		var_cmd(cmd, lclvar, envvar);
 	else
 	{
-		//enlever la declaration de variable si il y en a une au milieu de pipi (ok=89 | ls) (le remplacer par "echo ''")
+		//enlever la declaration de variable si il y en a une au milieu de pipex (ok=89 | ls) (le remplacer par "echo ''")
 		//si c'est avec une autre cmd(ex : ls ok=89) le laisser car c'est un 
 			//parametre de cmd et pas une declaration de variable
+
+
+		// si y'a des pipes verifier qu'il y a pas des declarations de variables
+			//si il y en a les remplacer par des echo vide
+		//si il est dans une commande (ex ok=8 ls) // si il est au debut l'enlever et envoyer le reste a pipex
+			//pareil pour ls | ok=8 cat
 	}
+
+	//utiliser cette fonction pour parser une commande apres l'autre
+	//c'est pipex qui doit appeler cette commande
+	//retourne la bonne commande (traduction de variable ou 
+		//enlever les declarations de variables et les remplacer par des echo vide 
+			//(meme si ceux ci reussise(ex : ok=8 
+				//reussit mais pipex ne doit executer aucune commande donc executer un echo vide)))
+	//em plus le $? compte une declaration de variables reussit
+	//si une declaration de variable a besoin d'une execution (operation), lancer un execve pendant 
+		//le parsing et retourner a pipex qui il y a eu une erreur si il y en a une
 }
