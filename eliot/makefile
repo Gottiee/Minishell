@@ -13,7 +13,8 @@ pipex \
 end_and_free \
 lexeur_pipex \
 fork_process \
-struct_manage_pipex
+struct_manage_pipex \
+pipex_parsing
 
 BONUS_SRC_FILES = 
 

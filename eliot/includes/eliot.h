@@ -20,6 +20,12 @@
 
 /*	stucture pipex	*/
 
+typedef	struct s_pipe_lexeur
+{
+	int	*pipe;
+	int	*tchque_pipe;
+} t_pipe_lexeur;
+
 typedef struct s_str
 {
 	char	c;
@@ -43,13 +49,11 @@ typedef struct s_pipex
 	char	**cmd_splited;
 	char	*cmd;
 	int		return_value_var_global;
-	int		fd[2];
 
 	//parsing de la cmd
 	t_list_pipex	*lexeur;
 	
 }				t_pipex;
-
 
 
 /*          --- Fonctions qui gere pipex ---     */
@@ -61,12 +65,7 @@ int		how_many_pipe(char **cmd);
 
 /*Fichier: end_and_free.c*/
 void	free_all_pipex(t_pipex *pipex);
-void	del_list(t_pipex *pipex);
-
-/*Fichier: fork_process.c*/
-
-/*Fichier: lexeur_pipex.c*/
-int		lexeur_pipex(t_pipex *pipex, char *cmd);
+int		del_list(t_pipex *pipex);
 
 /*Fichier: stuct_manage_pipex.c*/
 t_list_pipex	*init_struct_pipex(void);
@@ -76,4 +75,16 @@ void	free_tstr(t_str *tstr);
 int	add_char_pipex(t_list_pipex *start, char char_p);
 void	print_struc(t_list_pipex *start);
 
+/*Fichier: lexeur_pipex.c*/
+int		lexeur_pipex(t_pipex *pipex, char *cmd);
+void	lexeur_front_chevron(t_pipex *pipex, char *cmd, int *i);
+void	lexeur_back_chevron(t_pipex *pipex, char *cmd, int *i);
+void	lexeur_cmd(t_pipex *pipex, char *cmd, int *i);
+void	pipe_lexeur(t_pipex *pipex, char *cmd, int *i, t_pipe_lexeur lex);
+
+/*Fichier: parsing_pipex.c*/
+int	paring_pipex(t_list_pipex *start);
+int	print_error_syntax(t_list_pipex *tmp);
+
+/*Fichier: fork_process.c*/
 #endif

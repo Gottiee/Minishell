@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/09 17:07:22 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/11 12:46:13 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 int g_return_value;
 
 /*chose a faire: 
--	faire le lexer qui met tout les arguments dans les structure: 
-	-	mettre dans UNE structure tous les arguments les uns apres les autres commes ils sont appele
-		- << < > >>
-	-	 dans une struct a part metre les commandes
 - 	lire dans l'ordre les instsrucition et verifier s'ils sont executables et que ca marche correctment 
 	- faire les heres doc s'ils sont appele
 	- attention aux "" dans les here doc (ajouter au README)
@@ -48,7 +44,12 @@ int	pipex(char *cmd, char *path)
 		return (1);
 	}
 
+	// affiche sur le terminal les info du lexeur;
 	print_struc(pipex.lexeur);
+	
+	//parsing de pipex (verification de la syntax, ouverture des heres doc au fur et a mesure)
+	paring_pipex(pipex.lexeur);
+
 	//creation du pipe ?
 	if (pipex.nbr_of_pipe > 1)
 		pipe(pipex.fd_pipe);
@@ -73,8 +74,8 @@ int	pipex(char *cmd, char *path)
 	//attente des process dans le main
 	if (id != 0)
 		wait(0);
-	close(pipex.fd[0]);
-	close(pipex.fd[1]);
+	close(pipex.fd_pipe[0]);
+	close(pipex.fd_pipe[1]);
 	del_list(&pipex);
 	free_all_pipex(&pipex);
 	return (0);

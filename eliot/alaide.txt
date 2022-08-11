@@ -1,0 +1,23 @@
+MacBook-Pro:eliot eliot$ cat << ok | << biz >
+> ok
+> biz
+-bash: syntax error near unexpected token `newline'
+
+MacBook-Pro:eliot eliot$ cat << ok | > << biz >
+-bash: syntax error near unexpected token `<<'
+> ok
+
+si l'erreur est apres les << alors les faires puis prins l'erreur
+si l'erreur est avant les << print l'error puis faire les doc heres jusqu'a l'error
+
+MacBook-Pro:eliot eliot$ cat << ok | << dac << ? > << >
+-bash: syntax error near unexpected token `<<'
+> dac
+> ok
+> dac
+> ?
+
+MacBook-Pro:eliot eliot$ cat << ok | << dac  << >
+-bash: syntax error near unexpected token `>'
+> ok
+> dac
