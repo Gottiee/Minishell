@@ -963,7 +963,7 @@ $t_p=9=$((5*8))
 tokerman@e1r8p10:~/MNSHL/theo$ p='$t_p'="$t_p"=$(ls)=$((5*8))
 tokerman@e1r8p10:~/MNSHL/theo$ echo $p
 $t_p=9=includes libft makefile minishell src=40
-tokerman@e1r8p10:~/MNSHL/theo$ p='$t_p'="$t_p"=$(lss)=$((5*8))
+tokerman@e1r8p10:~/MNSHL/theo$ p='$t_p'="$t_p"=$(lss)+$((5*8))
 
 Command 'lss' not found, did you mean:
 

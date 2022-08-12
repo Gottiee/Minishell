@@ -43,6 +43,8 @@
 	- [ ] prendre en compte les operations (ex oui=$((4+5))) + calcul dans export
 	- [ ] si ok=$(ls) alors ok prend le resultat de la commande ls
 	- [X] verifier que le nom de la variable est constituer seulement de lettres, chiffre underscore mais nest pas egal a "_" ou qu'il n'y ai pas que des chiffres dans le nom de la var
+	- [ ] pour les cmd ($(ls)) dans les decl de var, fork et rediriger la sortie standart et que j'appelle pipex 
+		- si erreur de syntaxe, si pipex renvoie newline, pour (ok=$(ok >))renvoyer bash: command substitution: line 3: syntax error near unexpected token `)' bash: command substitution: line 3: `ok >)'
 	- [X]  creer une recherche par le nom pour trouver la structure dans la liste chainee (fonction dans les deux listes) :theo
 	- [ ]  gerer pour le here doc
 	- [ ] traduire les variable locale et env quand elle existe

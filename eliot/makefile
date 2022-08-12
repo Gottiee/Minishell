@@ -14,7 +14,8 @@ end_and_free \
 lexeur_pipex \
 fork_process \
 struct_manage_pipex \
-pipex_parsing
+pipex_parsing \
+here_doc
 
 BONUS_SRC_FILES = 
 

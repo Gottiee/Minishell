@@ -6,11 +6,16 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:43:53 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/11 13:44:29 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/12 18:07:28 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/eliot.h"
+
+/*-	si quote ' ou " ne pas skippe les espaces
+- && cmd[i] != ' '; devient && (cmd[i]!= ' ' && bolo_quote == 0) sinon ca veut dire que je suis sur une quote et qu'il faut pas que je sskipe les espaces
+while je suis sur une quote (donner a quote la valeur ascii de la quote (puisqu'il y en a plusieur)), la skipe copier tout l'interieur j'usaqua la pochaine quote
+*/
 
 void	pipe_lexeur(t_pipex *pipex, char *cmd, int *i, t_pipe_lexeur lex)
 {
@@ -30,9 +35,22 @@ void	pipe_lexeur(t_pipex *pipex, char *cmd, int *i, t_pipe_lexeur lex)
 			add_char_pipex(pipex->lexeur, ' ');
 		while (cmd[*i] && (cmd[*i] != '<' && cmd[*i] != '>' && cmd[*i] != '|' && cmd[*i] != ' ')) 
 		{
-			add_char_pipex(pipex->lexeur, cmd[*i]);
+			if (cmd[*i] == '"' || cmd[*i] == 39)
+				quote_add_char(pipex, cmd, i, cmd[*i]);
+			if (cmd[*i] != '"' && cmd[*i] != 39)
+				add_char_pipex(pipex->lexeur, cmd[*i]);
 			(*i)++;
 		}
+	}
+}
+
+void	quote_add_char(t_pipex *pipex, char *cmd, int *i, int quote)
+{
+	*i += 1;
+	while (cmd[*i] != quote)
+	{
+		add_char_pipex(pipex->lexeur, cmd[*i]);
+		(*i)++;
 	}
 }
 
@@ -48,7 +66,13 @@ void	lexeur_front_chevron(t_pipex *pipex, char *cmd, int *i)
 			add_struct_pipex(pipex->lexeur, HERE_DOC); // creatin elem heredoc
 			while (cmd[*i] && (cmd[*i] != '<' && cmd[*i] != '>' && cmd[*i] != '|' && cmd[*i] != ' ')) 
 			{
-				add_char_pipex(pipex->lexeur, cmd[*i]);
+				if (cmd[*i] == '"' || cmd[*i] == 39)
+				{
+					quote_add_char(pipex, cmd, i, cmd[*i]);
+					add_bolo_here_doc(pipex->lexeur);
+				}
+				if (cmd[*i] != '"' && cmd[*i] != 39)
+					add_char_pipex(pipex->lexeur, cmd[*i]);
 				(*i) ++;
 			}
 		}
@@ -62,7 +86,10 @@ void	lexeur_front_chevron(t_pipex *pipex, char *cmd, int *i)
 			add_struct_pipex(pipex->lexeur, INFILE);
 			while (cmd[*i] && (cmd[*i] != '<' && cmd[*i] != '>' && cmd[*i] != '|' && cmd[*i] != ' ')) 
 			{
-				add_char_pipex(pipex->lexeur, cmd[*i]);
+				if (cmd[*i] == '"' || cmd[*i] == 39)
+					quote_add_char(pipex, cmd, i, cmd[*i]);
+				if (cmd[*i] != '"' && cmd[*i] != 39)
+					add_char_pipex(pipex->lexeur, cmd[*i]);
 				(*i) ++;
 			}
 		}
@@ -84,7 +111,10 @@ void	lexeur_back_chevron(t_pipex *pipex, char *cmd, int *i)
 			add_struct_pipex(pipex->lexeur, DBL_OUTFILE);
 			while (cmd[*i] && (cmd[*i] != '<' && cmd[*i] != '>' && cmd[*i] != '|' && cmd[*i] != ' ')) 
 			{
-				add_char_pipex(pipex->lexeur, cmd[*i]);
+				if (cmd[*i] == '"' || cmd[*i] == 39)
+					quote_add_char(pipex, cmd, i, cmd[*i]);
+				if (cmd[*i] != '"' && cmd[*i] != 39)
+					add_char_pipex(pipex->lexeur, cmd[*i]);
 				(*i) ++;
 			}
 		}
@@ -98,7 +128,10 @@ void	lexeur_back_chevron(t_pipex *pipex, char *cmd, int *i)
 			add_struct_pipex(pipex->lexeur, OUTFILE);
 			while (cmd[*i] && (cmd[*i] != '<' && cmd[*i] != '>' && cmd[*i] != '|' && cmd[*i] != ' ')) 
 			{
-				add_char_pipex(pipex->lexeur, cmd[*i]);
+				if (cmd[*i] == '"' || cmd[*i] == 39)
+					quote_add_char(pipex, cmd, i, cmd[*i]);
+				if (cmd[*i] != '"' && cmd[*i] != 39)
+					add_char_pipex(pipex->lexeur, cmd[*i]);
 				(*i) ++;
 			}
 		}
@@ -108,15 +141,17 @@ void	lexeur_back_chevron(t_pipex *pipex, char *cmd, int *i)
 
 void	lexeur_cmd(t_pipex *pipex, char *cmd, int *i)
 {
-	if (cmd[*i] && cmd[*i] != '|' && cmd[*i] != ' ')
+	if (cmd[*i] && cmd[*i] != '|' && cmd[*i] != ' ' && cmd[*i] != '<' && cmd[*i] != '>')
 	{
 		while (cmd[*i] == ' ')
 			(*i) ++;
-		//add_char_pipex(pipex->lexeur, ' ');
 		add_struct_pipex(pipex->lexeur, CMD);
 		while (cmd[*i] && (cmd[*i] != '<' && cmd[*i] != '>' && cmd[*i] != '|' && cmd[*i] != ' ')) 
 		{
-			add_char_pipex(pipex->lexeur, cmd[*i]); 
+			if (cmd[*i] == '"' || cmd[*i] == 39)
+				quote_add_char(pipex, cmd, i, cmd[*i]);
+			if (cmd[*i] != '"' && cmd[*i] != 39)
+				add_char_pipex(pipex->lexeur, cmd[*i]); 
 			(*i) ++;
 		}
 	}

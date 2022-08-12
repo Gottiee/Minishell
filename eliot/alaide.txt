@@ -21,3 +21,7 @@ MacBook-Pro:eliot eliot$ cat << ok | << dac  << >
 -bash: syntax error near unexpected token `>'
 > ok
 > dac
+
+ton output est deux fois le meme fichier; l'ouvrire deux fois ?? 
+
+commancer la commande avec un pipe
