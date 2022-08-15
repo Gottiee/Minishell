@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 10:50:38 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/12 19:00:36 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/15 15:12:29 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,36 @@ int	add_char_pipex(t_list_pipex *start, char char_p)
 	return (0);
 }
 
+int	add_char_here_doc(t_str *start, char char_p)
+{
+	t_str	*new;
+	t_str	*tmp;
+
+	tmp = start;
+	if (!tmp->c)
+	{
+		tmp->c = char_p;
+		tmp->next = NULL;
+		return (0);
+	}
+	new = malloc(sizeof(t_str));
+	if (!new)
+		return (-1);
+	
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+	new->next = NULL;
+	new->c = char_p;
+	return (0);
+}
+
+
 char	*concatenate_tstr(t_str *node)
 {
 	t_str	*tmp;
 	int		count_char;
-	char	str;
+	char	*str;
 	int		i;
 
 	i = -1;

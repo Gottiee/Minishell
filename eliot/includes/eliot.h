@@ -38,6 +38,8 @@ typedef struct s_list_pipex
 	t_str				*str_pipex;
 	int					type; // stock ce que c'est : here doc ... avec le define la haut
 	int					quote_here_doc;
+	int					fd;
+	char				*file_name;
 }				 t_list_pipex;
 
 typedef struct s_pipex
@@ -77,6 +79,7 @@ int	add_char_pipex(t_list_pipex *start, char char_p);
 void	print_struc(t_list_pipex *start);
 void	add_bolo_here_doc(t_list_pipex *start);
 char	*concatenate_tstr(t_str *node);
+int	add_char_here_doc(t_str *start, char char_p);
 
 /*Fichier: lexeur_pipex.c*/
 int		lexeur_pipex(t_pipex *pipex, char *cmd);
@@ -89,10 +92,14 @@ void	quote_add_char(t_pipex *pipex, char *cmd, int *i, int quote);
 /*Fichier: parsing_pipex.c*/
 int	paring_pipex(t_list_pipex *start);
 int	print_error_syntax(t_list_pipex *tmp);
-t_list_pipex	*parsing_pipex2(t_list_pipex *tmp);
+int	parsing_pipex2(t_list_pipex *tmp);
 
 
 /*Fichier: here_doc.c*/
+int		here_doc(t_list_pipex *here);
+int	cmp(char *s1, t_str *start, int k);
+int	gen_char(void);
+char	*random_file_name(void);
 
 /*Fichier: fork_process.c*/
 #endif

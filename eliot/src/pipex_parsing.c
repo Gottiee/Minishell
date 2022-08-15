@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 11:56:37 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/12 13:03:36 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/15 15:02:08 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ int	paring_pipex(t_list_pipex *start)
 				return (print_error_syntax(tmp));
 			}
 		}
-		tmp = parsing_pipex2(tmp);
-		if (tmp == NULL)
+		if (parsing_pipex2(tmp) == -1)
 			return (-1);
+		tmp = tmp->next;
 	}
 	return (0);
 }
 
-t_list_pipex	*parsing_pipex2(t_list_pipex *tmp)
+int	parsing_pipex2(t_list_pipex *tmp)
 {
 	// y 'as un |
 	if (tmp->type == PIPE)
@@ -51,22 +51,23 @@ t_list_pipex	*parsing_pipex2(t_list_pipex *tmp)
 		if (tmp->next == NULL)
 		{
 			printf("-bash: syntax error near unexpected token `newline'\n");
-			return (NULL);
+			return (-1);
 		}
 		// deux || colle donc error
 		else if (tmp->next->type == PIPE)
 		{
 			printf("-bash: syntax error near unexpected token `|'\n");
-			return (NULL);
+			return (-1);
 		}
 	}
 	// y 'as un << et que quelque chose est ecrit apres: tester le here doc
 	if (tmp->type == HERE_DOC)
 	{
-		printf("\n!! j'effectue un here doc !!\n");
+		here_doc(tmp);
+		printf("tmp->name = %s\n", tmp->file_name);
+		printf("fd = %d\n", tmp->fd);
 	}
-	tmp = tmp->next;
-	return (tmp);
+	return (0);
 }
 
 int	print_error_syntax(t_list_pipex *tmp)
