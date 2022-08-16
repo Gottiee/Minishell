@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 11:56:37 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/15 15:02:08 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/16 12:51:56 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int	parsing_pipex2(t_list_pipex *tmp)
 	// y 'as un << et que quelque chose est ecrit apres: tester le here doc
 	if (tmp->type == HERE_DOC)
 	{
-		here_doc(tmp);
+		if (here_doc(tmp) == -1)
+			return (-1);
 		printf("tmp->name = %s\n", tmp->file_name);
 		printf("fd = %d\n", tmp->fd);
 	}

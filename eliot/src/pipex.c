@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/12 17:06:43 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/16 13:18:51 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ int	pipex(char *cmd, char *path)
 	//attente des process dans le main
 	if (id != 0)
 		wait(0);
-	close(pipex.fd_pipe[0]);
-	close(pipex.fd_pipe[1]);
+	//close(pipex.fd_pipe[0]);
+	//close(pipex.fd_pipe[1]);
 	del_list(&pipex);
 	free_all_pipex(&pipex);
 	return (0);
@@ -85,10 +85,12 @@ int	manage_process(t_pipex *pipex, int index)
 {
 	int	return_value_parsing;
 	(void)return_value_parsing;
+	(void)pipex;
+	(void)index;
 
 	// stock dans cmd_splited toute la comande numero index, une nouvelle string par espace
-	pipex->cmd_splited = ft_split(pipex->pipe_splited[index], ' ');
-	pipex->cmd = pipex->pipe_splited[index];	
+	//pipex->cmd_splited = ft_split(pipex->pipe_splited[index], ' ');
+	//pipex->cmd = pipex->pipe_splited[index];	
 	return (0);
 }
 
