@@ -100,6 +100,7 @@ int		here_doc(t_list_pipex *here);
 int	cmp(char *s1, t_str *start, int k);
 int	gen_char(void);
 char	*random_file_name(void);
+void	write_inside_file(t_str *user_input, int fd, int k);
 
 /*Fichier: fork_process.c*/
 #endif

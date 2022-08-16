@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 13:25:43 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/16 13:31:01 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/16 16:11:45 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,31 @@ int		here_doc(t_list_pipex *here)
 			i ++;
 		}
 	}
-	free_tstr(user_input);
 	file_name = random_file_name();
 	here->file_name = file_name;
 	here->fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	// il faut ecrire dedans aussi
-
+	/*
+		Dans writes inside gerer si la valeur des quotes est egal a 0 il faut expand le nom
+		du coup j'ai gerer si la valeur des quotes est egal a 1. 
+	*/
+	write_inside_file(user_input, here->fd, k);
 	free(str_here_doc);
+	free_tstr(user_input);
 	return (0);
+}
+
+void	write_inside_file(t_str *user_input, int fd, int k)
+{
+	int		i;
+	t_str	*tmp;
+
+	tmp = user_input;
+	i = -1;
+	while (++i < k)
+	{
+		write(fd, &(tmp->c), 1);
+		tmp = tmp->next;
+	}
 }
 
 char	*random_file_name(void)
@@ -78,11 +95,13 @@ int	gen_char(void)
 	int		nbr;
 	int		fd;
 	
-	fd = open("/dev/random", O_RDONLY);
+	fd = open("/dev/urandom", O_RDONLY);
 	if (fd < -1)
 		return(-1);
 	read(fd, buff, 4);
 	nbr = *(int *)buff;
+	if (!nbr)
+		nbr = 'a';
 	if (nbr < 0)
 		nbr *= -1;
 	close(fd);
