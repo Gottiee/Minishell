@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/16 13:18:51 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/16 17:08:51 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,7 @@
 int g_return_value;
 
 /*chose a faire: 
-- 	lire dans l'ordre les instsrucition et verifier s'ils sont executables et que ca marche correctment 
-	- faire les heres doc s'ils sont appele
-	- attention aux "" dans les here doc (ajouter au README)
-- ATTENTION: a partire de la return si error
-- 	ouvrire les < 
--	ouvrire les >> et > suivant l'ordre de gauche a droite 
--	tester et exuter les commandes de gauche a droite
-	- !! un pipe = fork donc si un rate les autres s'execute*/
+	- attention aux "" dans les here doc (ajouter au README)*/
 
 int	pipex(char *cmd, char *path)
 {
@@ -65,8 +58,8 @@ int	pipex(char *cmd, char *path)
 			id = fork();
 		}
 	}
-	//gerer si fork fail
-
+	if (id == -1)
+		return (-1);
 	// fonction pour les process fork
 	if (id == 0)
 		pipex.return_value_var_global = manage_process(&pipex, index_process);
@@ -74,8 +67,6 @@ int	pipex(char *cmd, char *path)
 	//attente des process dans le main
 	if (id != 0)
 		wait(0);
-	//close(pipex.fd_pipe[0]);
-	//close(pipex.fd_pipe[1]);
 	del_list(&pipex);
 	free_all_pipex(&pipex);
 	return (0);
@@ -83,15 +74,17 @@ int	pipex(char *cmd, char *path)
 
 int	manage_process(t_pipex *pipex, int index)
 {
-	int	return_value_parsing;
-	(void)return_value_parsing;
-	(void)pipex;
-	(void)index;
+	/* chose a faire ! 
 
-	// stock dans cmd_splited toute la comande numero index, une nouvelle string par espace
-	//pipex->cmd_splited = ft_split(pipex->pipe_splited[index], ' ');
-	//pipex->cmd = pipex->pipe_splited[index];	
-	return (0);
+		- ecrire une fonction qui avance dans la liste chaine de x element jusqu'a arriver a son pipe on l'appeleraactual_pipe;
+		- compris entre actual_pipe et la prochaine stuct '|' ou struct NULL definir et changer le stdin de notre pie (par defaut c'est 0 (entre standart)). ouvir les < 
+		- compris entre ... changer et definir le stdout de notre fork: par defauti si rien c'est 1, si pipe apres c'est le pipe, sinon c'est les > et >> ouvert les uns apres les autres
+		- creer le tableau de tableau pour execve et le remplir
+		- tester la commande dans acess (pour check si c'est un absolute path);
+		- chercher env path (si path n'existe pas execve la command sans path) bash: ...: No such file or directory!! gerer le numero de retour
+		- si path essayer de trouver la path,  si pas trouver: ...:command not found;
+	*/
+
 }
 
 int	how_many_pipe(char **cmd)
