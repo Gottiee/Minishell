@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 13:25:43 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/16 16:14:09 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/17 16:57:28 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,14 @@ int		here_doc(t_list_pipex *here)
 	}
 	file_name = random_file_name();
 	here->file_name = file_name;
-	here->fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	here->fd = open(file_name, O_RDONLY | O_CREAT | O_TRUNC, 0644);
 	/*
 		Dans writes inside gerer si la valeur des quotes est egal a 0 il faut expand le nom
 		du coup j'ai gerer si la valeur des quotes est egal a 1. 
 	*/
 	write_inside_file(user_input, here->fd, k);
+	close(here->fd);
+	here->fd = open(file_name, O_RDONLY, 0644);
 	free(str_here_doc);
 	free_tstr(user_input);
 	return (0);

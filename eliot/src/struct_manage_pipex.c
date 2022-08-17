@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 10:50:38 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/16 15:50:58 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/17 16:50:44 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,8 @@ char	*concatenate_tstr(t_str *node)
 		tmp = tmp->next;
 	}
 	str = malloc(sizeof(char) * count_char + 1);
+	if (!str)
+		return (NULL);
 	str[count_char] = '\0';
 	tmp = node;
 	while (++i < count_char)

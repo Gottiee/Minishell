@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/16 17:08:51 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/17 17:46:04 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,19 +72,35 @@ int	pipex(char *cmd, char *path)
 	return (0);
 }
 
-int	manage_process(t_pipex *pipex, int index)
-{
-	/* chose a faire ! 
+/* chose a faire ! 
 
-		- ecrire une fonction qui avance dans la liste chaine de x element jusqu'a arriver a son pipe on l'appeleraactual_pipe;
-		- compris entre actual_pipe et la prochaine stuct '|' ou struct NULL definir et changer le stdin de notre pie (par defaut c'est 0 (entre standart)). ouvir les < 
 		- compris entre ... changer et definir le stdout de notre fork: par defauti si rien c'est 1, si pipe apres c'est le pipe, sinon c'est les > et >> ouvert les uns apres les autres
 		- creer le tableau de tableau pour execve et le remplir
 		- tester la commande dans acess (pour check si c'est un absolute path);
 		- chercher env path (si path n'existe pas execve la command sans path) bash: ...: No such file or directory!! gerer le numero de retour
 		- si path essayer de trouver la path,  si pas trouver: ...:command not found;
-	*/
+*/
 
+int	manage_process(t_pipex *pipex, int index)
+{
+	t_list_pipex	*tmp;
+	int				fd;
+	
+	printf("\nJE SUIS LE PROCESS %d\n\n", index);
+	// actual pipe te remvoie un pointeur sur le premier element du pipe que gere le fork
+	tmp = actual_pipe(pipex->lexeur, index);
+	// ouvre les < un par un et modifie dup la bonne sortie; 
+	fd = get_infile(tmp, index, pipex);
+	if (fd == -1)
+		return (-1);
+
+	// ouvre les  > et les >> chacun son tour et redirige 
+
+	// a la fin de la fonction il faut close le fichier si erreur < ou de command	
+	if (fd)
+		close(fd);
+	
+	return (0);
 }
 
 int	how_many_pipe(char **cmd)

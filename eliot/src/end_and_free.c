@@ -6,13 +6,13 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 13:08:06 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/16 16:45:21 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/17 16:11:22 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/eliot.h"
 
-void	free_all_pipex(t_pipex *pipex, int id)
+void	free_all_pipex(t_pipex *pipex)
 {
 	int	i;
 
