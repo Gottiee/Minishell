@@ -50,8 +50,9 @@ typedef struct s_pipex
 	int		fd_pipe[2];
 
 	//dans chaque process
-	char	**cmd_splited;
-	char	*cmd;
+	char	**cmd_tab_exec;
+	int		nbr_cmd;
+	char	*cmd_path;
 	int		return_value_var_global;
 
 	//parsing de la cmd
@@ -70,6 +71,7 @@ int		how_many_pipe(char **cmd);
 /*Fichier: end_and_free.c*/
 void	free_all_pipex(t_pipex *pipex);
 int		del_list(t_pipex *pipex);
+void	free_cmd_tab(t_pipex *pipex);
 
 /*Fichier: stuct_manage_pipex.c*/
 t_list_pipex	*init_struct_pipex(void);
@@ -107,5 +109,6 @@ void	write_inside_file(t_str *user_input, int fd, int k);
 t_list_pipex	*actual_pipe(t_list_pipex *lexeur, int index);
 int				get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex);
 int				get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex);
+char			**creat_tab_exec(t_list_pipex *lexeur, t_pipex *pipex);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/18 14:03:59 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/18 17:18:24 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	pipex(char *cmd, char *path)
 	paring_pipex(pipex.lexeur);
 
 	//creation du pipe ?
-	if (pipex.nbr_of_pipe > 1)
+	//if (pipex.nbr_of_pipe > 1)
 		pipe(pipex.fd_pipe);
 	
 	//creatio des processes
@@ -66,7 +66,11 @@ int	pipex(char *cmd, char *path)
 
 	//attente des process dans le main
 	if (id != 0)
+	{
 		wait(0);
+		close(pipex.fd_pipe[0]);
+		close(pipex.fd_pipe[1]);
+	}
 	del_list(&pipex);
 	free_all_pipex(&pipex);
 	return (0);
@@ -74,8 +78,6 @@ int	pipex(char *cmd, char *path)
 
 /* chose a faire ! 
 
-		- compris entre ... changer et definir le stdout de notre fork: par defauti si rien c'est 1, si pipe apres c'est le pipe, sinon c'est les > et >> ouvert les uns apres les autres
-		- creer le tableau de tableau pour execve et le remplir
 		- tester la commande dans acess (pour check si c'est un absolute path);
 		- chercher env path (si path n'existe pas execve la command sans path) bash: ...: No such file or directory!! gerer le numero de retour
 		- si path essayer de trouver la path,  si pas trouver: ...:command not found;
@@ -86,7 +88,7 @@ int	manage_process(t_pipex *pipex, int index)
 	t_list_pipex	*tmp;
 	int				fd_infile;
 	int				fd_outfile;
-	
+
 	// actual pipe te remvoie un pointeur sur le premier element du pipe que gere le fork
 	tmp = actual_pipe(pipex->lexeur, index);
 	// ouvre les < un par un et modifie dup la bonne sortie; 
@@ -99,11 +101,24 @@ int	manage_process(t_pipex *pipex, int index)
 	if (fd_outfile < 0)		
 		return (-1);
 
+	//creation du tableau de tableau pour execve
+	pipex->cmd_tab_exec = creat_tab_exec(tmp, pipex);
+	if (!pipex->cmd_tab_exec)
+		return (-2);
+
+	// test de la commande pour voir si c'est un absolute path
+	// si == -1 alors je dois aller choper le path
+	if (testing_path(tmp) == -1)
+		find_path
+	
+
 	// a la fin de la fonction il faut close le fichier si erreur < ou de command	
+	free_cmd_tab(pipex);
 	close(fd_outfile);
 	close(fd_infile);
-		
-	
+	close(0);
+	close(1);
+	close(2);
 	return (0);
 }
 
