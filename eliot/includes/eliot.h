@@ -6,6 +6,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <strings.h>
+# include <string.h>
 # include <sys/wait.h>
 # include <errno.h>
 # include "../libft/libft.h"
@@ -105,5 +106,6 @@ void	write_inside_file(t_str *user_input, int fd, int k);
 /*Fichier: fork_process.c*/
 t_list_pipex	*actual_pipe(t_list_pipex *lexeur, int index);
 int				get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex);
+int				get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex);
 
 #endif

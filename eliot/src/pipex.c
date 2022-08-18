@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/17 17:46:04 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/18 14:03:59 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,21 +84,25 @@ int	pipex(char *cmd, char *path)
 int	manage_process(t_pipex *pipex, int index)
 {
 	t_list_pipex	*tmp;
-	int				fd;
+	int				fd_infile;
+	int				fd_outfile;
 	
-	printf("\nJE SUIS LE PROCESS %d\n\n", index);
 	// actual pipe te remvoie un pointeur sur le premier element du pipe que gere le fork
 	tmp = actual_pipe(pipex->lexeur, index);
 	// ouvre les < un par un et modifie dup la bonne sortie; 
-	fd = get_infile(tmp, index, pipex);
-	if (fd == -1)
+	fd_infile = get_infile(tmp, index, pipex);
+	if (fd_infile < 0)
 		return (-1);
 
 	// ouvre les  > et les >> chacun son tour et redirige 
+	fd_outfile = get_outfile(tmp, index, pipex);
+	if (fd_outfile < 0)		
+		return (-1);
 
 	// a la fin de la fonction il faut close le fichier si erreur < ou de command	
-	if (fd)
-		close(fd);
+	close(fd_outfile);
+	close(fd_infile);
+		
 	
 	return (0);
 }
