@@ -54,6 +54,7 @@ typedef struct s_pipex
 	int		nbr_cmd;
 	char	*cmd_path;
 	int		return_value_var_global;
+	char	*cmd_with_path;
 
 	//parsing de la cmd
 	t_list_pipex	*lexeur;
@@ -110,5 +111,6 @@ t_list_pipex	*actual_pipe(t_list_pipex *lexeur, int index);
 int				get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex);
 int				get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex);
 char			**creat_tab_exec(t_list_pipex *lexeur, t_pipex *pipex);
+char			*testing_path(t_list_pipex *lexeur);
 
 #endif

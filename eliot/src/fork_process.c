@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 11:16:05 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/18 16:52:41 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/22 14:59:38 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,8 @@ char	**creat_tab_exec(t_list_pipex *lexeur, t_pipex *pipex)
 		tmp = tmp->next;
 	}
 	tmp = lexeur;
+	if (cmd == 0)
+		return (NULL);
 	cmd_tab_exec = malloc(sizeof(char *) * cmd);
 	if (!cmd_tab_exec)
 		return (NULL);
@@ -185,4 +187,21 @@ char	**creat_tab_exec(t_list_pipex *lexeur, t_pipex *pipex)
 	}
 	pipex->nbr_cmd = cmd;
 	return (cmd_tab_exec);
+}
+
+char	*testing_path(t_list_pipex *lexeur)
+{
+	t_list_pipex	*tmp;
+	char			*cmd;
+	char			*cpy;
+	
+	tmp = lexeur;
+	while (tmp && tmp->type != PIPE && tmp->type != CMD)
+		tmp = tmp->next;
+	cmd = concatenate_tstr(tmp->str_pipex);
+	cpy = cmd;
+	if (access(cpy, X_OK) == 0)
+		return (cmd);
+	free(cmd);
+	return (NULL);
 }

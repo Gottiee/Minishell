@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/18 17:18:24 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/22 15:05:24 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,13 @@ int	pipex(char *cmd, char *path)
 
 /* chose a faire ! 
 
-		- tester la commande dans acess (pour check si c'est un absolute path);
 		- chercher env path (si path n'existe pas execve la command sans path) bash: ...: No such file or directory!! gerer le numero de retour
 		- si path essayer de trouver la path,  si pas trouver: ...:command not found;
+		- execve la command
+		- regler avec theo : 
+			- dochere et expension de variable
+			- chercher le path dans l'environnement
+		- faire des testes avec les fds open ect..
 */
 
 int	manage_process(t_pipex *pipex, int index)
@@ -102,15 +106,20 @@ int	manage_process(t_pipex *pipex, int index)
 		return (-1);
 
 	//creation du tableau de tableau pour execve
+	// la fonction return NULL si il n'y pas de commad dans le pipe
 	pipex->cmd_tab_exec = creat_tab_exec(tmp, pipex);
 	if (!pipex->cmd_tab_exec)
 		return (-2);
 
 	// test de la commande pour voir si c'est un absolute path
-	// si == -1 alors je dois aller choper le path
-	if (testing_path(tmp) == -1)
-		find_path
+	// si == NULL alors je dois aller choper le path
+	// sinon il y a deja le path et c'est niquel
+	pipex->cmd_with_path = testing_path(tmp);
+	if (!pipex->cmd_with_path)
+		if (is_path_exist()) // recherche du path, savoir s'il existe
+			find_path(); // recherche de la command dans le path
 	
+	// execve
 
 	// a la fin de la fonction il faut close le fichier si erreur < ou de command	
 	free_cmd_tab(pipex);

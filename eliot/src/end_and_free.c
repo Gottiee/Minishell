@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 13:08:06 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/18 16:50:10 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/22 13:39:12 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,5 @@ void	free_cmd_tab(t_pipex *pipex)
 	while (++i < pipex->nbr_cmd)
 		free(pipex->cmd_tab_exec[i]);
 	free(pipex->cmd_tab_exec);
+	free(pipex->cmd_with_path);
 }
