@@ -11,6 +11,8 @@
 # include <errno.h>
 # include "../libft/libft.h"
 # include "minishell.h"
+# include <dirent.h>
+//# include <direct.h>
 
 # define HERE_DOC 1
 # define INFILE 2
@@ -112,5 +114,19 @@ int				get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex);
 int				get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex);
 char			**creat_tab_exec(t_list_pipex *lexeur, t_pipex *pipex);
 char			*testing_path(t_list_pipex *lexeur);
+
+
+/*          --- Fonctions qui gere les builtins---     */
+
+/*Fichier: cd.c*/
+int		cd(char *directory);
+char	*conca_str(char *str1, char *str2);
+
+/*Fichier: utils.c*/
+void	ls(char *path);
+// renvoie un pointeur sur chaine de caractere malloc contenant le path actuell 
+char	*get_current_path(void);
+
+/*Fichier: pwd.c*/
 
 #endif

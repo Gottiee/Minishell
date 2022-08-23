@@ -6,11 +6,11 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 11:56:37 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/17 17:14:49 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/23 16:08:31 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eliot.h"
+#include "../../includes/eliot.h"
 
 int	paring_pipex(t_list_pipex *start)
 {

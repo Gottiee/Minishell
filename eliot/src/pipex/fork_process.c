@@ -6,11 +6,11 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 11:16:05 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/22 14:59:38 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/23 16:07:57 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eliot.h"
+#include "../../includes/eliot.h"
 
 t_list_pipex	*actual_pipe(t_list_pipex *lexeur, int index)
 {

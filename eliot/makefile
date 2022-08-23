@@ -8,14 +8,17 @@ SRC_DIR = src/
 
 BONUS_SRC_DIR = src_bonus/
 
-SRC_FILES = main \
-pipex \
-end_and_free \
-lexeur_pipex \
-fork_process \
-struct_manage_pipex \
-pipex_parsing \
-here_doc
+SRC_FILES = pipex/main \
+pipex/pipex \
+pipex/end_and_free \
+pipex/lexeur_pipex \
+pipex/fork_process \
+pipex/struct_manage_pipex \
+pipex/pipex_parsing \
+pipex/here_doc \
+builtins/cd \
+builtins/utils \
+builtins/pwd
 
 BONUS_SRC_FILES = 
 

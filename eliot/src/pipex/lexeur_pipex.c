@@ -6,11 +6,11 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:43:53 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/12 18:07:28 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/23 16:08:13 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eliot.h"
+#include "../../includes/eliot.h"
 
 /*-	si quote ' ou " ne pas skippe les espaces
 - && cmd[i] != ' '; devient && (cmd[i]!= ' ' && bolo_quote == 0) sinon ca veut dire que je suis sur une quote et qu'il faut pas que je sskipe les espaces

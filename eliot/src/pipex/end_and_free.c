@@ -6,11 +6,11 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 13:08:06 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/22 13:39:12 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/23 16:07:47 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eliot.h"
+#include "../../includes/eliot.h"
 
 void	free_all_pipex(t_pipex *pipex)
 {

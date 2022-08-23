@@ -6,15 +6,16 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 02:30:59 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/09 16:25:59 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/23 20:01:21 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eliot.h"
+#include "../../includes/eliot.h"
 
 int	main(int argc, char **argv)
 {
 	(void)argc;
-	pipex(argv[1], NULL);
+	//pipex(argv[1], NULL);
+	cd(argv[1]);
 	return (0);
 }

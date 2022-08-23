@@ -6,11 +6,11 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/22 15:05:24 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/23 20:01:08 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eliot.h"
+#include "../../includes/eliot.h"
 
 int g_return_value;
 
@@ -81,9 +81,6 @@ int	pipex(char *cmd, char *path)
 		- chercher env path (si path n'existe pas execve la command sans path) bash: ...: No such file or directory!! gerer le numero de retour
 		- si path essayer de trouver la path,  si pas trouver: ...:command not found;
 		- execve la command
-		- regler avec theo : 
-			- dochere et expension de variable
-			- chercher le path dans l'environnement
 		- faire des testes avec les fds open ect..
 */
 
@@ -115,9 +112,9 @@ int	manage_process(t_pipex *pipex, int index)
 	// si == NULL alors je dois aller choper le path
 	// sinon il y a deja le path et c'est niquel
 	pipex->cmd_with_path = testing_path(tmp);
-	if (!pipex->cmd_with_path)
-		if (is_path_exist()) // recherche du path, savoir s'il existe
-			find_path(); // recherche de la command dans le path
+//	if (!pipex->cmd_with_path)
+//		if (is_path_exist()) // recherche du path, savoir s'il existe
+//			find_path(); // recherche de la command dans le path
 	
 	// execve
 

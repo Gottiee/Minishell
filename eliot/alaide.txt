@@ -1,27 +1,24 @@
-MacBook-Pro:eliot eliot$ cat << ok | << biz >
-> ok
-> biz
--bash: syntax error near unexpected token `newline'
-
-MacBook-Pro:eliot eliot$ cat << ok | > << biz >
--bash: syntax error near unexpected token `<<'
-> ok
-
-si l'erreur est apres les << alors les faires puis prins l'erreur
-si l'erreur est avant les << print l'error puis faire les doc heres jusqu'a l'error
-
-MacBook-Pro:eliot eliot$ cat << ok | << dac << ? > << >
--bash: syntax error near unexpected token `<<'
-> dac
-> ok
-> dac
-> ?
-
-MacBook-Pro:eliot eliot$ cat << ok | << dac  << >
--bash: syntax error near unexpected token `>'
-> ok
-> dac
-
-ton output est deux fois le meme fichier; l'ouvrire deux fois ?? 
-
 commancer la commande avec un pipe
+
+
+TRUC A FAIRE
+
+-	finir de coder cd
+	- lorsque je fais cd sans argument: set up l'endroit de respawn
+	- que faire quand on perd completement le chemin
+	- faire un cd sur un fork ? 
+
+- finir de coder le here doc avec theo
+
+- finir de coder pipex 
+	- recherche de la  variable path
+	- recherche de la cmd dans la variable path
+
+- tester le pwd quand on est perdu
+
+- implementer le pwd a chaque retour de prompt
+
+- test: 
+	- tester le pipex finis
+	- tester cd
+	- tester pwd
