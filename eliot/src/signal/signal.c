@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/29 02:30:59 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/25 13:21:16 by eedy             ###   ########.fr       */
+/*   Created: 2022/08/25 11:10:56 by eedy              #+#    #+#             */
+/*   Updated: 2022/08/25 13:04:23 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eliot.h"
 
-int	main(int argc, char **argv)
+void	prompt_signal(int sig)
 {
-	(void)argc;
-	(void)argv;
-	pipex(argv[1], NULL);
-	//cd(argv[1]);
-	//signal_handle();
-	return (0);
+	if (sig == SIGINT)
+		printf("affichage d'un new prompte\n");
+}
+
+void	signal_handle(void)
+{
+	// si ctrl-c alors nouveaux prompt
+	signal(SIGINT, &prompt_signal);
+	// si ctrl-\ alors il est ignoree
+	signal(SIGQUIT, SIG_IGN);
 }

@@ -22,3 +22,22 @@ TRUC A FAIRE
 	- tester le pipex finis
 	- tester cd
 	- tester pwd
+
+- gerer les signaux
+	- ctr-\
+	- ctr-c
+	- ctr-d: verifiere s'il fonctionne avec le prompte lors du here doc
+
+!! les signaux: 
+
+-	utiliser signal au debut du program(le signal attendu, la fonction qui va gerer le signal);
+-	le signal attendu est soit ctr-c soit ctr-\. Le ctr-d se fait tout seul, il faut par contre rajouter dans le here doc que si crl-d taper alors on a envoyer eof et faut print une petite ligne d'info.
+- 	le signal \ ne fait rien (sig ignore)
+-	le signal c ecrit \n et envoie un nouveau prompte
+
+!! attention au moment ou je fork il faut que je resetup les signaux de mes child en mode si je recois le signal c je dois tuer le child avec sig_default ou chez pas quoi, et dans le main je dois rediriger le signal vers une autrefonction qui ne raffiche pas le prompt mais qui fait juste un \n.
+
+!! Valeur de retour
+pour recuperer la derniere valeur retourner par mes childs, il ne faut pas recuper la dernier valeur de mon dernier child dead parce que c'est pas forcement le dernier mort.
+Pour regler le probleme, le dernier fork que j'appelle je lui dis int pid = fork();
+comme ca pid vaut le dernier fork, et dans le main au moment du wait, si wait == pid alors je sais que j'ai choper mon dernier child;

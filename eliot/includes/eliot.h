@@ -12,7 +12,7 @@
 # include "../libft/libft.h"
 # include "minishell.h"
 # include <dirent.h>
-//# include <direct.h>
+# include <signal.h>
 
 # define HERE_DOC 1
 # define INFILE 2
@@ -128,5 +128,11 @@ void	ls(char *path);
 char	*get_current_path(void);
 
 /*Fichier: pwd.c*/
+int	pwd(void);
 
+/*          --- Fonctions qui gere les signaux---     */
+
+/*Fichier: signal.c*/
+void	signal_handle(void);
+void	prompt_signal(int sig);
 #endif

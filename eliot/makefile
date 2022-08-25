@@ -18,7 +18,8 @@ pipex/pipex_parsing \
 pipex/here_doc \
 builtins/cd \
 builtins/utils \
-builtins/pwd
+builtins/pwd \
+signal/signal
 
 BONUS_SRC_FILES = 
 

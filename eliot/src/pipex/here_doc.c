@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 13:25:43 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/23 16:08:02 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/25 13:20:55 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,17 @@ int		here_doc(t_list_pipex *here)
 		buff[0] = '\0';
 		while (buff[0] != '\n')
 		{
-			read(0, buff, 1);
+			if (read(0, buff, 1) == -1)
+			{
+				perror("");
+				break;
+				i = -1;
+			}
 			add_char_here_doc(user_input, buff[0]);
 			i ++;
 		}
+		if (i == -1)
+			break;
 	}
 	file_name = random_file_name();
 	here->file_name = file_name;

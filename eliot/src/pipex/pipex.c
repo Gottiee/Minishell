@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/23 20:01:08 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/25 13:09:17 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,11 @@ int	pipex(char *cmd, char *path)
 		return (-1);
 	// fonction pour les process fork
 	if (id == 0)
+	{
+		// reset le signal ctrl-c a defaut c'est a dire kill the process
+		signal(SIGINT, SIG_DFL);
 		pipex.return_value_var_global = manage_process(&pipex, index_process);
+	}
 
 	//attente des process dans le main
 	if (id != 0)
