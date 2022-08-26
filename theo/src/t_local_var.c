@@ -40,70 +40,13 @@ exemple:
 	retourne (89)
 */
 char	*get_text_val(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
-{//prendre en compte les operations dans les $(()) // traduire les variables ex : ok=$test*8
-	t_str	*tstr;
-	int		quotes;
-	char	*res;
-	
-	tstr = NULL;
-	quotes = 0;
+{// traduire les variables ex : ok=$test*8	
 	while (*cmd == ' ')
 		cmd++;
 	while (*cmd != '=')
 		cmd++;
 	cmd++;
-	/*
-	if (*cmd == '"' || *cmd == '\'')
-		quotes = *(cmd++);
-	while (*cmd)
-	{
-		if (quotes == 0 && (*cmd == '"' || *cmd == '\''))
-		{
-			quotes = *(cmd++);
-			continue;
-		}
-		else if (quotes > 0 && *cmd == quotes)
-			quotes = 0;
-		else if (*cmd == ' ' && quotes == 0)
-			break;
-		if ((quotes == 0 && *cmd != '"' && *cmd != '\'') || quotes > 0)
-			add_back_tstr(&tstr, create_tstr(*cmd));
-		cmd++;
-	}
-	*/
-	/*
-	$test		variable test
-	$(test)		commande test
-	$((test))	operation test	traduit test
-
-	ne pas avoir de de '(' ou de ')' directement apres un des trois cas
-	*/
-	///////////////////////////////////////////////////
-	while (*cmd)
-	{
-		if (quotes == 0 && (*cmd == '"' || *cmd == '\''))
-		{
-			quotes = *(cmd++);
-			continue;
-		}
-		else if (quotes > 0 && *cmd == quotes)
-			quotes = 0;
-		else if (*cmd == ' ' && quotes == 0)
-			break;
-		if (quotes == '\'' || *cmd != '$')
-			add_back_tstr(&tstr, create_tstr(*cmd));
-		else
-		{
-			
-		}
-		cmd++;
-	}
-
-	///////////////////////////////////////////////////
-	res = get_str_with_tstr(tstr);
-	if (is_operation(res))
-		printf("Operation\n");
-	return (res);
+	return (get_txt(cmd, lclvar, envvar));
 }
 
 /*

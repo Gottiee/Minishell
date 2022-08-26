@@ -183,4 +183,5 @@ char *parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
 	//em plus le $? compte une declaration de variables reussit
 	//si une declaration de variable a besoin d'une execution (operation), lancer un execve pendant 
 		//le parsing et retourner a pipex qui il y a eu une erreur si il y en a une
+	return (NULL);
 }

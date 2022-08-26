@@ -14,8 +14,10 @@
 
 int	cd(char *directory)
 {
-	char	*buff;
-	char	*path;
+	char		*buff;
+	char		*path;
+	t_lcl_var	*envvar;
+	t_lcl_var	*envhome;
 
 	buff = get_current_path();
 	if (!buff)
@@ -23,12 +25,20 @@ int	cd(char *directory)
 	if (!directory)
 	{
 		//coder cette partie  pour set up si cd est vide.
-		chdir("/Users/eliot");
+		// recuperer le nom du user pour le mettre a la place de "NAME"
+		//fonction pour recuperer la liste chainee des variables d'env
+		envvar = generate_envvar_list(NULL);
+		//fonction qui cherche dans envvar une var d'env nomme HOME, envoie NULL si il trouve pas
+		envhome = get_lclvar_by_name(&envvar, "HOME");
+		if (envhome)
+			chdir(envhome->val);//val c'est la valeur de la variable d'env
+		else
+			write(2, "bash: cd: HOME not set\n", 23);
 		return (0);
 	}
 	if (directory[0] == '/' && !directory[1])
 	{
-		write(2, "-bash: cd: /:No such file or directory\n", 39);
+		chdir("/mnt");
 		return (0);
 	}
 	if (chdir(directory) == 0)
@@ -44,7 +54,7 @@ int	cd(char *directory)
 	{
 		write(2, "-bash: cd: ", 11);
 		write(2, directory, ft_strlen(directory));
-		write(2, " :", 2);
+		write(2, ": ", 2);
 		perror("");
 		return (-1);
 	}

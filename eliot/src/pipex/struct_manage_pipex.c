@@ -74,7 +74,7 @@ void	del_list_pipex(t_list_pipex *start)
 		free(tmp);
 	}
 }
-
+/*
 void	free_tstr(t_str *tstr)
 {
 	t_str	*tmp;
@@ -86,7 +86,7 @@ void	free_tstr(t_str *tstr)
 		tstr = tstr->next;
 		free(tmp);
 	}
-}
+}*/
 
 int	add_char_pipex(t_list_pipex *start, char char_p)
 {

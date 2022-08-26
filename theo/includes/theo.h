@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
 
 typedef struct s_str
 {
@@ -26,7 +29,8 @@ typedef struct s_hist_cmd
 	struct s_hist_cmd	*next;
 }	t_hist_cmd;
 
-
+void	signal_handle(void);
+t_lcl_var	*generate_envvar_list(char **envp);
 void		start_prompt(char **envp);
 int			cmd_type(char *cmd);
 
@@ -44,6 +48,8 @@ int			is_var_cmd(char *cmd);
 t_str		*create_tstr(char c);
 void		add_back_tstr(t_str **first, t_str *new);
 char		*get_str_with_tstr(t_str *first);
+t_str		*get_tstr_with_str(char *txt);
+int			tstr_len(t_str *tstr);
 
 //utils
 char	*remove_dquotes(char *str);
@@ -59,5 +65,14 @@ t_lcl_var	*create_lclvar(char	*cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
 void		free_lclvar(t_lcl_var *var);
 void		add_back_lclvar(t_lcl_var **first, t_lcl_var *new);
 t_lcl_var	*get_lclvar_by_name(t_lcl_var **lclvar, char *tofind);
+
+//txt_trad
+char	*get_txt(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
+
+// renvoie un pointeur sur chaine de caractere malloc contenant le path actuell 
+char	*get_current_path(void);
+
+/*Fichier: cd.c*/
+int		cd(char *directory);
 
 #endif

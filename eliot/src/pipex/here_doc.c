@@ -65,6 +65,10 @@ int		here_doc(t_list_pipex *here)
 	*/
 	write_inside_file(user_input, here->fd, k);
 	close(here->fd);
+	/*
+		get_txt(char *txt);
+		txt est le retour de la fonction qui traduit un tstr en string
+	*/
 	here->fd = open(file_name, O_RDONLY, 0644);
 	free(str_here_doc);
 	free_tstr(user_input);

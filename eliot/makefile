@@ -19,7 +19,15 @@ pipex/here_doc \
 builtins/cd \
 builtins/utils \
 builtins/pwd \
-signal/signal
+signal/signal \
+../../theo/src/prompt \
+../../theo/src/cmd_type \
+../../theo/src/parsing \
+../../theo/src/txt_trad \
+../../theo/src/t_local_var \
+../../theo/src/t_str \
+../../theo/src/utils \
+../../theo/src/hist_cmd
 
 BONUS_SRC_FILES = 
 
@@ -39,7 +47,7 @@ all: $(NAME)
 
 $(NAME) : $(OBJ)
 	make -C ./libft
-	$(CC) $(OBJ) -o $(NAME) $(LIBFT) -g
+	$(CC) $(OBJ) -o $(NAME) $(LIBFT) -g -lreadline
 
 debug: $(NAME_DEBUG)
 

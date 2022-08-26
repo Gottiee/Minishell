@@ -12,7 +12,6 @@
 
 #include "../../includes/eliot.h"
 
-
 int	pwd(void)
 {
 	char	*pwd;

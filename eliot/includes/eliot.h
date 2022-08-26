@@ -13,6 +13,7 @@
 # include "minishell.h"
 # include <dirent.h>
 # include <signal.h>
+#include "../../theo/includes/theo.h"
 
 # define HERE_DOC 1
 # define INFILE 2
@@ -28,12 +29,6 @@ typedef	struct s_pipe_lexeur
 	int	*pipe;
 	int	*tchque_pipe;
 } t_pipe_lexeur;
-
-typedef struct s_str
-{
-	char	c;
-	struct s_str	*next;
-} t_str;
 
 typedef struct s_list_pipex
 {

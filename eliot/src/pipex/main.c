@@ -12,12 +12,13 @@
 
 #include "../../includes/eliot.h"
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
-	pipex(argv[1], NULL);
+	//pipex(argv[1], NULL);
+	signal_handle();
+	start_prompt(envp);
 	//cd(argv[1]);
-	//signal_handle();
 	return (0);
 }

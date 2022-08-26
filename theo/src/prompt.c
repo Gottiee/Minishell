@@ -12,7 +12,6 @@
 
 #include "../includes/theo.h"
 
-
 /*
 Permet de retourner la bonne size de la str du read
 */
@@ -47,15 +46,17 @@ char	*clear_str(char *str)
 t_lcl_var	*generate_envvar_list(char **envp)
 {
 	int	i;
-	t_lcl_var	*res;
-	t_lcl_var	*temp;
+	static t_lcl_var	*res;
 
-	i = 0;
-	res = NULL;
-	while (envp && envp[i] != NULL)
+	if (res == NULL)
 	{
-		add_back_lclvar(&res, create_lclvar(envp[i], NULL, NULL));
-		i++;
+		i = 0;
+		res = NULL;
+		while (envp && envp[i] != NULL)
+		{
+			add_back_lclvar(&res, create_lclvar(envp[i], NULL, NULL));
+			i++;
+		}	
 	}
 	return (res);
 }
@@ -68,12 +69,12 @@ void	start_prompt(char **envp)
 {
 	char	*res;
 	char	*prt;
+	char	*path;
 	t_lcl_var	*lclvar;
 	t_lcl_var	*envvar;
 	t_hist_cmd	*histcmd;
-	
-	res = malloc(10000);
-	ft_bzero(res, 10000);
+
+	res = NULL;
 	lclvar = NULL;
 	histcmd = NULL;
 	envvar = generate_envvar_list(envp);
@@ -87,8 +88,10 @@ void	start_prompt(char **envp)
 			printf("%s=%s|\n", temp->name, temp->val);
 			temp = temp->next;
 		}
-		ft_putstr_fd("Minishell$ ", 1);
-		read(0, res, 10000);
+		path = get_current_path();
+		// path = 'Minishell:"path"$ '
+		res = readline(path);
+		free(path);
 		if (res[0] == '\n')
 		{
 			free(res);
@@ -98,10 +101,10 @@ void	start_prompt(char **envp)
 			break;
 		}
 		//Vrai commande a envoyer au parsing et a pipex
+		cd(res);
 		prt = clear_str(res);
 		add_back_histcmd(&histcmd, create_histcmd(prt));
 		//Envoyer au parsing
 		parsing(prt, &lclvar, &envvar);
-		ft_bzero(res, 10000);
 	}	
 }

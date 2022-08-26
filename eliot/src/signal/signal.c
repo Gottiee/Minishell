@@ -15,7 +15,10 @@
 void	prompt_signal(int sig)
 {
 	if (sig == SIGINT)
-		printf("affichage d'un new prompte\n");
+	{
+		printf("\n");
+		start_prompt(NULL);
+	}
 }
 
 void	signal_handle(void)

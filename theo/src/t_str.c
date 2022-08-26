@@ -72,3 +72,31 @@ char	*get_str_with_tstr(t_str *first)
 	free_tstr(first);
 	return (res);
 }
+
+t_str	*get_tstr_with_str(char *txt)
+{
+	t_str	*res;
+
+	res = NULL;
+	while (*txt)
+	{
+		add_back_tstr(&res, create_tstr(*txt));
+		txt++;
+	}
+	return (res);
+}
+
+int	tstr_len(t_str *tstr)
+{
+	int	res;
+	t_str	*temp;
+
+	res = 0;
+	temp = tstr;
+	while (temp)
+	{
+		res++;
+		temp = temp->next;
+	}
+	return (res);
+}
