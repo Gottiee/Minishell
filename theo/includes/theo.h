@@ -37,6 +37,7 @@ char	*get_rdln_message();
 
 //prompt
 void		start_prompt(char **envp);
+char		**get_envp(char **envp);
 
 //export
 void		cmd_export(char **cmd);
@@ -76,9 +77,6 @@ char		*get_txt(char *cmd);
 
 // renvoie un pointeur sur chaine de caractere malloc contenant le path actuell 
 char		*get_current_path(void);
-
-/*Fichier: cd.c*/
-int			cd(char *directory);
 
 /*Fichier: pipex.c*/
 int		pipex(char *cmd, char **env);

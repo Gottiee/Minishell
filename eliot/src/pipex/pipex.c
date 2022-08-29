@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/29 16:29:11 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 16:40:20 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	int				fd_infile;
 	int				fd_outfile;
 	char			*full_path;
-	int				builtin;
+	//int				builtin;
+	(void)env;
 
 	// actual pipe te remvoie un pointeur sur le premier element du pipe que gere le fork
 	tmp = actual_pipe(pipex->lexeur, index);
@@ -124,11 +125,13 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 			if (find_path(full_path, pipex) == 0) // recherche de la command dans le path renvoie 0 si trouve
 			{
 				//cherche les builtins qu'on a coder pour les exec ici 
-				builtin = cmd_type(pipex->cmd_tab_exec[0]);
+				//builtin = cmd_type(pipex->cmd_tab_exec[0]);
+				/*
 				if (builtin) // si positif alors c'est un builtin
 					do_builtins(builtin, pipex->cmd_tab_exec); // selon la valeur de builtin appelle la bonne fnction
 				else	
 				execve(pipex->cmd_path, pipex->cmd_tab_exec, env);
+				*/
 			}
 		}
 	}

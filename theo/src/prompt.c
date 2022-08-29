@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:37:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/29 16:28:31 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/29 16:53:42 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,15 @@ char	*clear_str(char *str)
 	return (res);
 }
 
+char	**get_envp(char **envp)
+{
+	static char	**res;
+
+	if (res == NULL)
+		res = envp;
+	return (res);
+}
+
 t_lcl_var	*generate_envvar_list(char **envp)
 {
 	int	i;
@@ -56,7 +65,7 @@ t_lcl_var	*generate_envvar_list(char **envp)
 		{
 			add_back_lclvar(&res, create_lclvar(envp[i]));
 			i++;
-		}	
+		}
 	}
 	return (res);
 }
@@ -85,41 +94,19 @@ void	start_prompt(char **envp)
 
 	res = NULL;
 	generate_envvar_list(envp);
+	get_envp(envp);
 	while (1)
 	{
-	/*printf("Local variable :\n");
-		t_lcl_var *temp;
-		temp = lclvar;
-		while (temp)
-		{
-			printf("|%s=%s|\n", temp->name, temp->val);
-			temp = temp->next;
-		}
-		printf("Emv variable :\n");
-		temp = envvar;
-		while (temp)
-		{
-			printf("|%s=%s|\n", temp->name, temp->val);
-			temp = temp->next;
-		}*/	
-		
 		path = get_rdln_message();
 		res = readline(path);
 		free(path);
-		if (cmd_type(res) == -6)
+		if (cmd_type(res) == EXIT)
 		{
 			free(res);
 			free_lclvar(generate_envvar_list(NULL));
 			rl_clear_history();
 			break;
 		}
-		/*
-		else if (cmd_type(res) == -7)
-			cmd_echo(res, &lclvar, &envvar);
-		else if (cmd_type(res) == -3)
-			cmd_export(res, &lclvar, &envvar);
-		printf("cmd type : %i\n", cmd_type(res));
-		*/
 		add_history(res);
 		parsing(res, envp);
 		free(res);

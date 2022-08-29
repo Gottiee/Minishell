@@ -117,7 +117,7 @@ char			*is_path_exist(t_pipex	*pipex);
 /*          --- Fonctions qui gere les builtins---     */
 
 /*Fichier: cd.c*/
-int		cd(char *directory);
+int		cd(char **directory);
 char	*conca_str(char *str1, char *str2);
 
 /*Fichier: utils.c*/
