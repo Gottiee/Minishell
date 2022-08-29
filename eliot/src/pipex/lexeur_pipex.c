@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:43:53 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/23 16:08:13 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 18:26:22 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,6 @@ int	lexeur_pipex(t_pipex *pipex, char *cmd)
 	i = 0;
 	pipe = 0;
 	tchque_pipe = 0;
-	printf("cmd = %s\n", cmd);
 	while (cmd[i]) // while pour chaque pipe
 	{
 		// regarde si on est sur des pipes // et si oui, regarde si le mot d'apres est une commande

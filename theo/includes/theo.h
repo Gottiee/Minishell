@@ -33,11 +33,9 @@ typedef struct s_lcl_var
 void	signal_handle(void);
 t_lcl_var	*generate_envvar_list(char **envp);
 int			cmd_type(char *cmd);
-char	*get_rdln_message();
 
 //prompt
 void		start_prompt(char **envp);
-char		**get_envp(char **envp);
 
 //export
 void		cmd_export(char **cmd);

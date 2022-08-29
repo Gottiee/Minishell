@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/29 16:40:20 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/29 18:54:46 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	pipex(char *cmd, char **env)
 	}
 
 	// affiche sur le terminal les info du lexeur;
-	print_struc(pipex.lexeur);
+	//print_struc(pipex.lexeur);
 	
 	//parsing de pipex (verification de la syntax, ouverture des heres doc au fur et a mesure)
 	paring_pipex(pipex.lexeur);
@@ -75,6 +75,7 @@ int	pipex(char *cmd, char **env)
 	}
 	del_list(&pipex);
 	free_all_pipex(&pipex);
+	printf("pipex over\n");
 	return (0);
 }
 
@@ -93,7 +94,6 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	int				fd_outfile;
 	char			*full_path;
 	//int				builtin;
-	(void)env;
 
 	// actual pipe te remvoie un pointeur sur le premier element du pipe que gere le fork
 	tmp = actual_pipe(pipex->lexeur, index);
@@ -116,22 +116,22 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	// test de la commande pour voir si c'est un absolute path
 	// si == NULL alors je dois aller choper le path
 	// sinon il y a deja le path et c'est niquel
-	pipex->cmd_with_path = testing_path(tmp);
-	if (!pipex->cmd_with_path)
+	
+	//cherche les builtins qu'on a coder pour les exec ici 
+	/*builtin = cmd_type(pipex->cmd_tab_exec[0]);
+	if (builtin) // si positif alors c'est un builtin
+		do_builtins(builtin, pipex->cmd_tab_exec); // selon la valeur de builtin appelle la bonne fnction
+
+*/	else 
 	{
-		full_path = is_path_exist(pipex);
-		if (full_path) // recherche du path: renvoi le path s'il existe
+		pipex->cmd_with_path = testing_path(tmp);
+		if (!pipex->cmd_with_path)
 		{
-			if (find_path(full_path, pipex) == 0) // recherche de la command dans le path renvoie 0 si trouve
+			full_path = is_path_exist(pipex);
+			if (full_path) // recherche du path: renvoi le path s'il existe
 			{
-				//cherche les builtins qu'on a coder pour les exec ici 
-				//builtin = cmd_type(pipex->cmd_tab_exec[0]);
-				/*
-				if (builtin) // si positif alors c'est un builtin
-					do_builtins(builtin, pipex->cmd_tab_exec); // selon la valeur de builtin appelle la bonne fnction
-				else	
-				execve(pipex->cmd_path, pipex->cmd_tab_exec, env);
-				*/
+				if (find_path(full_path, pipex) == 0) // recherche de la command dans le path renvoie 0 si trouve
+					execve(pipex->cmd_path, pipex->cmd_tab_exec, env);
 			}
 		}
 	}

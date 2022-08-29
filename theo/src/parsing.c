@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:57:58 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/29 16:27:31 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/29 18:35:43 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,10 @@ fonction qui va verifier si il n'y pas d'erreur
 char *parsing(char *cmd, char **envp)
 {
 	if (check_spe_char(cmd) == 0)
+	{
+		printf("bash: error syntax\n");
 		return NULL;//retourner une erreur "Wrong syntax"
+	}
 	else
 	{
 		pipex(cmd, envp);

@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 11:16:05 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/29 14:22:10 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 18:07:21 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,7 @@ int find_path(char *full_path, t_pipex *pipex)
 	char	*path;
 	int		i;
 	int		malloc_size;
+	int		path_size;
 
 	i = -1;
 	all_path = ft_split(full_path, ':');
@@ -236,13 +237,15 @@ int find_path(char *full_path, t_pipex *pipex)
 		return (-1);
 	while (all_path[++i])
 	{
-		malloc_size = ft_strlen(all_path[i]) + ft_strlen(pipex->cmd_tab_exec[0]);
+		path_size = ft_strlen(all_path[i]);
+		malloc_size = path_size + ft_strlen(pipex->cmd_tab_exec[0]);
 		path = malloc(sizeof(char) * (malloc_size + 2));
 		if (!path)
 			return (-1);
-		ft_strlcpy(path, all_path[i], ft_strlen(all_path[i] + 1));
-		ft_strlcat(path, "/",1);
-		ft_strlcat(path, pipex->cmd_tab_exec[0], malloc_size + 1);
+		ft_strlcpy(path, all_path[i], path_size + 1);
+		path[path_size] = '/';
+		path[path_size + 1] = '\0';
+		ft_strlcat(path, pipex->cmd_tab_exec[0], malloc_size + 2);
 		if (access(path, X_OK) == 0)
 		{
 			free_all_path(all_path);

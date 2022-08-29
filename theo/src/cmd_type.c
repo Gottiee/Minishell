@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:48:49 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/29 16:13:16 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 18:32:49 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ int	cmd_type(char *cmd)
 {
 	int	len_cmd;
 
-	while (*cmd && *cmd == ' ')
-		cmd++;
 	len_cmd = ft_strlen(cmd);
 	if (ft_strnstr(cmd, "cd", len_cmd) == cmd)
 		return (CD);
@@ -37,5 +35,5 @@ int	cmd_type(char *cmd)
 		return (EXIT);
 	if (ft_strnstr(cmd, "echo", len_cmd) == cmd)
 		return (ECHO);
-	return (1);
+	return (0);
 }

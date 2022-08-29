@@ -19,6 +19,7 @@ pipex/here_doc \
 builtins/cd \
 builtins/utils \
 builtins/pwd \
+builtins/builtins_manage \
 signal/signal \
 ../../theo/src/prompt \
 ../../theo/src/cmd_type \

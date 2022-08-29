@@ -128,6 +128,9 @@ char	*get_current_path(void);
 /*Fichier: pwd.c*/
 int	pwd(void);
 
+/*Fichier: builtins_manage.c*/
+void	do_builtins(int builtin, char **cmd_tab_exec);
+
 /*          --- Fonctions qui gere les signaux---     */
 
 /*Fichier: signal.c*/
