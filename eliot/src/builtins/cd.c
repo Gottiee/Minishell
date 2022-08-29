@@ -6,13 +6,13 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:13:30 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/29 13:57:13 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 16:25:56 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eliot.h"
 
-int	cd(char *directory)
+int	cd(char **directory)
 {
 	char		*buff;
 	char		*path;
@@ -22,7 +22,7 @@ int	cd(char *directory)
 	buff = get_current_path();
 	if (!buff)
 		return (-1);
-	if (!directory)
+	if (!directory[1])
 	{
 		//fonction pour recuperer la liste chainee des variables d'env
 		envvar = generate_envvar_list(NULL);
@@ -34,24 +34,29 @@ int	cd(char *directory)
 			write(2, "bash: cd: HOME not set\n", 23);
 		return (0);
 	}
-	if (directory[0] == '/' && !directory[1])
+	if (directory[2])
+	{
+		write(2, "bash: cd: too many arguments\n", 29);
+		return (0);
+	}
+	if (directory[0][0] == '/' && !directory[0][1])
 	{
 		chdir("/mnt");
 		return (0);
 	}
-	if (chdir(directory) == 0)
+	if (chdir(directory[0]) == 0)
 	{
 	//	buff = get_current_path();
 	//	printf("current path: %s\n", buff);
 		return (0);
 	}
-	path = conca_str(buff, directory);
+	path = conca_str(buff, directory[0]);
 	if (!path)
 		return (-1);
 	if (chdir(path) == -1)
 	{
 		write(2, "-bash: cd: ", 11);
-		write(2, directory, ft_strlen(directory));
+		write(2, directory[0], ft_strlen(directory[0]));
 		write(2, ": ", 2);
 		perror("");
 		return (-1);

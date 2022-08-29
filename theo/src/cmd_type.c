@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:48:49 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/27 20:19:59 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/29 16:13:16 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,18 @@ int	cmd_type(char *cmd)
 		cmd++;
 	len_cmd = ft_strlen(cmd);
 	if (ft_strnstr(cmd, "cd", len_cmd) == cmd)
-		return (-1);
+		return (CD);
 	if (ft_strnstr(cmd, "pwd", len_cmd) == cmd)
-		return (-2);
+		return (PWD);
 	if (ft_strnstr(cmd, "export", len_cmd) == cmd)
-		return (-3);
+		return (EXPORT);
 	if (ft_strnstr(cmd, "unset", len_cmd) == cmd)
-		return (-4);
+		return (UNSET);
 	if (ft_strnstr(cmd, "env", len_cmd) == cmd)
-		return (-5);
+		return (ENV);
 	if (ft_strnstr(cmd, "exit", len_cmd) == cmd)
-		return (-6);
+		return (EXIT);
 	if (ft_strnstr(cmd, "echo", len_cmd) == cmd)
-		return (-7);
+		return (ECHO);
 	return (1);
 }
