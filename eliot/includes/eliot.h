@@ -13,7 +13,7 @@
 # include "minishell.h"
 # include <dirent.h>
 # include <signal.h>
-#include "../../theo/includes/theo.h"
+# include "../../theo/includes/theo.h"
 
 # define HERE_DOC 1
 # define INFILE 2
@@ -21,6 +21,14 @@
 # define DBL_OUTFILE 4
 # define CMD 5
 # define PIPE 6
+
+# define CD 7
+# define ECHO 8
+# define EXPORT 9
+# define PWD 10
+# define UNSET 11
+# define ENV 12
+# define EXIT 13
 
 /*	stucture pipex	*/
 
@@ -62,14 +70,15 @@ typedef struct s_pipex
 /*          --- Fonctions qui gere pipex ---     */
 
 /*Fichier: pipex.c*/
-int		pipex(char *cmd, char *path);
-int		manage_process(t_pipex *pipex, int index);
+int		pipex(char *cmd, char **env);
+int		manage_process(t_pipex *pipex, int index, char	**env);
 int		how_many_pipe(char **cmd);
 
 /*Fichier: end_and_free.c*/
 void	free_all_pipex(t_pipex *pipex);
 int		del_list(t_pipex *pipex);
 void	free_cmd_tab(t_pipex *pipex);
+void	free_all_path(char **path);
 
 /*Fichier: stuct_manage_pipex.c*/
 t_list_pipex	*init_struct_pipex(void);
@@ -109,6 +118,8 @@ int				get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex);
 int				get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex);
 char			**creat_tab_exec(t_list_pipex *lexeur, t_pipex *pipex);
 char			*testing_path(t_list_pipex *lexeur);
+int 			find_path(char *full_path, t_pipex *pipex);
+char			*is_path_exist(t_pipex	*pipex);
 
 
 /*          --- Fonctions qui gere les builtins---     */

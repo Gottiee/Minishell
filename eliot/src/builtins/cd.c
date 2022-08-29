@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:13:30 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/25 11:48:23 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 13:57:13 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ int	cd(char *directory)
 		return (-1);
 	if (!directory)
 	{
-		//coder cette partie  pour set up si cd est vide.
-		// recuperer le nom du user pour le mettre a la place de "NAME"
 		//fonction pour recuperer la liste chainee des variables d'env
 		envvar = generate_envvar_list(NULL);
 		//fonction qui cherche dans envvar une var d'env nomme HOME, envoie NULL si il trouve pas

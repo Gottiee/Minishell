@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/25 13:09:17 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 14:41:06 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,12 @@ int g_return_value;
 /*chose a faire: 
 	- attention aux "" dans les here doc (ajouter au README)*/
 
-int	pipex(char *cmd, char *path)
+int	pipex(char *cmd, char **env)
 {
 	t_pipex pipex;
 	int		i;
 	int		id;
 	int		index_process;
-
-	(void)path;
 
 	//premier split : division des pipes
 	pipex.pipe_splited = ft_split(cmd, '|');
@@ -65,7 +63,7 @@ int	pipex(char *cmd, char *path)
 	{
 		// reset le signal ctrl-c a defaut c'est a dire kill the process
 		signal(SIGINT, SIG_DFL);
-		pipex.return_value_var_global = manage_process(&pipex, index_process);
+		pipex.return_value_var_global = manage_process(&pipex, index_process, env);
 	}
 
 	//attente des process dans le main
@@ -88,11 +86,13 @@ int	pipex(char *cmd, char *path)
 		- faire des testes avec les fds open ect..
 */
 
-int	manage_process(t_pipex *pipex, int index)
+int	manage_process(t_pipex *pipex, int index, char	**env)
 {
 	t_list_pipex	*tmp;
 	int				fd_infile;
 	int				fd_outfile;
+	char			*full_path;
+	int				builtin;
 
 	// actual pipe te remvoie un pointeur sur le premier element du pipe que gere le fork
 	tmp = actual_pipe(pipex->lexeur, index);
@@ -116,12 +116,22 @@ int	manage_process(t_pipex *pipex, int index)
 	// si == NULL alors je dois aller choper le path
 	// sinon il y a deja le path et c'est niquel
 	pipex->cmd_with_path = testing_path(tmp);
-//	if (!pipex->cmd_with_path)
-//		if (is_path_exist()) // recherche du path, savoir s'il existe
-//			find_path(); // recherche de la command dans le path
-	
-	// execve
-
+	if (!pipex->cmd_with_path)
+	{
+		full_path = is_path_exist(pipex);
+		if (full_path) // recherche du path: renvoi le path s'il existe
+		{
+			if (find_path(full_path, pipex) == 0) // recherche de la command dans le path renvoie 0 si trouve
+			{
+				//cherche les builtins qu'on a coder pour les exec ici 
+				builtin = test_builtins(pipex);
+				if (builtin) // si positif alors c'est un builtin
+					do_builtins(builtin); // selon la valeur de builtin appelle la bonne fnction
+				else
+				execve(pipex->cmd_path, pipex->cmd_tab_exec, env);
+			}
+		}
+	}
 	// a la fin de la fonction il faut close le fichier si erreur < ou de command	
 	free_cmd_tab(pipex);
 	close(fd_outfile);

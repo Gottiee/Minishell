@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 11:16:05 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/23 16:07:57 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 14:22:10 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,4 +204,55 @@ char	*testing_path(t_list_pipex *lexeur)
 		return (cmd);
 	free(cmd);
 	return (NULL);
+}
+
+char	*is_path_exist(t_pipex	*pipex)
+{
+	t_lcl_var	*envar;	
+	t_lcl_var	*envpath;
+
+	envar = generate_envvar_list(NULL);
+	envpath = get_lclvar_by_name(&envar, "PATH");
+	if (!envpath)
+	{
+		write(2, "bash: ", 6);
+		write(2, pipex->cmd_tab_exec[0], ft_strlen(pipex->cmd_tab_exec[0]));
+		write(2, ": No suche file or directory\n", 29);
+		return (NULL);
+	}
+	return (envpath->val);
+}
+
+int find_path(char *full_path, t_pipex *pipex)
+{
+	char	**all_path;
+	char	*path;
+	int		i;
+	int		malloc_size;
+
+	i = -1;
+	all_path = ft_split(full_path, ':');
+	if (!all_path)
+		return (-1);
+	while (all_path[++i])
+	{
+		malloc_size = ft_strlen(all_path[i]) + ft_strlen(pipex->cmd_tab_exec[0]);
+		path = malloc(sizeof(char) * (malloc_size + 2));
+		if (!path)
+			return (-1);
+		ft_strlcpy(path, all_path[i], ft_strlen(all_path[i] + 1));
+		ft_strlcat(path, "/",1);
+		ft_strlcat(path, pipex->cmd_tab_exec[0], malloc_size + 1);
+		if (access(path, X_OK) == 0)
+		{
+			free_all_path(all_path);
+			pipex->cmd_path = path;
+			return (0);
+		}
+		free(path);
+	}
+	free_all_path(all_path);
+	write(2, pipex->cmd_tab_exec[0], ft_strlen(pipex->cmd_tab_exec[0]));
+	write(2, ": command not found\n", 20);
+	return (-1);
 }
