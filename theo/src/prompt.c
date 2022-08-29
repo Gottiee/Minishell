@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:37:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/27 20:55:00 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/29 15:57:36 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	start_prompt(char **envp)
 			cmd_export(res, &lclvar, &envvar);
 		printf("cmd type : %i\n", cmd_type(res));
 		add_history(res);
-		parsing(res, &lclvar, &envvar);
+		parsing(res, &lclvar, &envvar, envp);
 		free(res);
 	}	
 }

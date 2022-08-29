@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:57:58 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/27 20:57:48 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/29 15:57:16 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void	var_cmd(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
 fonction qui va verifier si il n'y pas d'erreur
 	et qui va clean la cmd
 */
-char *parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
+char *parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar, char **envp)
 {
 	if (check_spe_char(cmd) == 0)
 		return NULL;//retourner une erreur "Wrong syntax"
@@ -162,6 +162,7 @@ char *parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
 	}
 	else
 	{
+		pipex(cmd, envp);
 		//enlever la declaration de variable si il y en a une au milieu de pipex (ok=89 ls) (l'enlever)
 		//si c'est avec une autre cmd(ex : ls ok=89) le laisser car c'est un 
 			//parametre de cmd et pas une declaration de variable

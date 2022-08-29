@@ -38,7 +38,7 @@ void		cmd_echo(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
 
 //parsing
 int			check_spe_char(char *cmd);
-char 		*parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
+char 		*parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar, char **envp);
 int			is_var_cmd(char *cmd);
 
 //t_str
@@ -72,4 +72,6 @@ char		*get_current_path(void);
 /*Fichier: cd.c*/
 int			cd(char *directory);
 
+/*Fichier: pipex.c*/
+int		pipex(char *cmd, char **env);
 #endif
