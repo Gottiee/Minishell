@@ -19,9 +19,8 @@
 - [ ] promp theo 
 	- [X] recuperer l'entree utilisateur et la clean
 	- [X] l'envoyer au parsing
-	- [ ] Mettre plusieurs read jusqua un \n pour lire tout les caractere (bsq)
 	- [X] rajouter un historique des commandes(dnas le prompt)
-	- [ ] pourvoir reprendre les commandes d'avant(fleche du haut)
+	- [X] pourvoir reprendre les commandes d'avant(fleche du haut)
 - [ ] parsing: theo
 	- [X]  si presence de \ ou de "' non fermer ou de ; marquer error syntax;
 	- [ ]  si un meta charcheter il doit etre afficher seulement s'il est dans des quotes (dans les double quote faut gerer les $ ` \$ \' \" \\ All other \ characters are literal (not special)) (dans les simple quotes tout les meta character sont desactiver / du coup il faut reactiver le $)(https://www.tutorialspoint.com/unix/unix-quoting-mechanisms.htm)
@@ -91,3 +90,5 @@ exp"o"rt c=$ls
 
 
 
+Rajouter la sauvegarde de l'env avec un fichier txt
+Tester les fonctions custom et rajouter les secu au cas ou il y a des erreurs

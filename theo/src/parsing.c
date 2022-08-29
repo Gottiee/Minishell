@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:57:58 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/09 18:23:22 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/27 20:57:48 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ char *parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
 {
 	if (check_spe_char(cmd) == 0)
 		return NULL;//retourner une erreur "Wrong syntax"
-	printf("Is var %i\n", is_var_cmd(cmd));
 	if (is_var_cmd(cmd))
 	{
 		var_cmd(cmd, lclvar, envvar);
@@ -167,21 +166,13 @@ char *parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
 		//si c'est avec une autre cmd(ex : ls ok=89) le laisser car c'est un 
 			//parametre de cmd et pas une declaration de variable
 
-
-		// si y'a des pipes verifier qu'il y a pas des declarations de variables
-			//si il y en a les remplacer par des echo vide
 		//si il est dans une commande (ex ok=8 ls) // si il est au debut l'enlever et envoyer le reste a pipex
-			//pareil pour ls | ok=8 cat
 	}
 
 	//utiliser cette fonction pour parser une commande apres l'autre
 	//c'est pipex qui doit appeler cette commande
 	//retourne la bonne commande (traduction de variable ou 
-		//enlever les declarations de variables et les remplacer par des echo vide 
-			//(meme si ceux ci reussise(ex : ok=8 
-				//reussit mais pipex ne doit executer aucune commande donc executer un echo vide)))
+		//enlever les declarations de variables)
 	//em plus le $? compte une declaration de variables reussit
-	//si une declaration de variable a besoin d'une execution (operation), lancer un execve pendant 
-		//le parsing et retourner a pipex qui il y a eu une erreur si il y en a une
 	return (NULL);
 }

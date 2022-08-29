@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   txt_trad.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/27 20:39:31 by tokerman          #+#    #+#             */
+/*   Updated: 2022/08/27 20:39:31 by tokerman         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/theo.h"
 
@@ -68,7 +79,7 @@ char	*get_txt(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
 		else if (*cmd == ' ' && quotes == 0)
 			break;
 		if (quotes == '\'' || *cmd != '$')
-			add_back_tstr(&tstr, create_tstr(*cmd));
+			add_back_tstr(&tstr, create_tstr(*cmd++));
 		else
 		{
 			cmd++;
@@ -76,7 +87,6 @@ char	*get_txt(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
 			while (*cmd && (ft_isalnum(*cmd) || *cmd == '_'))
 				cmd++;
 		}
-		cmd++;
 	}
 	return (get_str_with_tstr(tstr));
 }

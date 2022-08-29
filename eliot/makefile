@@ -27,7 +27,8 @@ signal/signal \
 ../../theo/src/t_local_var \
 ../../theo/src/t_str \
 ../../theo/src/utils \
-../../theo/src/hist_cmd
+../../theo/src/echo \
+../../theo/src/export 
 
 BONUS_SRC_FILES = 
 

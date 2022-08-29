@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:37:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/09 18:13:47 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/27 20:55:00 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,26 @@ t_lcl_var	*generate_envvar_list(char **envp)
 	return (res);
 }
 
+t_lcl_var	*generate_lclvar_list()
+{
+	static t_lcl_var	*res;
+
+	return (res);
+}
+
+char	*get_rdln_message()
+{
+	char	*path;
+	char	*res;
+
+	path = get_current_path();
+	res = ft_strjoin("Minishell:", path);
+	free(path);
+	path = ft_strjoin(res, "$ ");
+	free(res);
+	return (path);
+}
+
 /*
 Prompt qui recupere l'entree de l'utilisateur et de lancer les commandes necessaire
 Mettre plusieurs read jusqua un \n pour lire tout les caractere (bsq)
@@ -68,15 +88,12 @@ Mettre plusieurs read jusqua un \n pour lire tout les caractere (bsq)
 void	start_prompt(char **envp)
 {
 	char	*res;
-	char	*prt;
 	char	*path;
 	t_lcl_var	*lclvar;
 	t_lcl_var	*envvar;
-	t_hist_cmd	*histcmd;
 
 	res = NULL;
 	lclvar = NULL;
-	histcmd = NULL;
 	envvar = generate_envvar_list(envp);
 	while (1)
 	{
@@ -85,26 +102,35 @@ void	start_prompt(char **envp)
 		temp = lclvar;
 		while (temp)
 		{
-			printf("%s=%s|\n", temp->name, temp->val);
+			printf("|%s=%s|\n", temp->name, temp->val);
 			temp = temp->next;
 		}
-		path = get_current_path();
-		// path = 'Minishell:"path"$ '
+		printf("Emv variable :\n");
+		temp = envvar;
+		while (temp)
+		{
+			printf("|%s=%s|\n", temp->name, temp->val);
+			temp = temp->next;
+		}
+		
+		path = get_rdln_message();
 		res = readline(path);
 		free(path);
-		if (res[0] == '\n')
+		if (cmd_type(res) == -6)
 		{
 			free(res);
 			free_lclvar(lclvar);
 			free_lclvar(envvar);
-			free_histcmd(histcmd);
+			rl_clear_history();
 			break;
 		}
-		//Vrai commande a envoyer au parsing et a pipex
-		cd(res);
-		prt = clear_str(res);
-		add_back_histcmd(&histcmd, create_histcmd(prt));
-		//Envoyer au parsing
-		parsing(prt, &lclvar, &envvar);
+		else if (cmd_type(res) == -7)
+			cmd_echo(res, &lclvar, &envvar);
+		else if (cmd_type(res) == -3)
+			cmd_export(res, &lclvar, &envvar);
+		printf("cmd type : %i\n", cmd_type(res));
+		add_history(res);
+		parsing(res, &lclvar, &envvar);
+		free(res);
 	}	
 }

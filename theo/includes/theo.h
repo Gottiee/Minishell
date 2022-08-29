@@ -23,21 +23,18 @@ typedef struct s_lcl_var
 	struct s_lcl_var	*next;
 }	t_lcl_var;
 
-typedef struct s_hist_cmd
-{
-	char	*cmd;
-	struct s_hist_cmd	*next;
-}	t_hist_cmd;
-
 void	signal_handle(void);
 t_lcl_var	*generate_envvar_list(char **envp);
-void		start_prompt(char **envp);
 int			cmd_type(char *cmd);
 
-//hist_cmd
-void	add_back_histcmd(t_hist_cmd **first, t_hist_cmd *new);
-t_hist_cmd	*create_histcmd(char *cmd);
-void	free_histcmd(t_hist_cmd *histcmd);
+//prompt
+void		start_prompt(char **envp);
+
+//export
+void		cmd_export(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
+
+//echo
+void		cmd_echo(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
 
 //parsing
 int			check_spe_char(char *cmd);
@@ -52,11 +49,11 @@ t_str		*get_tstr_with_str(char *txt);
 int			tstr_len(t_str *tstr);
 
 //utils
-char	*remove_dquotes(char *str);
+char		*remove_dquotes(char *str);
 
 //operation
 int			is_operation(char *val);
-char	*operate(char *val, t_lcl_var **lclvar, t_lcl_var **envvar);
+char		*operate(char *val, t_lcl_var **lclvar, t_lcl_var **envvar);
 
 //t_lcl_var
 char		*get_name_var(char	*cmd);
@@ -67,12 +64,12 @@ void		add_back_lclvar(t_lcl_var **first, t_lcl_var *new);
 t_lcl_var	*get_lclvar_by_name(t_lcl_var **lclvar, char *tofind);
 
 //txt_trad
-char	*get_txt(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
+char		*get_txt(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
 
 // renvoie un pointeur sur chaine de caractere malloc contenant le path actuell 
-char	*get_current_path(void);
+char		*get_current_path(void);
 
 /*Fichier: cd.c*/
-int		cd(char *directory);
+int			cd(char *directory);
 
 #endif
