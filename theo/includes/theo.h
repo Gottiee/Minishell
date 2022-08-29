@@ -8,6 +8,13 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+# define CD 7
+# define ECHO 8
+# define EXPORT 9
+# define PWD 10
+# define UNSET 11
+# define ENV 12
+# define EXIT 13
 
 typedef struct s_str
 {

@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:37:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/29 15:57:36 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 16:06:12 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	start_prompt(char **envp)
 	envvar = generate_envvar_list(envp);
 	while (1)
 	{
-		printf("Local variable :\n");
+	/*printf("Local variable :\n");
 		t_lcl_var *temp;
 		temp = lclvar;
 		while (temp)
@@ -111,7 +111,7 @@ void	start_prompt(char **envp)
 		{
 			printf("|%s=%s|\n", temp->name, temp->val);
 			temp = temp->next;
-		}
+		}*/	
 		
 		path = get_rdln_message();
 		res = readline(path);
