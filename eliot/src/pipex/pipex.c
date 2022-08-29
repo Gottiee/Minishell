@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/29 18:54:46 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 19:44:06 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	pipex(char *cmd, char **env)
 	//attente des process dans le main
 	if (id != 0)
 	{
-		wait(0);
+		waitpid(-1, NULL, 0);
 		close(pipex.fd_pipe[0]);
 		close(pipex.fd_pipe[1]);
 	}
@@ -111,7 +111,10 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	// la fonction return NULL si il n'y pas de commad dans le pipe
 	pipex->cmd_tab_exec = creat_tab_exec(tmp, pipex);
 	if (!pipex->cmd_tab_exec)
+	{
+		printf("je me casse salut\n");
 		return (-2);
+	}
 
 	// test de la commande pour voir si c'est un absolute path
 	// si == NULL alors je dois aller choper le path
@@ -131,7 +134,10 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 			if (full_path) // recherche du path: renvoi le path s'il existe
 			{
 				if (find_path(full_path, pipex) == 0) // recherche de la command dans le path renvoie 0 si trouve
+				{
+					printf("tu ne dois pas me voir\n");
 					execve(pipex->cmd_path, pipex->cmd_tab_exec, env);
+				}
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 11:16:05 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/29 18:07:21 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 20:16:19 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,10 @@ int get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 	int				fd;
 	int				count_file;
 	char			*file_name;
-	int				fd_tmp;
 	int				bolo_pipe;
 
 	count_file = 0;
-	fd_tmp = dup(STDOUT_FILENO);
+	//fd_tmp = dup(STDOUT_FILENO);
 	fd = 0;
 	tmp = lexeur;
 	bolo_pipe = 0;
@@ -129,10 +128,9 @@ int get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 			//probleme pour ouvir le fichier; je ferme mes fichier et free, et remodifie le dup pour print sur la sorie standart
 			if (fd == -1)
 			{
-				dup2(fd_tmp, STDOUT_FILENO);	
-				//dup2(fd_tmp, fd);
-				printf("-bash: %s: %s\n", file_name, strerror(errno));
-				close(fd_tmp);
+				write(2, "-bash: ", 7);
+				write(2, file_name, ft_strlen(file_name));
+				perror("");
 				free(file_name);
 				close(pipex->fd_pipe[1]);
 				return (-1);
@@ -145,7 +143,6 @@ int get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 	}
 	if (!bolo_pipe)
 		close(pipex->fd_pipe[1]);
-	close(fd_tmp);
 	return (fd);
 }
 
@@ -168,9 +165,10 @@ char	**creat_tab_exec(t_list_pipex *lexeur, t_pipex *pipex)
 	tmp = lexeur;
 	if (cmd == 0)
 		return (NULL);
-	cmd_tab_exec = malloc(sizeof(char *) * cmd);
+	cmd_tab_exec = malloc(sizeof(char *) * (cmd + 1));
 	if (!cmd_tab_exec)
 		return (NULL);
+	cmd_tab_exec[cmd] = NULL;
 
 	// je met dans cmd_tab_exec les commandes les unes apres les autres
 	i = 0;

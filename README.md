@@ -92,3 +92,4 @@ exp"o"rt c=$ls
 
 Rajouter la sauvegarde de l'env avec un fichier txt
 Tester les fonctions custom et rajouter les secu au cas ou il y a des erreurs
+New parsing: verfier si '' ou ""
