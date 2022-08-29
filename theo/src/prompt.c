@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:37:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/29 16:06:12 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 16:28:31 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,10 @@ t_lcl_var	*generate_envvar_list(char **envp)
 		res = NULL;
 		while (envp && envp[i] != NULL)
 		{
-			add_back_lclvar(&res, create_lclvar(envp[i], NULL, NULL));
+			add_back_lclvar(&res, create_lclvar(envp[i]));
 			i++;
 		}	
 	}
-	return (res);
-}
-
-t_lcl_var	*generate_lclvar_list()
-{
-	static t_lcl_var	*res;
-
 	return (res);
 }
 
@@ -89,12 +82,9 @@ void	start_prompt(char **envp)
 {
 	char	*res;
 	char	*path;
-	t_lcl_var	*lclvar;
-	t_lcl_var	*envvar;
 
 	res = NULL;
-	lclvar = NULL;
-	envvar = generate_envvar_list(envp);
+	generate_envvar_list(envp);
 	while (1)
 	{
 	/*printf("Local variable :\n");
@@ -119,18 +109,19 @@ void	start_prompt(char **envp)
 		if (cmd_type(res) == -6)
 		{
 			free(res);
-			free_lclvar(lclvar);
-			free_lclvar(envvar);
+			free_lclvar(generate_envvar_list(NULL));
 			rl_clear_history();
 			break;
 		}
+		/*
 		else if (cmd_type(res) == -7)
 			cmd_echo(res, &lclvar, &envvar);
 		else if (cmd_type(res) == -3)
 			cmd_export(res, &lclvar, &envvar);
 		printf("cmd type : %i\n", cmd_type(res));
+		*/
 		add_history(res);
-		parsing(res, &lclvar, &envvar, envp);
+		parsing(res, envp);
 		free(res);
 	}	
 }

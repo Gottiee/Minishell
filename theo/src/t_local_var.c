@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 19:12:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/09 19:00:04 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/29 16:23:51 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ exemple:
 	ok=89
 	retourne (89)
 */
-char	*get_text_val(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
+char	*get_text_val(char *cmd)
 {// traduire les variables ex : ok=$test*8	
 	while (*cmd == ' ')
 		cmd++;
 	while (*cmd != '=')
 		cmd++;
 	cmd++;
-	return (get_txt(cmd, lclvar, envvar));
+	return (get_txt(cmd));
 }
 
 /*
@@ -83,14 +83,14 @@ void	free_lclvar(t_lcl_var *var)
 /*
 creer la variable local a partir de la cmd en recuperant le nom, la valeur et le type de valeur
 */
-t_lcl_var	*create_lclvar(char	*cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
+t_lcl_var	*create_lclvar(char	*cmd)
 {
 	t_lcl_var	*res;
 	
 	res = ft_calloc(1, sizeof(t_lcl_var));
 	res->next = NULL;
 	res->name = get_name_var(cmd);
-	res->val = get_text_val(cmd, lclvar, envvar);
+	res->val = get_text_val(cmd);
 	res->type = get_type_val(res->val);
 	return (res);
 }

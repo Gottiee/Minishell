@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:57:58 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/29 15:57:16 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 16:27:31 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,45 +121,13 @@ int	is_var_cmd(char *cmd)
 }
 
 /*
-fonction qui gere la declaration d'une variable via une commande
-ex : ok=89
-*/
-void	var_cmd(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
-{
-	t_lcl_var *var;
-	t_lcl_var *temp_lcl;
-	t_lcl_var *temp_env;
-
-	var = create_lclvar(cmd, lclvar, envvar);
-	temp_lcl = get_lclvar_by_name(lclvar, var->name);
-	temp_env = get_lclvar_by_name(envvar, var->name);
-	if (temp_lcl != NULL)
-	{
-		free(temp_lcl->val);
-		temp_lcl->val = ft_strdup(var->val);
-		free_lclvar(var);
-	}
-	else if (temp_env != NULL)
-	{
-		//modification de la variable d'environnement
-	}
-	else
-		add_back_lclvar(lclvar, var);
-}
-
-/*
 fonction qui va verifier si il n'y pas d'erreur
 	et qui va clean la cmd
 */
-char *parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar, char **envp)
+char *parsing(char *cmd, char **envp)
 {
 	if (check_spe_char(cmd) == 0)
 		return NULL;//retourner une erreur "Wrong syntax"
-	if (is_var_cmd(cmd))
-	{
-		var_cmd(cmd, lclvar, envvar);
-		return ("echo -n ''");
-	}
 	else
 	{
 		pipex(cmd, envp);

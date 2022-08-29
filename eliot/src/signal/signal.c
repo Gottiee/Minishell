@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 11:10:56 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/25 13:04:23 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/29 16:36:05 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,25 @@
 
 void	prompt_signal(int sig)
 {
+	char	*res;
+	char	*path;
+	
 	if (sig == SIGINT)
 	{
 		printf("\n");
-		start_prompt(NULL);
+		path = get_rdln_message();
+		res = readline(path);
+		free(path);
+		if (cmd_type(res) == -6)
+		{
+			free(res);
+			free_lclvar(generate_envvar_list(NULL));
+			rl_clear_history();
+			break;
+		}
+		add_history(res);
+		parsing(res, envp);
+		free(res);
 	}
 }
 

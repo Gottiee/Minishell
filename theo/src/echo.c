@@ -6,33 +6,29 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 20:04:06 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/29 15:45:24 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/08/29 16:18:48 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/theo.h"
 
-//cmd : /bin/echo
-
-//char **arg 
-// arg[0]: echo
-
-//pouvoir echo plusieurs str
-
-void	cmd_echo(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar)
+void	cmd_echo(char **cmd)
 {
-	int	n_option;
-	
-	while (*cmd == ' ')
-		cmd++;
-	cmd += 5;
+	int		n_option;
+	int		i;
+	char	*txt;
+
 	n_option = 0;
-	if (ft_strnstr(cmd, "-n ", ft_strlen(cmd)) == cmd)
-	{
+	if (ft_strnstr(cmd[1], "-n", ft_strlen(cmd[1])) == cmd[1])
 		n_option = 1;
-		cmd += 3;
+	i = 1 + n_option;
+	while (cmd[i] != NULL)
+	{
+		txt = get_txt(cmd[i]);
+		write(1, txt, ft_strlen(txt));
+		free(txt);
+		i++;
 	}
-	printf("%s", get_txt(cmd, lclvar, envvar));
 	if (n_option == 0)
-		printf("\n");
+		write(1, "\n", 1);
 }

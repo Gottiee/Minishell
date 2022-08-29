@@ -33,19 +33,20 @@ typedef struct s_lcl_var
 void	signal_handle(void);
 t_lcl_var	*generate_envvar_list(char **envp);
 int			cmd_type(char *cmd);
+char	*get_rdln_message();
 
 //prompt
 void		start_prompt(char **envp);
 
 //export
-void		cmd_export(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
+void		cmd_export(char **cmd);
 
 //echo
-void		cmd_echo(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
+void		cmd_echo(char **cmd);
 
 //parsing
 int			check_spe_char(char *cmd);
-char 		*parsing(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar, char **envp);
+char 		*parsing(char *cmd, char **envp);
 int			is_var_cmd(char *cmd);
 
 //t_str
@@ -65,13 +66,13 @@ char		*operate(char *val, t_lcl_var **lclvar, t_lcl_var **envvar);
 //t_lcl_var
 char		*get_name_var(char	*cmd);
 int			get_type_val(char *text);
-t_lcl_var	*create_lclvar(char	*cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
+t_lcl_var	*create_lclvar(char	*cmd);
 void		free_lclvar(t_lcl_var *var);
 void		add_back_lclvar(t_lcl_var **first, t_lcl_var *new);
 t_lcl_var	*get_lclvar_by_name(t_lcl_var **lclvar, char *tofind);
 
 //txt_trad
-char		*get_txt(char *cmd, t_lcl_var **lclvar, t_lcl_var **envvar);
+char		*get_txt(char *cmd);
 
 // renvoie un pointeur sur chaine de caractere malloc contenant le path actuell 
 char		*get_current_path(void);
