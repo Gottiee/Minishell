@@ -44,7 +44,7 @@ typedef struct s_pipex
 {
 	char	**pipe_splited;
 	int		nbr_of_pipe;
-	int		fd_pipe[2];
+	int		**fd_pipe;
 
 	//dans chaque process
 	char	**cmd_tab_exec;
@@ -71,6 +71,7 @@ void	free_all_pipex(t_pipex *pipex);
 int		del_list(t_pipex *pipex);
 void	free_cmd_tab(t_pipex *pipex);
 void	free_all_path(char **path);
+void	close_all_fd(int fd_outfile, int fd_infile, t_pipex *pipex);
 
 /*Fichier: stuct_manage_pipex.c*/
 t_list_pipex	*init_struct_pipex(void);
@@ -112,6 +113,8 @@ char			**creat_tab_exec(t_list_pipex *lexeur, t_pipex *pipex);
 char			*testing_path(t_list_pipex *lexeur);
 int 			find_path(char *full_path, t_pipex *pipex);
 char			*is_path_exist(t_pipex	*pipex);
+int outfile_type(t_list_pipex *tmp);
+int	infile_type(t_list_pipex *tmp);
 
 
 /*          --- Fonctions qui gere les builtins---     */

@@ -5,9 +5,7 @@ TRUC A FAIRE
 
 - finir de coder le here doc
 
-- finir de coder pipex 
-	- recherche de la  variable path
-	- recherche de la cmd dans la variable path
+- appeller les builtins 
 
 - test: 
 	- tester le pipex finis
@@ -15,7 +13,6 @@ TRUC A FAIRE
 	- tester pwd
 
 - gerer les signaux
-	- ctr-c marche pas 
 	- ctr-d: verifiere s'il fonctionne avec le prompte lors du here doc
 
 !! Valeur de retour

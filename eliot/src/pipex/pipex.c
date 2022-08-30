@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/29 19:44:06 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/30 18:41:57 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	pipex(char *cmd, char **env)
 	t_pipex pipex;
 	int		i;
 	int		id;
+	//int		status;
 	int		index_process;
 
 	//premier split : division des pipes
@@ -43,8 +44,24 @@ int	pipex(char *cmd, char **env)
 
 	//creation du pipe ?
 	//if (pipex.nbr_of_pipe > 1)
-		pipe(pipex.fd_pipe);
 	
+	// comptage nmb de pipe	
+	pipex.fd_pipe = NULL;
+	if (pipex.nbr_of_pipe > 1)
+	{
+		pipex.fd_pipe = ft_calloc(pipex.nbr_of_pipe, sizeof(int *));
+		if (!pipex.fd_pipe)
+			return (-11);
+		i = -1;	
+		while (++i < pipex.nbr_of_pipe - 1)
+		{
+			pipex.fd_pipe[i] = ft_calloc(2, sizeof(int));
+			if (!pipex.fd_pipe[i])
+				return (-1);
+			if (pipe(pipex.fd_pipe[i]) < 0)
+				return (-1);
+		}
+	}
 	//creatio des processes
 	id = 1;
 	i = -1;
@@ -67,25 +84,25 @@ int	pipex(char *cmd, char **env)
 	}
 
 	//attente des process dans le main
+	i = -1;
 	if (id != 0)
 	{
-		waitpid(-1, NULL, 0);
-		close(pipex.fd_pipe[0]);
-		close(pipex.fd_pipe[1]);
-	}
+			while (++i < pipex.nbr_of_pipe)
+				waitpid(0, NULL, 0);
+			//wait(0);
+			write(2, "fin child\n", 10);
+		close_all_fd(-1, -1, &pipex);
+	}	
 	del_list(&pipex);
 	free_all_pipex(&pipex);
-	printf("pipex over\n");
+	if (id == 0)
+	{
+		write(2, "gosse qit\n", 10);
+		exit(1);
+	}
+	//printf("pipex over\n");
 	return (0);
 }
-
-/* chose a faire ! 
-
-		- chercher env path (si path n'existe pas execve la command sans path) bash: ...: No such file or directory!! gerer le numero de retour
-		- si path essayer de trouver la path,  si pas trouver: ...:command not found;
-		- execve la command
-		- faire des testes avec les fds open ect..
-*/
 
 int	manage_process(t_pipex *pipex, int index, char	**env)
 {
@@ -107,6 +124,7 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	if (fd_outfile < 0)		
 		return (-1);
 
+	close_all_fd(fd_outfile, fd_infile, pipex);
 	//creation du tableau de tableau pour execve
 	// la fonction return NULL si il n'y pas de commad dans le pipe
 	pipex->cmd_tab_exec = creat_tab_exec(tmp, pipex);
@@ -114,6 +132,7 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	{
 		printf("je me casse salut\n");
 		return (-2);
+		//exit(1);
 	}
 
 	// test de la commande pour voir si c'est un absolute path
@@ -135,7 +154,22 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 			{
 				if (find_path(full_path, pipex) == 0) // recherche de la command dans le path renvoie 0 si trouve
 				{
-					printf("tu ne dois pas me voir\n");
+					//printf("tu ne dois pas me voir\n");
+					
+					write(2, "\n", 1);
+					write(2, "infile: ",8);
+					write(2, ft_itoa(fd_infile), ft_strlen(ft_itoa(fd_infile)));
+					write(2, "\n", 1);
+					write(2, "outfile: ",9);
+					write(2, ft_itoa(fd_outfile), ft_strlen(ft_itoa(fd_outfile)));
+					write(2, "\n", 1);
+					write(2, "\n", 1);
+				/*if (index == pipex->nbr_of_pipe - 1)
+					{
+						char buff[1000];
+						read(pipex->fd_pipe[index - 1][0], buff, 1000);
+						write(2, buff, 1000);
+					}*/	
 					execve(pipex->cmd_path, pipex->cmd_tab_exec, env);
 				}
 			}
@@ -145,9 +179,6 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	free_cmd_tab(pipex);
 	close(fd_outfile);
 	close(fd_infile);
-	close(0);
-	close(1);
-	close(2);
 	return (0);
 }
 

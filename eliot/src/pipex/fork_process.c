@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 11:16:05 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/29 20:16:19 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/30 18:08:22 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_list_pipex	*actual_pipe(t_list_pipex *lexeur, int index)
 	return (tmp->next);
 }
 
-int	get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex)
+/*int	get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 {
 	t_list_pipex	*tmp;
 	int				id;
@@ -46,12 +46,12 @@ int	get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 	// si mon index n'est pas 0 ca veut dire qu'avant moi il y un pipe
 	if (index != 0)
 	{
-		dup2(pipex->fd_pipe[0], 0);
-		id = pipex->fd_pipe[0];
+		dup2(pipex->fd_pipe[index][0], 0);
+		id = pipex->fd_pipe[index][0];
 		bolo_pipe = 1;
 	}
-	else
-		close(pipex->fd_pipe[0]);
+	else if (pipex->fd_pipe)
+		close(pipex->fd_pipe[index][0]);
 	while (tmp && tmp->type != PIPE)
 	{
 		// je met en entre les here_doc
@@ -75,7 +75,8 @@ int	get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 			{
 				printf("-bash: %s: %s\n", file_name, strerror(errno));
 				free(file_name);
-				close(pipex->fd_pipe[1]);
+				if (pipex->fd_pipe)
+					close(pipex->fd_pipe[index][1]);
 				return (-1);
 			}
 			dup2(id, 0);
@@ -83,13 +84,13 @@ int	get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 			free(file_name);
 		}
 		tmp = tmp->next;
-		if (!bolo_pipe)
-			close(pipex->fd_pipe[0]);
+		if (!bolo_pipe && pipex->fd_pipe)
+			close(pipex->fd_pipe[index][0]);
 	}
 	return (id);
-}
+}*/
 
-int get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex)
+/*int get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 {
 	t_list_pipex	*tmp;
 	int				fd;
@@ -105,12 +106,12 @@ int get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 	// je suis sur une comand qui a un pipe et je ne suis pas sur le dernier pipe
 	if (pipex->nbr_of_pipe != 0 && index != pipex->nbr_of_pipe -1)
 	{
-		dup2(pipex->fd_pipe[1], 1);
-		fd = pipex->fd_pipe[1];
+		dup2(pipex->fd_pipe[index][1], 1);
+		fd = pipex->fd_pipe[index][1];
 		bolo_pipe = 1;
 	}
-	else
-		close(pipex->fd_pipe[1]);
+	else if (pipex->fd_pipe)
+		close(pipex->fd_pipe[index][1]);
 	while (tmp && tmp->type != PIPE)
 	{
 		if (tmp->type == OUTFILE || tmp->type == DBL_OUTFILE)
@@ -132,7 +133,8 @@ int get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 				write(2, file_name, ft_strlen(file_name));
 				perror("");
 				free(file_name);
-				close(pipex->fd_pipe[1]);
+				if (pipex->fd_pipe)
+					close(pipex->fd_pipe[index][1]);
 				return (-1);
 			}
 			dup2(fd, 1);
@@ -141,11 +143,11 @@ int get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 		}
 		tmp = tmp->next;
 	}
-	if (!bolo_pipe)
-		close(pipex->fd_pipe[1]);
+	if (!bolo_pipe && pipex->fd_pipe)
+		close(pipex->fd_pipe[index][1]);
 	return (fd);
 }
-
+*/
 char	**creat_tab_exec(t_list_pipex *lexeur, t_pipex *pipex)
 {
 	t_list_pipex	*tmp;
@@ -256,4 +258,130 @@ int find_path(char *full_path, t_pipex *pipex)
 	write(2, pipex->cmd_tab_exec[0], ft_strlen(pipex->cmd_tab_exec[0]));
 	write(2, ": command not found\n", 20);
 	return (-1);
+}
+
+int	get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex)
+{
+	t_list_pipex	*tmp;
+	int	 			id;
+	int				id_tmp;
+	
+	id = 0;
+	tmp = lexeur;
+	if (pipex->nbr_of_pipe == 1)
+		id_tmp = infile_type(tmp);
+	else
+	{
+		if (index != 0)
+		{
+			dup2(pipex->fd_pipe[index - 1][0], 0);
+			id = pipex->fd_pipe[index -1][0];
+		}
+		id_tmp = infile_type(tmp);
+	}
+	if (id_tmp != -1)
+			id = id_tmp;
+	return (id);
+}
+
+int	infile_type(t_list_pipex *tmp)
+{
+	int 	id;	
+	int		count_infile;
+	char	*file_name;
+
+	id = -1;	
+	count_infile = 0;
+	while (tmp && tmp->type != PIPE)
+	{
+		// je met en entre les here_doc
+		if (tmp->type == HERE_DOC)
+		{
+			if (count_infile != 0)
+				close(id);
+			id = tmp->fd;
+			dup2(tmp->fd, 0);
+			count_infile ++;
+		}
+		else if (tmp->type == INFILE)
+		{
+			if (count_infile != 0)
+				close(id);
+			file_name = concatenate_tstr(tmp->str_pipex);
+			if (!file_name)
+				return (-2);
+			id = open(file_name, O_RDONLY, 0644);
+			// le fichier ne peux pas etre ouvert
+			if (id == -1)
+			{
+				printf("-bash: %s: %s\n", file_name, strerror(errno));
+				free(file_name);
+				return (-1);
+			}
+			count_infile ++;
+			free(file_name);
+		}
+		tmp = tmp->next;
+	}
+	dup2(id, 0);
+	return (id);
+}
+
+int get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex)
+{
+	t_list_pipex	*tmp;
+	int				id;
+	int				id_tmp;
+
+	id = 1;
+	tmp = lexeur;
+	if (index == pipex->nbr_of_pipe -1)
+		id_tmp = outfile_type(tmp);
+	else
+	{
+		dup2(pipex->fd_pipe[index][1], 1);
+		id = pipex->fd_pipe[index][1];
+		id_tmp = outfile_type(tmp);
+	}
+	if (id_tmp != -1)
+		id = id_tmp;
+	return (id);
+}
+
+int outfile_type(t_list_pipex *tmp)
+{
+	int		count_file;	
+	int		id;
+	char	*file_name;
+
+	count_file = 0;
+	id = -1;
+	while (tmp && tmp->type != PIPE)
+	{
+		if (tmp->type == OUTFILE || tmp->type == DBL_OUTFILE)
+		{
+			if (count_file != 0)
+				close(id);
+			file_name = concatenate_tstr(tmp->str_pipex);
+			if (!file_name)
+				return (-2);
+			if (tmp->type == OUTFILE)
+				id = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			else
+				id = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (id == -1)
+			{
+				write(2, "-bash: ", 7);
+				write(2, file_name, ft_strlen(file_name));
+				perror(":");
+				free(file_name);
+				return (-1);
+			}
+			count_file ++;
+			free(file_name);
+		}
+		tmp = tmp->next;
+	}
+	dup2(id, 1);
+	return (id);
 }
