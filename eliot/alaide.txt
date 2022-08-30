@@ -19,3 +19,6 @@ TRUC A FAIRE
 pour recuperer la derniere valeur retourner par mes childs, il ne faut pas recuper la dernier valeur de mon dernier child dead parce que c'est pas forcement le dernier mort.
 Pour regler le probleme, le dernier fork que j'appelle je lui dis int pid = fork();
 comme ca pid vaut le dernier fork, et dans le main au moment du wait, si wait == pid alors je sais que j'ai choper mon dernier child;
+
+cat < makefile << k > ok | cat ok
+le programm essaie de rouvir ok alors qu'il est ferme

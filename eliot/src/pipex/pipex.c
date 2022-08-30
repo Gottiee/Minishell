@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/30 18:41:57 by eedy             ###   ########.fr       */
+/*   Updated: 2022/08/30 18:43:49 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ int	pipex(char *cmd, char **env)
 	i = -1;
 	if (id != 0)
 	{
-			while (++i < pipex.nbr_of_pipe)
-				waitpid(0, NULL, 0);
+			//while (++i < pipex.nbr_of_pipe)
+				waitpid(-1, NULL, 0);
 			//wait(0);
 			write(2, "fin child\n", 10);
 		close_all_fd(-1, -1, &pipex);
