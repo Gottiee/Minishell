@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/30 18:43:49 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/07 20:06:53 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,14 @@
 
 int g_return_value;
 
-/*chose a faire: 
-	- attention aux "" dans les here doc (ajouter au README)*/
-
 int	pipex(char *cmd, char **env)
 {
 	t_pipex pipex;
 	int		i;
-	int		id;
+	int		*id;
 	//int		status;
 	int		index_process;
+	//int		pid;
 
 	//premier split : division des pipes
 	pipex.pipe_splited = ft_split(cmd, '|');
@@ -63,20 +61,22 @@ int	pipex(char *cmd, char **env)
 		}
 	}
 	//creatio des processes
-	id = 1;
 	i = -1;
+	id = malloc(sizeof(int) * pipex.nbr_of_pipe);
 	while (++i < pipex.nbr_of_pipe)
 	{
-		if (id != 0)
-		{
-			index_process = i;
-			id = fork();
-		}
+		index_process = i;
+		id[i] = fork();
+		if (id[i] == 0)
+			break;
+		//printf("id enfant %d : %d\n", i, id[i]);
 	}
-	if (id == -1)
+	if (i == pipex.nbr_of_pipe)
+		i --;
+	if (id[i] == -1)
 		return (-1);
 	// fonction pour les process fork
-	if (id == 0)
+	if (id[i] == 0)
 	{
 		// reset le signal ctrl-c a defaut c'est a dire kill the process
 		signal(SIGINT, SIG_DFL);
@@ -84,20 +84,33 @@ int	pipex(char *cmd, char **env)
 	}
 
 	//attente des process dans le main
-	i = -1;
-	if (id != 0)
+	if (id[i] != 0)
 	{
-			//while (++i < pipex.nbr_of_pipe)
-				waitpid(-1, NULL, 0);
-			//wait(0);
-			write(2, "fin child\n", 10);
+	i = -1;
+		while (++i < pipex.nbr_of_pipe)
+		{
+			int wstatus;
+			int status;
+			printf("child %d commence\n", id[i]);
+			waitpid(id[i] , &wstatus, WUNTRACED);
+			printf("child %d terminer\n", id[i]);
+			if (WIFEXITED(wstatus))
+				status = WEXITSTATUS(wstatus);
+			else
+				status = 128 + WTERMSIG(wstatus);
+			printf("status :%d\n", status);
+		}	
+		i --;	
+		//waitpid(id[i], NULL, );
+		//wait(NULL);
+		//write(2, "fin child\n", 10);
 		close_all_fd(-1, -1, &pipex);
 	}	
 	del_list(&pipex);
 	free_all_pipex(&pipex);
-	if (id == 0)
+	if (id[i] == 0)
 	{
-		write(2, "gosse qit\n", 10);
+		//write(2, "gosse qit\n", 10);
 		exit(1);
 	}
 	//printf("pipex over\n");
@@ -121,8 +134,11 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 
 	// ouvre les  > et les >> chacun son tour et redirige 
 	fd_outfile = get_outfile(tmp, index, pipex);
-	if (fd_outfile < 0)		
+	if (fd_outfile < 0)	
+	{
+		close(fd_infile);
 		return (-1);
+	}
 
 	close_all_fd(fd_outfile, fd_infile, pipex);
 	//creation du tableau de tableau pour execve
@@ -130,7 +146,11 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	pipex->cmd_tab_exec = creat_tab_exec(tmp, pipex);
 	if (!pipex->cmd_tab_exec)
 	{
-		printf("je me casse salut\n");
+		//printf("je me casse salut\n");
+		close(fd_outfile);
+		close(fd_infile);
+		close(1);
+		close(0);
 		return (-2);
 		//exit(1);
 	}
@@ -154,7 +174,7 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 			{
 				if (find_path(full_path, pipex) == 0) // recherche de la command dans le path renvoie 0 si trouve
 				{
-					//printf("tu ne dois pas me voir\n");
+					/*printf("tu ne dois pas me voir\n");
 					
 					write(2, "\n", 1);
 					write(2, "infile: ",8);
@@ -164,12 +184,13 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 					write(2, ft_itoa(fd_outfile), ft_strlen(ft_itoa(fd_outfile)));
 					write(2, "\n", 1);
 					write(2, "\n", 1);
-				/*if (index == pipex->nbr_of_pipe - 1)
+					if (index == pipex->nbr_of_pipe - 1)
 					{
 						char buff[1000];
 						read(pipex->fd_pipe[index - 1][0], buff, 1000);
 						write(2, buff, 1000);
-					}*/	
+					}*/
+					write(2, "i did it\n", 9);
 					execve(pipex->cmd_path, pipex->cmd_tab_exec, env);
 				}
 			}

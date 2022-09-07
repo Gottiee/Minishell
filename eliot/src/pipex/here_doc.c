@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 13:25:43 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/26 18:22:26 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/07 14:08:14 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int		here_doc(t_list_pipex *here)
 	char	*str_here_doc;
 	t_str	*user_input;
 	char	*file_name;
+	char	*user_in;
+	char	*expend;
 
 	i = 0;
 	k = i;
@@ -42,6 +44,7 @@ int		here_doc(t_list_pipex *here)
 	{
 		k = i;
 		buff[0] = '\0';
+		write(1, "> ", 2);
 		while (buff[0] != '\n')
 		{
 			if (read(0, buff, 1) == -1)
@@ -63,12 +66,17 @@ int		here_doc(t_list_pipex *here)
 		Dans writes inside gerer si la valeur des quotes est egal a 0 il faut expand le nom
 		du coup j'ai gerer si la valeur des quotes est egal a 1. 
 	*/
-	write_inside_file(user_input, here->fd, k);
+	if (here->quote_here_doc == 1) // si egale a 1 pas d'expend
+		write_inside_file(user_input, here->fd, k);
+	else // sinon expend
+	{
+		user_in = concatenate_tstr(user_input);
+		expend = get_txt(user_in);
+		write(here->fd, expend, ft_strlen(expend) - (i - k));
+		free(user_in);
+		free(expend);
+	}
 	close(here->fd);
-	/*
-		get_txt(char *txt);
-		txt est le retour de la fonction qui traduit un tstr en string
-	*/
 	here->fd = open(file_name, O_RDONLY, 0644);
 	free(str_here_doc);
 	free_tstr(user_input);

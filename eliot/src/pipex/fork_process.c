@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 11:16:05 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/30 18:08:22 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/07 19:10:28 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,7 +323,8 @@ int	infile_type(t_list_pipex *tmp)
 		}
 		tmp = tmp->next;
 	}
-	dup2(id, 0);
+	if (id != -1)
+		dup2(id, 0);
 	return (id);
 }
 
@@ -382,6 +383,7 @@ int outfile_type(t_list_pipex *tmp)
 		}
 		tmp = tmp->next;
 	}
-	dup2(id, 1);
+	if (id != -1)
+		dup2(id, 1);
 	return (id);
 }
