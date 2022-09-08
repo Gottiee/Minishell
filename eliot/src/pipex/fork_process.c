@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 11:16:05 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/07 19:10:28 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/08 15:30:25 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,64 +90,7 @@ t_list_pipex	*actual_pipe(t_list_pipex *lexeur, int index)
 	return (id);
 }*/
 
-/*int get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex)
-{
-	t_list_pipex	*tmp;
-	int				fd;
-	int				count_file;
-	char			*file_name;
-	int				bolo_pipe;
-
-	count_file = 0;
-	//fd_tmp = dup(STDOUT_FILENO);
-	fd = 0;
-	tmp = lexeur;
-	bolo_pipe = 0;
-	// je suis sur une comand qui a un pipe et je ne suis pas sur le dernier pipe
-	if (pipex->nbr_of_pipe != 0 && index != pipex->nbr_of_pipe -1)
-	{
-		dup2(pipex->fd_pipe[index][1], 1);
-		fd = pipex->fd_pipe[index][1];
-		bolo_pipe = 1;
-	}
-	else if (pipex->fd_pipe)
-		close(pipex->fd_pipe[index][1]);
-	while (tmp && tmp->type != PIPE)
-	{
-		if (tmp->type == OUTFILE || tmp->type == DBL_OUTFILE)
-		{
-			bolo_pipe = 0;
-			if (count_file != 0)
-				close(fd);
-			file_name = concatenate_tstr(tmp->str_pipex);
-			if (!file_name)
-				return (-2);
-			if (tmp->type == OUTFILE)
-				fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			else
-				fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			//probleme pour ouvir le fichier; je ferme mes fichier et free, et remodifie le dup pour print sur la sorie standart
-			if (fd == -1)
-			{
-				write(2, "-bash: ", 7);
-				write(2, file_name, ft_strlen(file_name));
-				perror("");
-				free(file_name);
-				if (pipex->fd_pipe)
-					close(pipex->fd_pipe[index][1]);
-				return (-1);
-			}
-			dup2(fd, 1);
-			count_file ++;
-			free(file_name);
-		}
-		tmp = tmp->next;
-	}
-	if (!bolo_pipe && pipex->fd_pipe)
-		close(pipex->fd_pipe[index][1]);
-	return (fd);
-}
-*/
+/*creer un tableau de commande en partant de lexeur j'usque la fin de la lister chaine ou le prochain pipe*/
 char	**creat_tab_exec(t_list_pipex *lexeur, t_pipex *pipex)
 {
 	t_list_pipex	*tmp;

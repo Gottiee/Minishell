@@ -3,9 +3,9 @@ commancer la commande avec un pipe
 
 TRUC A FAIRE
 
-- finir de coder le here doc
-
 - appeller les builtins 
+	- cd ne fonctionne pas puisqu'il s'execute dans un FORK
+	""
 
 - test: 
 	- tester le pipex finis
@@ -14,11 +14,11 @@ TRUC A FAIRE
 
 - gerer les signaux
 	- ctr-d: verifiere s'il fonctionne avec le prompte lors du here doc
+	- ctr-d segfault sur le parsing de theo
+	- ctr-c fait plusieur prompt quand je suis dans une commande
 
-!! Valeur de retour
-pour recuperer la derniere valeur retourner par mes childs, il ne faut pas recuper la dernier valeur de mon dernier child dead parce que c'est pas forcement le dernier mort.
-Pour regler le probleme, le dernier fork que j'appelle je lui dis int pid = fork();
-comme ca pid vaut le dernier fork, et dans le main au moment du wait, si wait == pid alors je sais que j'ai choper mon dernier child;
+- norm
 
-cat < makefile << k > ok | cat ok
-le programm essaie de rouvir ok alors qu'il est ferme
+- malloc
+
+- fds

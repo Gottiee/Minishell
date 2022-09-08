@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/07 20:06:53 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/08 16:37:05 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ int	pipex(char *cmd, char **env)
 	t_pipex pipex;
 	int		i;
 	int		*id;
-	//int		status;
 	int		index_process;
-	//int		pid;
+	int		wstatus;
+	int		status;
+	int		pid;
 
 	//premier split : division des pipes
 	pipex.pipe_splited = ft_split(cmd, '|');
@@ -60,6 +61,7 @@ int	pipex(char *cmd, char **env)
 				return (-1);
 		}
 	}
+
 	//creatio des processes
 	i = -1;
 	id = malloc(sizeof(int) * pipex.nbr_of_pipe);
@@ -84,37 +86,76 @@ int	pipex(char *cmd, char **env)
 	}
 
 	//attente des process dans le main
+	index_process = i;
 	if (id[i] != 0)
 	{
-	i = -1;
+		i = -1;
+		close_all_fd(-1, -1, &pipex);
 		while (++i < pipex.nbr_of_pipe)
 		{
-			int wstatus;
-			int status;
-			printf("child %d commence\n", id[i]);
-			waitpid(id[i] , &wstatus, WUNTRACED);
-			printf("child %d terminer\n", id[i]);
-			if (WIFEXITED(wstatus))
-				status = WEXITSTATUS(wstatus);
-			else
-				status = 128 + WTERMSIG(wstatus);
-			printf("status :%d\n", status);
-		}	
+			pid = waitpid(id[i] , &wstatus, WUNTRACED);
+			if (pid == id[index_process])
+			{
+				if (WIFEXITED(wstatus))
+					status = WEXITSTATUS(wstatus);
+				else
+					status = 128 + WTERMSIG(wstatus);
+			}
+		}
 		i --;	
-		//waitpid(id[i], NULL, );
-		//wait(NULL);
-		//write(2, "fin child\n", 10);
-		close_all_fd(-1, -1, &pipex);
 	}	
+
+	// CD IN parent s'effectue apres le premier fork 
+	int				builtin;
+	t_list_pipex	*tmp;
+	int				pid2;
+
+	// si un seul pipe alors j'effectue cd
+	if (pipex.nbr_of_pipe == 1)
+	{
+		pipex.cmd_tab_exec  = creat_tab_exec(pipex.lexeur, &pipex);
+		if (!pipex.cmd_tab_exec)
+			return(-1);
+		builtin = cmd_type(pipex.cmd_tab_exec[0]);
+		if (builtin == CD)
+		{
+			printf("j'effectue cd dans le fork en haut\n");
+			cd(pipex.cmd_tab_exec);
+		}
+		free(pipex.cmd_tab_exec);
+	}
+	//si pls pipe, je regarde si une des commandes a un cd, si oui je fork et je l'effectue dans un process tout seul
+	else
+	{
+		index_process = -1;
+		while (++index_process < pipex.nbr_of_pipe)
+		{
+			tmp = actual_pipe(pipex.lexeur, index_process);
+			pipex.cmd_tab_exec = creat_tab_exec(tmp, &pipex);
+			builtin = cmd_type(pipex.cmd_tab_exec[0]);
+			if (builtin == CD)
+			{
+				pid2 = fork();
+				if (pid2 == 0)
+				{
+					printf("j'effectue cd dans le fork en bas\n");
+					cd(pipex.cmd_tab_exec);
+					free(pipex.cmd_tab_exec);
+					exit(1);
+				}
+				else
+					waitpid(-1, NULL, 0);
+			}
+			free(pipex.cmd_tab_exec);
+		}
+	}
+
+	//end and free
 	del_list(&pipex);
 	free_all_pipex(&pipex);
 	if (id[i] == 0)
-	{
-		//write(2, "gosse qit\n", 10);
 		exit(1);
-	}
-	//printf("pipex over\n");
-	return (0);
+	return (status);
 }
 
 int	manage_process(t_pipex *pipex, int index, char	**env)
@@ -123,7 +164,7 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	int				fd_infile;
 	int				fd_outfile;
 	char			*full_path;
-	//int				builtin;
+	int				builtin;
 
 	// actual pipe te remvoie un pointeur sur le premier element du pipe que gere le fork
 	tmp = actual_pipe(pipex->lexeur, index);
@@ -141,6 +182,7 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	}
 
 	close_all_fd(fd_outfile, fd_infile, pipex);
+
 	//creation du tableau de tableau pour execve
 	// la fonction return NULL si il n'y pas de commad dans le pipe
 	pipex->cmd_tab_exec = creat_tab_exec(tmp, pipex);
@@ -155,16 +197,11 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 		//exit(1);
 	}
 
-	// test de la commande pour voir si c'est un absolute path
-	// si == NULL alors je dois aller choper le path
-	// sinon il y a deja le path et c'est niquel
-	
 	//cherche les builtins qu'on a coder pour les exec ici 
-	/*builtin = cmd_type(pipex->cmd_tab_exec[0]);
+	builtin = cmd_type(pipex->cmd_tab_exec[0]);
 	if (builtin) // si positif alors c'est un builtin
 		do_builtins(builtin, pipex->cmd_tab_exec); // selon la valeur de builtin appelle la bonne fnction
-
-*/	else 
+	else 
 	{
 		pipex->cmd_with_path = testing_path(tmp);
 		if (!pipex->cmd_with_path)
@@ -173,26 +210,7 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 			if (full_path) // recherche du path: renvoi le path s'il existe
 			{
 				if (find_path(full_path, pipex) == 0) // recherche de la command dans le path renvoie 0 si trouve
-				{
-					/*printf("tu ne dois pas me voir\n");
-					
-					write(2, "\n", 1);
-					write(2, "infile: ",8);
-					write(2, ft_itoa(fd_infile), ft_strlen(ft_itoa(fd_infile)));
-					write(2, "\n", 1);
-					write(2, "outfile: ",9);
-					write(2, ft_itoa(fd_outfile), ft_strlen(ft_itoa(fd_outfile)));
-					write(2, "\n", 1);
-					write(2, "\n", 1);
-					if (index == pipex->nbr_of_pipe - 1)
-					{
-						char buff[1000];
-						read(pipex->fd_pipe[index - 1][0], buff, 1000);
-						write(2, buff, 1000);
-					}*/
-					write(2, "i did it\n", 9);
 					execve(pipex->cmd_path, pipex->cmd_tab_exec, env);
-				}
 			}
 		}
 	}
@@ -200,6 +218,8 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	free_cmd_tab(pipex);
 	close(fd_outfile);
 	close(fd_infile);
+	close(0);
+	close(1);
 	return (0);
 }
 

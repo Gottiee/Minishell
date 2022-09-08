@@ -1,26 +1,5 @@
 <h1>Minishell</h1>
 
-
- - [ ] pipex(char **env, char *str)eliot
-	<ul>
-		<li>split les commandes par les pipes</li>
-		<li>fork pour chaque </li>
-		<li>split par les espaces</li>
-		<li>parsing: '<<' / '<' / '>' / '>>' </li>
-			- si pipe mettre la sortie sur le pipe (sortie modifiable apres si > ou >>)
-			- si < tcheck dabord le fd puis apres la commande
-			- si << doc_here
-			- apres avoir effectuer un << ou < regerder la sortie
-			- si > crer le fichier / l'ouvrire et faire la commande ecraser les donner du fichier avec O_TRUNC
-			- si >> // faire la commande et ecrire a la suite O_APPEND
-			- <strong>ATTENTION</strong> si pipe apres > ou >> ne pas rediriger dans le pipe mets dans le fichier
-	</ul>
-- [X] int	cmd_type(char *arg); ->return 1 si execve et 0 une commande qu'on a codee. Theo
-- [ ] promp theo 
-	- [X] recuperer l'entree utilisateur et la clean
-	- [X] l'envoyer au parsing
-	- [X] rajouter un historique des commandes(dnas le prompt)
-	- [X] pourvoir reprendre les commandes d'avant(fleche du haut)
 - [ ] parsing: theo
 	- [X]  si presence de \ ou de "' non fermer ou de ; marquer error syntax;
 	- [ ]  si un meta charcheter il doit etre afficher seulement s'il est dans des quotes (dans les double quote faut gerer les $ ` \$ \' \" \\ All other \ characters are literal (not special)) (dans les simple quotes tout les meta character sont desactiver / du coup il faut reactiver le $)(https://www.tutorialspoint.com/unix/unix-quoting-mechanisms.htm)
