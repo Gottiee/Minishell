@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/08 16:37:05 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/08 17:48:21 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,50 +103,47 @@ int	pipex(char *cmd, char **env)
 			}
 		}
 		i --;	
-	}	
+		
 
 	// CD IN parent s'effectue apres le premier fork 
-	int				builtin;
-	t_list_pipex	*tmp;
-	int				pid2;
+		int				builtin;
+		t_list_pipex	*tmp;
+		int				pid2;
 
 	// si un seul pipe alors j'effectue cd
-	if (pipex.nbr_of_pipe == 1)
-	{
-		pipex.cmd_tab_exec  = creat_tab_exec(pipex.lexeur, &pipex);
-		if (!pipex.cmd_tab_exec)
-			return(-1);
-		builtin = cmd_type(pipex.cmd_tab_exec[0]);
-		if (builtin == CD)
+		if (pipex.nbr_of_pipe == 1)
 		{
-			printf("j'effectue cd dans le fork en haut\n");
-			cd(pipex.cmd_tab_exec);
-		}
-		free(pipex.cmd_tab_exec);
-	}
-	//si pls pipe, je regarde si une des commandes a un cd, si oui je fork et je l'effectue dans un process tout seul
-	else
-	{
-		index_process = -1;
-		while (++index_process < pipex.nbr_of_pipe)
-		{
-			tmp = actual_pipe(pipex.lexeur, index_process);
-			pipex.cmd_tab_exec = creat_tab_exec(tmp, &pipex);
+			pipex.cmd_tab_exec  = creat_tab_exec(pipex.lexeur, &pipex);
+			if (!pipex.cmd_tab_exec)
+				return(-1);
 			builtin = cmd_type(pipex.cmd_tab_exec[0]);
 			if (builtin == CD)
-			{
-				pid2 = fork();
-				if (pid2 == 0)
-				{
-					printf("j'effectue cd dans le fork en bas\n");
-					cd(pipex.cmd_tab_exec);
-					free(pipex.cmd_tab_exec);
-					exit(1);
-				}
-				else
-					waitpid(-1, NULL, 0);
-			}
+				cd(pipex.cmd_tab_exec);
 			free(pipex.cmd_tab_exec);
+		}
+		//si pls pipe, je regarde si une des commandes a un cd, si oui je fork et je l'effectue dans un process tout seul
+		else
+		{
+			index_process = -1;
+			while (++index_process < pipex.nbr_of_pipe)
+			{
+				tmp = actual_pipe(pipex.lexeur, index_process);
+				pipex.cmd_tab_exec = creat_tab_exec(tmp, &pipex);
+				builtin = cmd_type(pipex.cmd_tab_exec[0]);
+				if (builtin == CD)
+				{
+					pid2 = fork();
+					if (pid2 == 0)
+					{
+						cd(pipex.cmd_tab_exec);
+						free(pipex.cmd_tab_exec);
+						exit(1);
+					}
+					else
+						waitpid(-1, NULL, 0);
+				}
+				free(pipex.cmd_tab_exec);
+			}
 		}
 	}
 
