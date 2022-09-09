@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 19:07:52 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/23 19:37:04 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/09 14:02:56 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,32 @@
 char	*get_current_path(void)
 {
 	char	*buffer;
+	t_lcl_var	*envvar;
+	t_lcl_var	*envpwd;
 
 	// getcwd malloc buffer
 	buffer = getcwd(NULL, 1024);
 	if (buffer == NULL)
 	{
-		perror("-bash: pwd");
-		return (NULL);
+		/*chercher dans l'env pwd*/
+		envvar = generate_envvar_list(NULL);
+		envpwd = get_lclvar_by_name(&envvar, "PWD");
+		if (envpwd)
+		{
+			buffer = ft_strdup(envpwd->val);
+			if (!buffer)
+				return (NULL);
+		}
+		else 
+		{
+			buffer = malloc(sizeof(char) * 2);
+			buffer[0] = '.';
+		}
 	}
+	/*avant de return il faut que je sauvegarde paht dans PWD
+	 - il faut que je verifie que pwd exist, s'il n 'existe pas rien faire;
+	 - s'il existe le modifier;
+	 */
 	return (buffer);
 }
 

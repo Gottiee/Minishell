@@ -139,4 +139,5 @@ void	do_builtins(int builtin, char **cmd_tab_exec);
 /*Fichier: signal.c*/
 void	signal_handle(void);
 void	prompt_signal(int sig);
+void	signal_handle_fork(int sig);
 #endif

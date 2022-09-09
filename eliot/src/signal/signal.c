@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 11:10:56 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/08 14:48:40 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/09 14:09:04 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ void	signal_exit(int sig)
 		free_lclvar(generate_envvar_list(NULL));
 		rl_clear_history();
 		exit(1);
+	}
+}
+
+void	signal_handle_fork(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("\n");
 	}
 }
 

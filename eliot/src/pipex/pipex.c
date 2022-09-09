@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/08 17:48:21 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/09 14:09:59 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	pipex(char *cmd, char **env)
 	index_process = i;
 	if (id[i] != 0)
 	{
+		signal(SIGINT, &signal_handle_fork);
 		i = -1;
 		close_all_fd(-1, -1, &pipex);
 		while (++i < pipex.nbr_of_pipe)
@@ -102,6 +103,7 @@ int	pipex(char *cmd, char **env)
 					status = 128 + WTERMSIG(wstatus);
 			}
 		}
+		signal(SIGINT, &prompt_signal);
 		i --;	
 		
 
@@ -210,6 +212,8 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 					execve(pipex->cmd_path, pipex->cmd_tab_exec, env);
 			}
 		}
+		else
+			execve(pipex->cmd_with_path, pipex->cmd_tab_exec, env);
 	}
 	// a la fin de la fonction il faut close le fichier si erreur < ou de command	
 	free_cmd_tab(pipex);

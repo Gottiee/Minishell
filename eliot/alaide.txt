@@ -4,8 +4,9 @@ commancer la commande avec un pipe
 TRUC A FAIRE
 
 - appeller les builtins 
-	- cd ne fonctionne pas puisqu'il s'execute dans un FORK
-	""
+	- il faut sauvegarder dans l'env le chemin actuell pour que quand pwd marche pas, qu'il puisse se retrouver fonction: get_current_path;
+	- retester pwd quand on est perdu lorsque j'aurais implementer le pwd qui met .
+	- tester les autres builtins pas encore coder (env/ unset)
 
 - test: 
 	- tester le pipex finis
@@ -16,6 +17,9 @@ TRUC A FAIRE
 	- ctr-d: verifiere s'il fonctionne avec le prompte lors du here doc
 	- ctr-d segfault sur le parsing de theo
 	- ctr-c fait plusieur prompt quand je suis dans une commande
+
+- valeur de retour: 
+$?
 
 - norm
 
