@@ -6,17 +6,11 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 13:25:43 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/07 14:08:14 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/12 13:36:12 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eliot.h"
-
-/*
-	- free le nom du fichier
-	- unlik les fichiers 
-	- free la nouvelle list chainee;
-*/
 
 int		here_doc(t_list_pipex *here)
 {
@@ -28,6 +22,7 @@ int		here_doc(t_list_pipex *here)
 	char	*file_name;
 	char	*user_in;
 	char	*expend;
+	int		read_status;
 
 	i = 0;
 	k = i;
@@ -47,11 +42,18 @@ int		here_doc(t_list_pipex *here)
 		write(1, "> ", 2);
 		while (buff[0] != '\n')
 		{
-			if (read(0, buff, 1) == -1)
+			read_status = read(0, buff, 1);
+			if (read_status == -1)
 			{
 				perror("");
 				break;
 				i = -1;
+			}
+			if (read_status == 0)
+			{
+				i = -1;
+				printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", str_here_doc);
+				break ;
 			}
 			add_char_here_doc(user_input, buff[0]);
 			i ++;

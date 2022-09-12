@@ -6,15 +6,39 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/09 14:09:59 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/12 13:48:41 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eliot.h"
 
-int g_return_value;
-
 int	pipex(char *cmd, char **env)
+{
+	int		pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("bash: ");
+		return (-1);
+	}
+	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		pipex2(cmd, env);
+	}
+	else
+	{
+		signal(SIGINT, &signal_handle_fork);
+		waitpid(pid, NULL, 0);
+	}
+	if (pid == 0)
+		exit(1);
+	signal(SIGINT, &prompt_signal);
+	return (0);
+}
+
+int	pipex2(char *cmd, char **env)
 {
 	t_pipex pipex;
 	int		i;
@@ -24,6 +48,7 @@ int	pipex(char *cmd, char **env)
 	int		status;
 	int		pid;
 
+	//faire un premier fork qui va effectuer tout le parsing et toutes les commandes
 	//premier split : division des pipes
 	pipex.pipe_splited = ft_split(cmd, '|');
 	pipex.nbr_of_pipe = how_many_pipe(pipex.pipe_splited);
@@ -89,7 +114,8 @@ int	pipex(char *cmd, char **env)
 	index_process = i;
 	if (id[i] != 0)
 	{
-		signal(SIGINT, &signal_handle_fork);
+		//signal(SIGINT, &signal_handle_fork);
+		signal(SIGINT, SIG_DFL);
 		i = -1;
 		close_all_fd(-1, -1, &pipex);
 		while (++i < pipex.nbr_of_pipe)
@@ -103,7 +129,7 @@ int	pipex(char *cmd, char **env)
 					status = 128 + WTERMSIG(wstatus);
 			}
 		}
-		signal(SIGINT, &prompt_signal);
+		//signal(SIGINT, &prompt_signal);
 		i --;	
 		
 
@@ -187,7 +213,6 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	pipex->cmd_tab_exec = creat_tab_exec(tmp, pipex);
 	if (!pipex->cmd_tab_exec)
 	{
-		//printf("je me casse salut\n");
 		close(fd_outfile);
 		close(fd_infile);
 		close(1);

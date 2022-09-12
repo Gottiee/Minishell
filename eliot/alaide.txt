@@ -14,9 +14,7 @@ TRUC A FAIRE
 	- tester pwd
 
 - gerer les signaux
-	- ctr-d: verifiere s'il fonctionne avec le prompte lors du here doc
 	- ctr-d segfault sur le parsing de theo
-	- ctr-c fait plusieur prompt quand je suis dans une commande
 
 - valeur de retour: 
 $?
@@ -26,3 +24,7 @@ $?
 - malloc
 
 - fds
+
+- erreur quand on tape << < >> bizare
+- segfault quand: |  solo
+- si control c en here doc, les autres commandes se comportes comme un here doc
