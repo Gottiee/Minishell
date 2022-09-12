@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/12 13:48:41 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/12 16:42:04 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,12 @@
 int	pipex(char *cmd, char **env)
 {
 	int		pid;
-
+	int		fd[2];
+	char	buffer[2];
+	char	buff[4];
+	int		i;
+	
+	pipe(fd);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -24,21 +29,29 @@ int	pipex(char *cmd, char **env)
 	}
 	if (pid == 0)
 	{
+		close(fd[0]);
 		signal(SIGINT, SIG_DFL);
-		pipex2(cmd, env);
+		pipex2(cmd, env, fd);
 	}
 	else
 	{
+		close(fd[1]);
 		signal(SIGINT, &signal_handle_fork);
 		waitpid(pid, NULL, 0);
 	}
 	if (pid == 0)
 		exit(1);
 	signal(SIGINT, &prompt_signal);
-	return (0);
+	i = -1;
+	while (read(fd[0], buffer, 1) > 0)
+		buff[++i] = buffer[0];
+	if (g_return_value == SIG)
+		return (130);
+	return (ft_atoi(buff));
+	//return(0) ;
 }
 
-int	pipex2(char *cmd, char **env)
+int	pipex2(char *cmd, char **env, int fd[2])
 {
 	t_pipex pipex;
 	int		i;
@@ -47,6 +60,7 @@ int	pipex2(char *cmd, char **env)
 	int		wstatus;
 	int		status;
 	int		pid;
+	char	*status_char;
 
 	//faire un premier fork qui va effectuer tout le parsing et toutes les commandes
 	//premier split : division des pipes
@@ -107,7 +121,7 @@ int	pipex2(char *cmd, char **env)
 	{
 		// reset le signal ctrl-c a defaut c'est a dire kill the process
 		signal(SIGINT, SIG_DFL);
-		pipex.return_value_var_global = manage_process(&pipex, index_process, env);
+		manage_process(&pipex, index_process, env);
 	}
 
 	//attente des process dans le main
@@ -115,7 +129,7 @@ int	pipex2(char *cmd, char **env)
 	if (id[i] != 0)
 	{
 		//signal(SIGINT, &signal_handle_fork);
-		signal(SIGINT, SIG_DFL);
+		signal(SIGINT, SIG_IGN);
 		i = -1;
 		close_all_fd(-1, -1, &pipex);
 		while (++i < pipex.nbr_of_pipe)
@@ -180,7 +194,12 @@ int	pipex2(char *cmd, char **env)
 	free_all_pipex(&pipex);
 	if (id[i] == 0)
 		exit(1);
-	return (status);
+	//printf("status = %d\n", status);
+	status_char = ft_itoa(status);
+	write(fd[1], status_char, ft_strlen(status_char));
+	//printf("status_char = %s\n", status_char);
+	free(status_char);
+	return (0);
 }
 
 int	manage_process(t_pipex *pipex, int index, char	**env)
@@ -224,7 +243,10 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	//cherche les builtins qu'on a coder pour les exec ici 
 	builtin = cmd_type(pipex->cmd_tab_exec[0]);
 	if (builtin) // si positif alors c'est un builtin
+	{
 		do_builtins(builtin, pipex->cmd_tab_exec); // selon la valeur de builtin appelle la bonne fnction
+		pipex->cmd_with_path = NULL;
+	}
 	else 
 	{
 		pipex->cmd_with_path = testing_path(tmp);

@@ -22,6 +22,7 @@
 # define CMD 5
 # define PIPE 6
 # define HERE 7
+# define SIG -2
 
 /*	stucture pipex	*/
 
@@ -51,7 +52,7 @@ typedef struct s_pipex
 	char	**cmd_tab_exec;
 	int		nbr_cmd;
 	char	*cmd_path;
-	int		return_value_var_global;
+	//int		return_value_var_global;
 	char	*cmd_with_path;
 
 	//parsing de la cmd
@@ -63,7 +64,7 @@ typedef struct s_pipex
 /*          --- Fonctions qui gere pipex ---     */
 
 /*Fichier: pipex.c*/
-int		pipex2(char *cmd, char **env);
+int		pipex2(char *cmd, char **env, int fd[2]);
 int		pipex(char *cmd, char **env);
 int		manage_process(t_pipex *pipex, int index, char	**env);
 int		how_many_pipe(char **cmd);

@@ -17,8 +17,11 @@ TRUC A FAIRE
 	- ctr-d segfault sur le parsing de theo
 
 - valeur de retour: 
-$?
-
+$? 
+	- mettre la valeur de retoru dans l'env dans la fonction parsing de theo
+	- quand une commande n'est pas trouve il renvoie 1
+	- quand une commande est un builtin renvoie 1 egalement
+	
 - norm
 
 - malloc
@@ -27,4 +30,3 @@ $?
 
 - erreur quand on tape << < >> bizare
 - segfault quand: |  solo
-- si control c en here doc, les autres commandes se comportes comme un here doc

@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 11:10:56 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/12 13:35:57 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/12 16:01:42 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	signal_handle_fork(int sig)
 {
 	if (sig == SIGINT)
 	{
+		//g_return_value = SIG;
 		printf("\n");
 	}
 }
