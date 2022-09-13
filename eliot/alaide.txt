@@ -1,6 +1,5 @@
 commancer la commande avec un pipe
 
-
 TRUC A FAIRE
 
 - appeller les builtins 
@@ -13,14 +12,13 @@ TRUC A FAIRE
 	- tester cd
 	- tester pwd
 
-- gerer les signaux
-	- ctr-d segfault sur le parsing de theo
 
 - valeur de retour: 
 $? 
 	- mettre la valeur de retoru dans l'env dans la fonction parsing de theo
-	- quand une commande n'est pas trouve il renvoie 1
-	- quand une commande est un builtin renvoie 1 egalement
+	- ctrl c sur le here doc
+	- gerer les valeur de retour des builtins qui rate 
+	- no such or directory c'est 1
 	
 - norm
 
@@ -28,5 +26,12 @@ $?
 
 - fds
 
-- erreur quand on tape << < >> bizare
-- segfault quand: |  solo
+- bouger le cd
+
+
+DONE today
+	- quand une commande n'est pas trouve il renvoie 1
+	- quand une commande est un builtin renvoie 1 egalement
+	- erreur quand on tape << < >> bizare
+	- ctr-d segfault sur le parsing de theo
+	- segfault quand: |  solo

@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 13:25:43 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/12 13:36:12 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/13 14:15:53 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		here_doc(t_list_pipex *here)
 			if (read_status == 0)
 			{
 				i = -1;
-				printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", str_here_doc);
+				printf("bash: warning: here-document delimited by end-of-file (wanted `%s')\n", str_here_doc);
 				break ;
 			}
 			add_char_here_doc(user_input, buff[0]);

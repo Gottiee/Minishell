@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/12 16:42:04 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/13 14:05:59 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	pipex2(char *cmd, char **env, int fd[2])
 	int		status;
 	int		pid;
 	char	*status_char;
+	int		exit_status;
 
 	//faire un premier fork qui va effectuer tout le parsing et toutes les commandes
 	//premier split : division des pipes
@@ -71,15 +72,23 @@ int	pipex2(char *cmd, char **env, int fd[2])
 	if (lexeur_pipex(&pipex, cmd) == -1)
 	{
 		printf("error malloc\n");
-		return (1);
+		status_char = ft_itoa(2);
+		write(fd[1], status_char, ft_strlen(status_char));
+		free(status_char);
+		return(-1);
 	}
 
 	// affiche sur le terminal les info du lexeur;
 	//print_struc(pipex.lexeur);
 	
 	//parsing de pipex (verification de la syntax, ouverture des heres doc au fur et a mesure)
-	paring_pipex(pipex.lexeur);
-
+	if(paring_pipex(pipex.lexeur) == -1) 
+	{
+		status_char = ft_itoa(2);
+		write(fd[1], status_char, ft_strlen(status_char));
+		free(status_char);
+		return(-1);
+	}
 	//creation du pipe ?
 	//if (pipex.nbr_of_pipe > 1)
 	
@@ -121,7 +130,7 @@ int	pipex2(char *cmd, char **env, int fd[2])
 	{
 		// reset le signal ctrl-c a defaut c'est a dire kill the process
 		signal(SIGINT, SIG_DFL);
-		manage_process(&pipex, index_process, env);
+		exit_status = manage_process(&pipex, index_process, env);
 	}
 
 	//attente des process dans le main
@@ -193,8 +202,10 @@ int	pipex2(char *cmd, char **env, int fd[2])
 	del_list(&pipex);
 	free_all_pipex(&pipex);
 	if (id[i] == 0)
-		exit(1);
+		exit(exit_status);
 	//printf("status = %d\n", status);
+	if (status == 1)
+		status = 127;
 	status_char = ft_itoa(status);
 	write(fd[1], status_char, ft_strlen(status_char));
 	//printf("status_char = %s\n", status_char);
@@ -209,7 +220,9 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	int				fd_outfile;
 	char			*full_path;
 	int				builtin;
+	int				exec_status;
 
+	exec_status = 0;
 	// actual pipe te remvoie un pointeur sur le premier element du pipe que gere le fork
 	tmp = actual_pipe(pipex->lexeur, index);
 	// ouvre les < un par un et modifie dup la bonne sortie; 
@@ -257,6 +270,8 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 			{
 				if (find_path(full_path, pipex) == 0) // recherche de la command dans le path renvoie 0 si trouve
 					execve(pipex->cmd_path, pipex->cmd_tab_exec, env);
+				else
+					exec_status = 127;
 			}
 		}
 		else
@@ -268,7 +283,7 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	close(fd_infile);
 	close(0);
 	close(1);
-	return (0);
+	return (exec_status);
 }
 
 int	how_many_pipe(char **cmd)
