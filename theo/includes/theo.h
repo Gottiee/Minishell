@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+# include "../../eliot/includes/minishell.h"
 
 # define CD 7
 # define ECHO 8

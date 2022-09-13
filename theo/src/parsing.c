@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:57:58 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/29 18:35:43 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/12 15:39:28 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,10 @@ char *parsing(char *cmd, char **envp)
 	}
 	else
 	{
-		pipex(cmd, envp);
+		// mettre g_return_value dans $? dans l'env
+		g_return_value = pipex(cmd, envp);
+		printf("g_return_value = %d\n", g_return_value);
+		
 		//enlever la declaration de variable si il y en a une au milieu de pipex (ok=89 ls) (l'enlever)
 		//si c'est avec une autre cmd(ex : ls ok=89) le laisser car c'est un 
 			//parametre de cmd et pas une declaration de variable
