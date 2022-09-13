@@ -64,7 +64,7 @@ typedef struct s_pipex
 /*          --- Fonctions qui gere pipex ---     */
 
 /*Fichier: pipex.c*/
-int		pipex2(char *cmd, char **env, int fd[2]);
+int		pipex2(char **env, int fd[2], t_pipex *pipex);
 int		pipex(char *cmd, char **env);
 int		manage_process(t_pipex *pipex, int index, char	**env);
 int		how_many_pipe(char **cmd);
@@ -93,7 +93,7 @@ void	lexeur_front_chevron(t_pipex *pipex, char *cmd, int *i);
 void	lexeur_back_chevron(t_pipex *pipex, char *cmd, int *i);
 void	lexeur_cmd(t_pipex *pipex, char *cmd, int *i);
 void	pipe_lexeur(t_pipex *pipex, char *cmd, int *i, t_pipe_lexeur lex);
-void	quote_add_char(t_pipex *pipex, char *cmd, int *i, int quote);
+int		quote_add_char(t_pipex *pipex, char *cmd, int *i, int quote);
 
 /*Fichier: parsing_pipex.c*/
 int	paring_pipex(t_list_pipex *start);

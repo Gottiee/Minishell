@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
@@ -6,21 +6,98 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/13 14:05:59 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/13 18:40:20 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eliot.h"
 
+int	lexeur(char *cmd, t_pipex *pipex)
+{
+	pipex->pipe_splited = ft_split(cmd, '|');
+	pipex->nbr_of_pipe = how_many_pipe(pipex->pipe_splited);
+
+	//creation du lexeur: mettre tout dans les stucts;
+	if (lexeur_pipex(pipex, cmd) == -1)
+	{
+		printf("error malloc\n");
+		return(-1);
+	}
+	return (0);
+}
+
+int	do_cd(t_pipex *pipex)
+{
+	t_list_pipex	*tmp;
+	int				pid2;
+	int				index_process;
+	int				builtin;
+	int				cd_status;
+	int				bolo;
+	int				wstatus;
+	
+	bolo = 0;
+	cd_status = -1;
+	if (pipex->nbr_of_pipe == 1)
+	{
+		pipex->cmd_tab_exec = creat_tab_exec(pipex->lexeur, pipex);
+		if (!pipex->cmd_tab_exec)
+			return(-2);
+		builtin = cmd_type(pipex->cmd_tab_exec[0]);
+		if (builtin == CD)
+		{
+			bolo = 1;
+			cd_status = cd(pipex->cmd_tab_exec);
+		}
+		free(pipex->cmd_tab_exec);
+	}
+		//si pls pipe, je regarde si une des commandes a un cd, si oui je fork et je l'effectue dans un process tout seul
+	else
+	{
+		index_process = -1;
+		while (++index_process < pipex->nbr_of_pipe)
+		{
+			tmp = actual_pipe(pipex->lexeur, index_process);
+			pipex->cmd_tab_exec = creat_tab_exec(tmp, pipex);
+			builtin = cmd_type(pipex->cmd_tab_exec[0]);
+			if (builtin == CD)
+			{
+				if (index_process + 1 == pipex->nbr_of_pipe)
+					bolo = 1;
+				pid2 = fork();
+				if (pid2 == 0)
+				{
+					cd(pipex->cmd_tab_exec);
+					free(pipex->cmd_tab_exec);
+					exit(1);
+				}
+				else
+				{
+					waitpid(-1, &wstatus, 0);
+					cd_status = WEXITSTATUS(wstatus);
+				}
+			}
+			free(pipex->cmd_tab_exec);
+		}
+	}
+	if (bolo == 1)
+		return (cd_status);
+	return (-1);
+}
+
 int	pipex(char *cmd, char **env)
 {
+	t_pipex	pipex;
 	int		pid;
 	int		fd[2];
 	char	buffer[2];
 	char	buff[4];
 	int		i;
+	int		cd_status;
 	
 	pipe(fd);
+	if (lexeur(cmd, &pipex) == -1)
+		return (-1);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -31,7 +108,7 @@ int	pipex(char *cmd, char **env)
 	{
 		close(fd[0]);
 		signal(SIGINT, SIG_DFL);
-		pipex2(cmd, env, fd);
+		pipex2(env, fd, &pipex);
 	}
 	else
 	{
@@ -42,6 +119,9 @@ int	pipex(char *cmd, char **env)
 	if (pid == 0)
 		exit(1);
 	signal(SIGINT, &prompt_signal);
+	cd_status = do_cd(&pipex);
+ 	if (cd_status >= 0)
+		return (cd_status);
 	i = -1;
 	while (read(fd[0], buffer, 1) > 0)
 		buff[++i] = buffer[0];
@@ -51,9 +131,8 @@ int	pipex(char *cmd, char **env)
 	//return(0) ;
 }
 
-int	pipex2(char *cmd, char **env, int fd[2])
+int	pipex2(char **env, int fd[2], t_pipex *pipex)
 {
-	t_pipex pipex;
 	int		i;
 	int		*id;
 	int		index_process;
@@ -62,27 +141,12 @@ int	pipex2(char *cmd, char **env, int fd[2])
 	int		pid;
 	char	*status_char;
 	int		exit_status;
-
-	//faire un premier fork qui va effectuer tout le parsing et toutes les commandes
-	//premier split : division des pipes
-	pipex.pipe_splited = ft_split(cmd, '|');
-	pipex.nbr_of_pipe = how_many_pipe(pipex.pipe_splited);
-
-	//creation du lexeur: mettre tout dans les stucts;
-	if (lexeur_pipex(&pipex, cmd) == -1)
-	{
-		printf("error malloc\n");
-		status_char = ft_itoa(2);
-		write(fd[1], status_char, ft_strlen(status_char));
-		free(status_char);
-		return(-1);
-	}
-
+	
 	// affiche sur le terminal les info du lexeur;
 	//print_struc(pipex.lexeur);
 	
 	//parsing de pipex (verification de la syntax, ouverture des heres doc au fur et a mesure)
-	if(paring_pipex(pipex.lexeur) == -1) 
+	if(paring_pipex(pipex->lexeur) == -1) 
 	{
 		status_char = ft_itoa(2);
 		write(fd[1], status_char, ft_strlen(status_char));
@@ -90,30 +154,30 @@ int	pipex2(char *cmd, char **env, int fd[2])
 		return(-1);
 	}
 	//creation du pipe ?
-	//if (pipex.nbr_of_pipe > 1)
+	//if (pipex->nbr_of_pipe > 1)
 	
 	// comptage nmb de pipe	
-	pipex.fd_pipe = NULL;
-	if (pipex.nbr_of_pipe > 1)
+	pipex->fd_pipe = NULL;
+	if (pipex->nbr_of_pipe > 1)
 	{
-		pipex.fd_pipe = ft_calloc(pipex.nbr_of_pipe, sizeof(int *));
-		if (!pipex.fd_pipe)
+		pipex->fd_pipe = ft_calloc(pipex->nbr_of_pipe, sizeof(int *));
+		if (!pipex->fd_pipe)
 			return (-11);
 		i = -1;	
-		while (++i < pipex.nbr_of_pipe - 1)
+		while (++i < pipex->nbr_of_pipe - 1)
 		{
-			pipex.fd_pipe[i] = ft_calloc(2, sizeof(int));
-			if (!pipex.fd_pipe[i])
+			pipex->fd_pipe[i] = ft_calloc(2, sizeof(int));
+			if (!pipex->fd_pipe[i])
 				return (-1);
-			if (pipe(pipex.fd_pipe[i]) < 0)
+			if (pipe(pipex->fd_pipe[i]) < 0)
 				return (-1);
 		}
 	}
 
 	//creatio des processes
 	i = -1;
-	id = malloc(sizeof(int) * pipex.nbr_of_pipe);
-	while (++i < pipex.nbr_of_pipe)
+	id = malloc(sizeof(int) * pipex->nbr_of_pipe);
+	while (++i < pipex->nbr_of_pipe)
 	{
 		index_process = i;
 		id[i] = fork();
@@ -121,7 +185,7 @@ int	pipex2(char *cmd, char **env, int fd[2])
 			break;
 		//printf("id enfant %d : %d\n", i, id[i]);
 	}
-	if (i == pipex.nbr_of_pipe)
+	if (i == pipex->nbr_of_pipe)
 		i --;
 	if (id[i] == -1)
 		return (-1);
@@ -130,7 +194,7 @@ int	pipex2(char *cmd, char **env, int fd[2])
 	{
 		// reset le signal ctrl-c a defaut c'est a dire kill the process
 		signal(SIGINT, SIG_DFL);
-		exit_status = manage_process(&pipex, index_process, env);
+		exit_status = manage_process(pipex, index_process, env);
 	}
 
 	//attente des process dans le main
@@ -140,8 +204,8 @@ int	pipex2(char *cmd, char **env, int fd[2])
 		//signal(SIGINT, &signal_handle_fork);
 		signal(SIGINT, SIG_IGN);
 		i = -1;
-		close_all_fd(-1, -1, &pipex);
-		while (++i < pipex.nbr_of_pipe)
+		close_all_fd(-1, -1, pipex);
+		while (++i < pipex->nbr_of_pipe)
 		{
 			pid = waitpid(id[i] , &wstatus, WUNTRACED);
 			if (pid == id[index_process])
@@ -154,53 +218,11 @@ int	pipex2(char *cmd, char **env, int fd[2])
 		}
 		//signal(SIGINT, &prompt_signal);
 		i --;	
-		
-
-	// CD IN parent s'effectue apres le premier fork 
-		int				builtin;
-		t_list_pipex	*tmp;
-		int				pid2;
-
-	// si un seul pipe alors j'effectue cd
-		if (pipex.nbr_of_pipe == 1)
-		{
-			pipex.cmd_tab_exec  = creat_tab_exec(pipex.lexeur, &pipex);
-			if (!pipex.cmd_tab_exec)
-				return(-1);
-			builtin = cmd_type(pipex.cmd_tab_exec[0]);
-			if (builtin == CD)
-				cd(pipex.cmd_tab_exec);
-			free(pipex.cmd_tab_exec);
-		}
-		//si pls pipe, je regarde si une des commandes a un cd, si oui je fork et je l'effectue dans un process tout seul
-		else
-		{
-			index_process = -1;
-			while (++index_process < pipex.nbr_of_pipe)
-			{
-				tmp = actual_pipe(pipex.lexeur, index_process);
-				pipex.cmd_tab_exec = creat_tab_exec(tmp, &pipex);
-				builtin = cmd_type(pipex.cmd_tab_exec[0]);
-				if (builtin == CD)
-				{
-					pid2 = fork();
-					if (pid2 == 0)
-					{
-						cd(pipex.cmd_tab_exec);
-						free(pipex.cmd_tab_exec);
-						exit(1);
-					}
-					else
-						waitpid(-1, NULL, 0);
-				}
-				free(pipex.cmd_tab_exec);
-			}
-		}
 	}
 
 	//end and free
-	del_list(&pipex);
-	free_all_pipex(&pipex);
+	del_list(pipex);
+	free_all_pipex(pipex);
 	if (id[i] == 0)
 		exit(exit_status);
 	//printf("status = %d\n", status);
@@ -249,7 +271,7 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 		close(fd_infile);
 		close(1);
 		close(0);
-		return (-2);
+		return (0);
 		//exit(1);
 	}
 

@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:13:30 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/08 16:33:45 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/13 17:35:49 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ int	cd(char **directory)
 			chdir(envhome->val);//val c'est la valeur de la variable d'env
 		else
 			write(2, "bash: cd: HOME not set\n", 23);
-		return (0);
+		return (1);
 	}
 	if (directory[2])
 	{
 		write(2, "bash: cd: too many arguments\n", 29);
-		return (0);
+		return (1);
 	}
 	if (directory[1][0] == '/' && !directory[1][1])
 	{
@@ -53,7 +53,7 @@ int	cd(char **directory)
 		write(2, directory[1], ft_strlen(directory[1]));
 		write(2, ": ", 2);
 		perror("");
-		return (-1);
+		return (1);
 	}
 	free(path);
 	free(buff);
