@@ -3,7 +3,6 @@ commancer la commande avec un pipe
 TRUC A FAIRE
 
 - appeller les builtins 
-	- il faut sauvegarder dans l'env le chemin actuell pour que quand pwd marche pas, qu'il puisse se retrouver fonction: get_current_path;
 	- retester pwd quand on est perdu lorsque j'aurais implementer le pwd qui met .
 	- tester les autres builtins pas encore coder (env/ unset)
 
@@ -14,7 +13,6 @@ TRUC A FAIRE
 
 - valeur de retour: 
 $? 
-	- mettre la valeur de retoru dans l'env dans la fonction parsing de theo
 	- ctrl c sur le here doc
 	- gerer les valeur de retour des builtins qui rate 
 		- env
@@ -29,7 +27,4 @@ $?
 
 - fds
 
-DONE today
-- bouger le cd
-- gerer les valeurs de retour de cd / pwd
-- gerer '' et "" with cmd and here doc
+- expot/unset hors child

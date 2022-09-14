@@ -23,6 +23,8 @@ char	*get_var_name(char *cmd)
 
 	tstr = NULL;
 	start = cmd;
+	if (*cmd == '?')
+		return ("?");
 	while (*cmd && (ft_isalnum(*cmd) || *cmd == '_'))
 	{
 		add_back_tstr(&tstr, create_tstr(*cmd));
@@ -82,8 +84,7 @@ char	*get_txt(char *cmd)
 		{
 			cmd++;
 			add_back_tstr(&tstr, get_var_val(cmd));
-			while (*cmd && (ft_isalnum(*cmd) || *cmd == '_'))
-				cmd++;
+			cmd += ft_strlen(get_var_name(cmd));
 		}
 	}
 	return (get_str_with_tstr(tstr));

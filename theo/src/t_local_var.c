@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 19:12:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/29 16:23:51 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/14 10:42:24 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,4 +137,24 @@ t_lcl_var	*get_lclvar_by_name(t_lcl_var **lclvar, char *tofind)
 		}
 	}
 	return (res);
+}
+
+void	change_envvar_val(char *name, char *new_val)
+{
+	t_lcl_var	*temp;
+	t_lcl_var	*var;
+
+	var = generate_envvar_list(NULL);
+	temp = var;
+	while (temp)
+	{
+		if (ft_strnstr(temp->name, name, ft_strlen(temp->name)) == temp->name
+			&& ft_strlen(name) == ft_strlen(temp->name))
+		{
+			free(temp->val);
+			temp->val = ft_strdup(new_val);
+			return ;
+		}
+		temp = temp->next;
+	}
 }

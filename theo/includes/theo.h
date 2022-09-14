@@ -32,14 +32,21 @@ typedef struct s_lcl_var
 }	t_lcl_var;
 
 void	signal_handle(void);
-t_lcl_var	*generate_envvar_list(char **envp);
 int			cmd_type(char *cmd);
 
 //prompt
 void		start_prompt(char **envp);
+t_lcl_var	*generate_envvar_list(char **envp);
+
+//unset
+void		cmd_unset(char **cmd_tab_exec);
+
+//env
+void		cmd_env(char **cmd_tab_exec);
 
 //export
 void		cmd_export(char **cmd);
+int			is_var_cmd(char *cmd);
 
 //echo
 void		cmd_echo(char **cmd);
@@ -47,9 +54,9 @@ void		cmd_echo(char **cmd);
 //parsing
 int			check_spe_char(char *cmd);
 char 		*parsing(char *cmd, char **envp);
-int			is_var_cmd(char *cmd);
 
 //t_str
+void		free_tstr(t_str *tstr);
 t_str		*create_tstr(char c);
 void		add_back_tstr(t_str **first, t_str *new);
 char		*get_str_with_tstr(t_str *first);
@@ -70,6 +77,7 @@ t_lcl_var	*create_lclvar(char	*cmd);
 void		free_lclvar(t_lcl_var *var);
 void		add_back_lclvar(t_lcl_var **first, t_lcl_var *new);
 t_lcl_var	*get_lclvar_by_name(t_lcl_var **lclvar, char *tofind);
+void		change_envvar_val(char *name, char *new_val);
 
 //txt_trad
 char		*get_txt(char *cmd);
