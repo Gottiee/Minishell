@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 19:07:52 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/14 13:02:20 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/14 14:36:10 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*get_current_path(void)
 		{
 			buffer = malloc(sizeof(char) * 2);
 			buffer[0] = '.';
+			buffer[1] = '\0';
 		}
 	}
 	/*avant de return il faut que je sauvegarde paht dans PWD

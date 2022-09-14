@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 09:41:36 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/14 13:05:48 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/14 14:23:33 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_lcl_var	*remove_envvar_by_name(t_lcl_var *env_lst, char *name)
 	return (env_lst);
 }
 
-void	cmd_unset(char **cmd_tab_exec)
+int	cmd_unset(char **cmd_tab_exec)
 {
 	int			i;
 	char		*temp;
@@ -71,4 +71,5 @@ void	cmd_unset(char **cmd_tab_exec)
 			temp = cmd_tab_exec[++i];
 		}
 	}
+	return (0);
 }

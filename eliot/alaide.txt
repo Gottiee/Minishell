@@ -1,25 +1,11 @@
-commancer la commande avec un pipe
-
 TRUC A FAIRE
-
-- appeller les builtins 
-	- retester pwd quand on est perdu lorsque j'aurais implementer le pwd qui met .
-	- tester les autres builtins pas encore coder (env/ unset)
 
 - test: 
 	- tester le pipex finis
 	- tester cd
 	- tester pwd
 
-- valeur de retour: 
-$? 
-	- ctrl c sur le here doc
-	- gerer les valeur de retour des builtins qui rate 
-		- env
-		- unset
-		- echo
-		- heredoc
-	- no such or directory c'est 1
+/bin/echo execute le vrai echo
 	
 - norm
 
@@ -27,4 +13,10 @@ $?
 
 - fds
 
+
+done today:
+- valeur de retour sur cd en | 
+- valeur de retour here doc ctrl c
+- unset path
+	- cmd rater renvoie 0
 - expot/unset hors child

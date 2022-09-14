@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/13 18:40:20 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/14 16:45:37 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,39 @@ int	lexeur(char *cmd, t_pipex *pipex)
 	return (0);
 }
 
+int	do_exp_uns(t_pipex *pipex)
+{
+	t_list_pipex	*tmp;
+	int				index_process;
+	int				builtin;
+	int				bolo;
+	int				status;
+	int				cmd_status;
+
+	status = -1;
+	index_process = -1;
+	bolo = 0;
+	while (++index_process < pipex->nbr_of_pipe)
+	{
+		tmp = actual_pipe(pipex->lexeur, index_process);
+		pipex->cmd_tab_exec = creat_tab_exec(tmp, pipex);
+		builtin = cmd_type(pipex->cmd_tab_exec[0]);
+		if (builtin == EXPORT || builtin == UNSET)
+		{
+			if (index_process + 1 == pipex->nbr_of_pipe)
+				bolo = 1;
+			if (builtin == EXPORT)
+				cmd_status = cmd_export(pipex->cmd_tab_exec);
+			if (builtin == UNSET)
+				cmd_status = cmd_unset(pipex->cmd_tab_exec);
+		}
+		free(pipex->cmd_tab_exec);
+	}
+	if (bolo == 1)
+		status = cmd_status;
+	return(status);
+}
+
 int	do_cd(t_pipex *pipex)
 {
 	t_list_pipex	*tmp;
@@ -35,6 +68,7 @@ int	do_cd(t_pipex *pipex)
 	int				cd_status;
 	int				bolo;
 	int				wstatus;
+	int				status;
 	
 	bolo = 0;
 	cd_status = -1;
@@ -67,9 +101,9 @@ int	do_cd(t_pipex *pipex)
 				pid2 = fork();
 				if (pid2 == 0)
 				{
-					cd(pipex->cmd_tab_exec);
+					cd_status = cd(pipex->cmd_tab_exec);
 					free(pipex->cmd_tab_exec);
-					exit(1);
+					exit(cd_status);
 				}
 				else
 				{
@@ -80,6 +114,11 @@ int	do_cd(t_pipex *pipex)
 			free(pipex->cmd_tab_exec);
 		}
 	}
+	status = do_exp_uns(pipex);
+	if (status >= 0)
+		return(status);
+	if (cd_status >= 0)
+		return (cd_status);
 	if (bolo == 1)
 		return (cd_status);
 	return (-1);
@@ -94,7 +133,10 @@ int	pipex(char *cmd, char **env)
 	char	buff[4];
 	int		i;
 	int		cd_status;
+	int		wstatus;
+	int		status;
 	
+	status = 0;
 	pipe(fd);
 	if (lexeur(cmd, &pipex) == -1)
 		return (-1);
@@ -114,10 +156,12 @@ int	pipex(char *cmd, char **env)
 	{
 		close(fd[1]);
 		signal(SIGINT, &signal_handle_fork);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &wstatus, 0);
 	}
 	if (pid == 0)
 		exit(1);
+	if (!WIFEXITED(wstatus))
+		return (status += (128 + WTERMSIG(wstatus)));
 	signal(SIGINT, &prompt_signal);
 	cd_status = do_cd(&pipex);
  	if (cd_status >= 0)
@@ -277,11 +321,18 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 
 	//cherche les builtins qu'on a coder pour les exec ici 
 	builtin = cmd_type(pipex->cmd_tab_exec[0]);
-	if (builtin) // si positif alors c'est un builtin
+	if (builtin && builtin != 10) // si positif alors c'est un builtin
 	{
 		do_builtins(builtin, pipex->cmd_tab_exec); // selon la valeur de builtin appelle la bonne fnction
 		pipex->cmd_with_path = NULL;
 	}
+	else if (builtin ==10)
+	{
+		write(2, "bash: ", 6);
+		write(2, pipex->cmd_tab_exec[0], ft_strlen(pipex->cmd_tab_exec[0]));
+		write(2, ": wrong builtin call\n", 20);
+	}
+
 	else 
 	{
 		pipex->cmd_with_path = testing_path(tmp);
@@ -295,6 +346,8 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 				else
 					exec_status = 127;
 			}
+			else
+				exec_status = 127;
 		}
 		else
 			execve(pipex->cmd_with_path, pipex->cmd_tab_exec, env);

@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 11:16:05 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/14 10:41:47 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/14 15:49:42 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,65 +30,6 @@ t_list_pipex	*actual_pipe(t_list_pipex *lexeur, int index)
 	}
 	return (tmp->next);
 }
-
-/*int	get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex)
-{
-	t_list_pipex	*tmp;
-	int				id;
-	int				count_infile;
-	char			*file_name;
-	int				bolo_pipe;
-
-	count_infile = 0;
-	id = 0;
-	tmp = lexeur;
-	bolo_pipe = 0;
-	// si mon index n'est pas 0 ca veut dire qu'avant moi il y un pipe
-	if (index != 0)
-	{
-		dup2(pipex->fd_pipe[index][0], 0);
-		id = pipex->fd_pipe[index][0];
-		bolo_pipe = 1;
-	}
-	else if (pipex->fd_pipe)
-		close(pipex->fd_pipe[index][0]);
-	while (tmp && tmp->type != PIPE)
-	{
-		// je met en entre les here_doc
-		if (tmp->type == HERE_DOC)
-		{
-			bolo_pipe = 0;
-			dup2(tmp->fd, 0);
-		}
-		// je met en entre mon infile
-		else if (tmp->type == INFILE)
-		{
-			bolo_pipe = 0;
-			if (count_infile != 0)
-				close(id);
-			file_name = concatenate_tstr(tmp->str_pipex);
-			if (!file_name)
-				return (-2);
-			id = open(file_name, O_RDONLY, 0644);
-			// le fichier ne peux pas etre ouvert
-			if (id == -1)
-			{
-				printf("-bash: %s: %s\n", file_name, strerror(errno));
-				free(file_name);
-				if (pipex->fd_pipe)
-					close(pipex->fd_pipe[index][1]);
-				return (-1);
-			}
-			dup2(id, 0);
-			count_infile ++;
-			free(file_name);
-		}
-		tmp = tmp->next;
-		if (!bolo_pipe && pipex->fd_pipe)
-			close(pipex->fd_pipe[index][0]);
-	}
-	return (id);
-}*/
 
 /*creer un tableau de commande en partant de lexeur j'usque la fin de la lister chaine ou le prochain pipe*/
 char	**creat_tab_exec(t_list_pipex *lexeur, t_pipex *pipex)

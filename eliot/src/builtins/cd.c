@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:13:30 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/14 10:41:41 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/14 14:39:21 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ int	cd(char **directory)
 		//fonction qui cherche dans envvar une var d'env nomme HOME, envoie NULL si il trouve pas
 		envhome = get_lclvar_by_name(&envvar, "HOME");
 		if (envhome)
+		{
 			chdir(envhome->val);//val c'est la valeur de la variable d'env
+			return (0);
+		}
 		else
 			write(2, "bash: cd: HOME not set\n", 23);
 		return (1);

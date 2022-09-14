@@ -39,17 +39,17 @@ void		start_prompt(char **envp);
 t_lcl_var	*generate_envvar_list(char **envp);
 
 //unset
-void		cmd_unset(char **cmd_tab_exec);
+int		cmd_unset(char **cmd_tab_exec);
 
 //env
-void		cmd_env(char **cmd_tab_exec);
+int		cmd_env(char **cmd_tab_exec);
 
 //export
-void		cmd_export(char **cmd);
+int			cmd_export(char **cmd);
 int			is_var_cmd(char *cmd);
 
 //echo
-void		cmd_echo(char **cmd);
+int		cmd_echo(char **cmd);
 
 //parsing
 int			check_spe_char(char *cmd);
