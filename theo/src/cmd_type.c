@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:48:49 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/19 12:49:11 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/19 14:56:12 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@
 Fonction qui retourne 1 si c'est une commande a executer avec execve 
 	et 0 si c'est une commande qu'on doit coder nous meme
 */
-
-//bin/echo
-int builtin_val(char *cmd)
+int	builtin_val(char *cmd)
 {
 	int	len_cmd;
 
@@ -40,7 +38,7 @@ int builtin_val(char *cmd)
 	return (0);
 }
 
-void free_split(char **spl)
+void	free_split(char **spl)
 {
 	int	i;
 
@@ -61,9 +59,6 @@ int	cmd_type(char *cmd)
 
 	if (cmd == NULL)
 		return (-1);
-	// split de la commande a chaque "/" 
-	// si cmd[1] == '/' && last split == a un builtin
-	// alors retrurn (1); !! gerer pour ne pas l'executer apres ! 
 	if (cmd[0] == '/')
 	{
 		spl = ft_split(cmd, '/');

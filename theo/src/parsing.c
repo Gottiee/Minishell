@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:57:58 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/14 13:10:50 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/19 14:36:00 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char *parsing(char *cmd, char **envp)
 {
 	t_lcl_var	*temp;
 	t_lcl_var	*envlst;
+	char		*cmd_expended;
 	
 	if (check_spe_char(cmd) == 0)
 	{
@@ -63,7 +64,9 @@ char *parsing(char *cmd, char **envp)
 	else
 	{
 		//traduire tout sauf le heredoc
-		g_return_value = pipex(cmd, envp);
+		cmd_expended = trad_cmd(cmd);
+		g_return_value = pipex(cmd_expended, envp);
+		free(cmd_expended);
 		envlst = generate_envvar_list(NULL);
 		temp = get_lclvar_by_name(&envlst, "?");
 		free(temp->val);

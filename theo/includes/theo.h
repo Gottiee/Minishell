@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   theo.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/19 14:53:30 by tokerman          #+#    #+#             */
+/*   Updated: 2022/09/19 14:54:25 by tokerman         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef THEO_H
 # define THEO_H
 
-#include "../libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+# include "../libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "../../eliot/includes/minishell.h"
 
 # define CD 7
@@ -19,19 +31,19 @@
 
 typedef struct s_str
 {
-	char	c;
+	char			c;
 	struct s_str	*next;
 }	t_str;
- 
+
 typedef struct s_lcl_var
 {
-	char	*name;
-	char	*val;
-	int		type;
+	char				*name;
+	char				*val;
+	int					type;
 	struct s_lcl_var	*next;
 }	t_lcl_var;
 
-void	signal_handle(void);
+void		signal_handle(void);
 int			cmd_type(char *cmd);
 
 //prompt
@@ -39,21 +51,21 @@ void		start_prompt(char **envp);
 t_lcl_var	*generate_envvar_list(char **envp);
 
 //unset
-int		cmd_unset(char **cmd_tab_exec);
+int			cmd_unset(char **cmd_tab_exec);
 
 //env
-int		cmd_env(char **cmd_tab_exec);
+int			cmd_env(char **cmd_tab_exec);
 
 //export
 int			cmd_export(char **cmd);
 int			is_var_cmd(char *cmd);
 
 //echo
-int		cmd_echo(char **cmd);
+int			cmd_echo(char **cmd);
 
 //parsing
 int			check_spe_char(char *cmd);
-char 		*parsing(char *cmd, char **envp);
+char		*parsing(char *cmd, char **envp);
 
 //t_str
 void		free_tstr(t_str *tstr);
@@ -81,10 +93,11 @@ void		change_envvar_val(char *name, char *new_val);
 
 //txt_trad
 char		*get_txt(char *cmd);
+char		*trad_cmd(char *cmd);
 
 // renvoie un pointeur sur chaine de caractere malloc contenant le path actuell 
 char		*get_current_path(void);
 
 /*Fichier: pipex.c*/
-int		pipex(char *cmd, char **env);
+int			pipex(char *cmd, char **env);
 #endif
