@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 11:16:05 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/14 15:49:42 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/19 19:02:42 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ char	*testing_path(t_list_pipex *lexeur)
 		tmp = tmp->next;
 	cmd = concatenate_tstr(tmp->str_pipex);
 	cpy = cmd;
+	if (cpy[0] == '.')
+		return (cmd);
 	if (access(cpy, X_OK) == 0)
 		return (cmd);
 	free(cmd);

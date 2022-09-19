@@ -1,7 +1,8 @@
 <h1>Minishell</h1>
 
-- valgrind / test
+- makefile joli
 - norminette
+- push
 
 DONE :
 - faire l'erreur de l'export clean

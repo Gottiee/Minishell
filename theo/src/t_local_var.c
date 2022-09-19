@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 19:12:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/14 10:42:24 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/19 18:10:43 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,29 @@ exemple:
 */
 char	*get_text_val(char *cmd)
 {// traduire les variables ex : ok=$test*8	
+	t_str	*tstr;
+	int		quotes;
+
+	tstr = NULL;
 	while (*cmd == ' ')
 		cmd++;
 	while (*cmd != '=')
 		cmd++;
 	cmd++;
-	return (get_txt(cmd));
+	quotes = 0;
+	while (*cmd && (*cmd != ' ' || quotes != 0))
+	{
+		if (*cmd == '\'' || *cmd == '"')
+		{
+			if (quotes)
+				quotes = 0;
+			else
+				quotes = *cmd;
+		}
+		add_back_tstr(&tstr, create_tstr(*cmd));
+		cmd++;
+	}
+	return (get_str_with_tstr(tstr));
 }
 
 /*

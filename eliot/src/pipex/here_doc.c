@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 13:25:43 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/13 18:35:58 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/19 17:35:06 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int		here_doc(t_list_pipex *here)
 	i = 0;
 	k = i;
 	user_input = malloc(sizeof(t_str));
+	user_input->c = '\0';
 	str_here_doc = concatenate_tstr(here->str_pipex);
 	if (!user_input || !str_here_doc)
 	{
@@ -47,7 +48,7 @@ int		here_doc(t_list_pipex *here)
 			{
 				perror("");
 				break;
-				i = -1;
+				i = -2;
 			}
 			if (read_status == 0)
 			{
@@ -58,7 +59,7 @@ int		here_doc(t_list_pipex *here)
 			add_char_here_doc(user_input, buff[0]);
 			i ++;
 		}
-		if (i == -1)
+		if (i == -1 || i == -2)
 			break;
 	}
 	file_name = random_file_name();
@@ -70,18 +71,23 @@ int		here_doc(t_list_pipex *here)
 	*/
 	if (here->quote_here_doc == 1) // si egale a 1 pas d'expend
 		write_inside_file(user_input, here->fd, k);
-	else // sinon expend
+	else if (user_input->c)// sinon expend
 	{
 		user_in = concatenate_tstr(user_input);
 		expend = get_txt(user_in);
-		write(here->fd, expend, ft_strlen(expend) - (i - k));
+		free(user_in);
+		user_in = get_txt(str_here_doc);
+		write(here->fd, expend, ft_strlen(expend) - ft_strlen(user_in) - 1);
 		free(user_in);
 		free(expend);
 	}
 	close(here->fd);
 	here->fd = open(file_name, O_RDONLY, 0644);
 	free(str_here_doc);
-	free_tstr(user_input);
+	if (!user_input->c)
+		free(user_input);
+	else
+		free_tstr(user_input);
 	return (0);
 }
 
@@ -105,7 +111,7 @@ char	*random_file_name(void)
 	int		i;
 
 	i = -1;
-	file_name = malloc(sizeof(char) * 11);
+	file_name = ft_calloc(11, (sizeof(char)));
 	file_name[10] = '\0';
 	while (++i < 10)
 		file_name[i] = (char)gen_char();

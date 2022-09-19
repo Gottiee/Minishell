@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/14 16:45:37 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/19 19:05:28 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	do_exp_uns(t_pipex *pipex)
 	int				bolo;
 	int				status;
 	int				cmd_status;
+	int				i;
 
 	status = -1;
 	index_process = -1;
@@ -52,6 +53,9 @@ int	do_exp_uns(t_pipex *pipex)
 			if (builtin == UNSET)
 				cmd_status = cmd_unset(pipex->cmd_tab_exec);
 		}
+		i = -1;
+		while (pipex->cmd_tab_exec[++i])
+				free(pipex->cmd_tab_exec[i]);
 		free(pipex->cmd_tab_exec);
 	}
 	if (bolo == 1)
@@ -68,6 +72,7 @@ int	do_cd(t_pipex *pipex)
 	int				cd_status;
 	int				bolo;
 	int				wstatus;
+	int				i;
 	int				status;
 	
 	bolo = 0;
@@ -83,6 +88,9 @@ int	do_cd(t_pipex *pipex)
 			bolo = 1;
 			cd_status = cd(pipex->cmd_tab_exec);
 		}
+		i = -1;
+		while (pipex->cmd_tab_exec[++i])
+				free(pipex->cmd_tab_exec[i]);
 		free(pipex->cmd_tab_exec);
 	}
 		//si pls pipe, je regarde si une des commandes a un cd, si oui je fork et je l'effectue dans un process tout seul
@@ -111,6 +119,9 @@ int	do_cd(t_pipex *pipex)
 					cd_status = WEXITSTATUS(wstatus);
 				}
 			}
+			i = -1;
+			while (pipex->cmd_tab_exec[++i])
+				free(pipex->cmd_tab_exec[i]);
 			free(pipex->cmd_tab_exec);
 		}
 	}
@@ -159,16 +170,37 @@ int	pipex(char *cmd, char **env)
 		waitpid(pid, &wstatus, 0);
 	}
 	if (pid == 0)
+	{
+		close(fd[0]);
+		close(fd[1]);
+		del_list(&pipex, pid);
+		free_all_pipex(&pipex);
 		exit(1);
+	}
 	if (!WIFEXITED(wstatus))
+	{
+		close(fd[0]);
+		close(fd[1]);
+		del_list(&pipex, pid);
+		free_all_pipex(&pipex);
 		return (status += (128 + WTERMSIG(wstatus)));
+	}
 	signal(SIGINT, &prompt_signal);
 	cd_status = do_cd(&pipex);
+	del_list(&pipex, pid);
+	free_all_pipex(&pipex);
  	if (cd_status >= 0)
+	{
+		close(fd[0]);
+		close(fd[1]);
 		return (cd_status);
+	}
 	i = -1;
 	while (read(fd[0], buffer, 1) > 0)
 		buff[++i] = buffer[0];
+	buff[++i] = '\0'; 
+	close(fd[0]);
+	close(fd[1]);
 	if (g_return_value == SIG)
 		return (130);
 	return (ft_atoi(buff));
@@ -265,10 +297,16 @@ int	pipex2(char **env, int fd[2], t_pipex *pipex)
 	}
 
 	//end and free
-	del_list(pipex);
-	free_all_pipex(pipex);
+	//del_list(pipex);
+	//free_all_pipex(pipex);
 	if (id[i] == 0)
+	{
+		free_all_pipex(pipex);
+		del_list(pipex, 0);
+		close(fd[0]);
+		close(fd[1]);
 		exit(exit_status);
+	}
 	//printf("status = %d\n", status);
 	if (status == 1)
 		status = 127;
@@ -276,6 +314,7 @@ int	pipex2(char **env, int fd[2], t_pipex *pipex)
 	write(fd[1], status_char, ft_strlen(status_char));
 	//printf("status_char = %s\n", status_char);
 	free(status_char);
+	free(id);
 	return (0);
 }
 
@@ -287,6 +326,7 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	char			*full_path;
 	int				builtin;
 	int				exec_status;
+	int				i;
 
 	exec_status = 0;
 	// actual pipe te remvoie un pointeur sur le premier element du pipe que gere le fork
@@ -350,7 +390,23 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 				exec_status = 127;
 		}
 		else
-			execve(pipex->cmd_with_path, pipex->cmd_tab_exec, env);
+		{
+			if (pipex->cmd_with_path[0] == '.')
+			{
+				i = -1;
+				while (++i < pipex->nbr_cmd)
+					free(pipex->cmd_tab_exec[i]);
+				free(pipex->cmd_tab_exec);
+				pipex->cmd_tab_exec = malloc(sizeof(char *) * 3);
+				pipex->cmd_tab_exec[0] = ft_strdup("bash");
+				pipex->cmd_tab_exec[1] = pipex->cmd_with_path;
+				pipex->cmd_tab_exec[2] = NULL;
+				execve("/usr/bin/bash", pipex->cmd_tab_exec, env);
+
+			}
+			else
+				execve(pipex->cmd_with_path, pipex->cmd_tab_exec, env);
+		}
 	}
 	// a la fin de la fonction il faut close le fichier si erreur < ou de command	
 	free_cmd_tab(pipex);

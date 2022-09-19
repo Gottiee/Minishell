@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 13:08:06 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/12 16:43:07 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/19 15:51:04 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	free_all_pipex(t_pipex *pipex)
 	free(pipex->pipe_splited);
 }
 
-int	del_list(t_pipex *pipex)
+int	del_list(t_pipex *pipex, int ok)
 {
-	del_list_pipex(pipex->lexeur);
+	del_list_pipex(pipex->lexeur, ok);
 	return (-1);
 }
 

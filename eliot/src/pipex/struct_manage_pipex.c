@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 10:50:38 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/19 15:02:12 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/19 16:55:46 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,17 @@ int	add_struct_pipex(t_list_pipex *start, int type)
 	tmp->next = new;
 	new->next = NULL;
 	new->type = type;
+	new->file_name = NULL;
 	new->quote_here_doc = 0;
 	new->str_pipex = NULL;
+	new->fd = -2;
 	return (0);
 }
 
-void	del_list_pipex(t_list_pipex *start)
+void	del_list_pipex(t_list_pipex *start, int ok)
 {
 	t_list_pipex	*tmp;
+	(void)ok;
 
 	while (start)
 	{
@@ -65,10 +68,13 @@ void	del_list_pipex(t_list_pipex *start)
 		start = start->next;
 		if (tmp->type == 1)
 		{
-			unlink(tmp->file_name);
 			if (tmp->file_name)
+			{
+				unlink(tmp->file_name);
 				free(tmp->file_name);
-			close(tmp->fd);
+			}
+			if (tmp->fd != -2)
+				close(tmp->fd);
 		}
 		free_tstr(tmp->str_pipex);
 		free(tmp);

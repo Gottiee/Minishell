@@ -72,7 +72,7 @@ int		how_many_pipe(char **cmd);
 
 /*Fichier: end_and_free.c*/
 void	free_all_pipex(t_pipex *pipex);
-int		del_list(t_pipex *pipex);
+int		del_list(t_pipex *pipex, int ok);
 void	free_cmd_tab(t_pipex *pipex);
 void	free_all_path(char **path);
 void	close_all_fd(int fd_outfile, int fd_infile, t_pipex *pipex);
@@ -80,7 +80,7 @@ void	close_all_fd(int fd_outfile, int fd_infile, t_pipex *pipex);
 /*Fichier: stuct_manage_pipex.c*/
 t_list_pipex	*init_struct_pipex(void);
 int	add_struct_pipex(t_list_pipex *start, int type);
-void	del_list_pipex(t_list_pipex *start);
+void	del_list_pipex(t_list_pipex *start, int ok);
 void	free_tstr(t_str *tstr);
 int	add_char_pipex(t_list_pipex *start, char char_p);
 void	print_struc(t_list_pipex *start);

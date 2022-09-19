@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 20:39:25 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/19 14:58:43 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/19 17:55:07 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	cmd_export(char **cmd)
 			temp_env = get_lclvar_by_name(&envvar, var->name);
 			if (temp_env != NULL)
 			{
+				free(temp_env->val);
 				temp_env->val = ft_strdup(var->val);
 				free_lclvar(var);
 			}
