@@ -60,7 +60,26 @@ traduit les variables dans une chaine de charactere donnée
 char	*get_txt(char *cmd)
 {	
 	t_str	*tstr;
-	int		quotes;
+
+	tstr = NULL;
+	while (*cmd)
+	{
+		if (*cmd != '$')
+			add_back_tstr(&tstr, create_tstr(*cmd++));
+		else
+		{
+			cmd++;
+			add_back_tstr(&tstr, get_var_val(cmd));
+			cmd += ft_strlen(get_var_name(cmd));
+		}
+	}
+	return (get_str_with_tstr(tstr));
+}
+
+
+char *trad_cmd(char *cmd)
+{
+	t_str	*tstr;
 
 	tstr = NULL;
 	quotes = 0;

@@ -321,18 +321,18 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 
 	//cherche les builtins qu'on a coder pour les exec ici 
 	builtin = cmd_type(pipex->cmd_tab_exec[0]);
-	if (builtin && builtin != 10) // si positif alors c'est un builtin
+	if (builtin && builtin != 99) // si positif alors c'est un builtin
 	{
 		do_builtins(builtin, pipex->cmd_tab_exec); // selon la valeur de builtin appelle la bonne fnction
 		pipex->cmd_with_path = NULL;
 	}
-	else if (builtin ==10)
+	else if (builtin == 99)
 	{
 		write(2, "bash: ", 6);
 		write(2, pipex->cmd_tab_exec[0], ft_strlen(pipex->cmd_tab_exec[0]));
-		write(2, ": wrong builtin call\n", 20);
+		write(2, ": wrong builtin call\n", 21);
+		exec_status = 127;
 	}
-
 	else 
 	{
 		pipex->cmd_with_path = testing_path(tmp);

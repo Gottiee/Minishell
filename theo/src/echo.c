@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 20:04:06 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/14 13:12:01 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/19 13:44:40 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	cmd_echo(char **cmd)
 {
 	int		n_option;
 	int		i;
-	char	*txt;
 
 	n_option = 0;
 	if (cmd[1] && ft_strnstr(cmd[1], "-n", ft_strlen(cmd[1])) == cmd[1])
@@ -24,9 +23,9 @@ int	cmd_echo(char **cmd)
 	i = 1 + n_option;
 	while (cmd[i] != NULL)
 	{
-		txt = get_txt(cmd[i]);
-		write(1, txt, ft_strlen(txt));
-		free(txt);
+		write(1, cmd[i], ft_strlen(cmd[i]));
+		if (cmd[i + 1] != NULL)
+			write(1, " ", 1);
 		i++;
 	}
 	if (n_option == 0)

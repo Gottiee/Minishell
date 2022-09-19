@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:48:49 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/14 16:40:20 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/19 12:49:11 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,10 @@ Fonction qui retourne 1 si c'est une commande a executer avec execve
 */
 
 //bin/echo
-
-
-int	cmd_type(char *cmd)
+int builtin_val(char *cmd)
 {
 	int	len_cmd;
-	if (cmd == NULL)
-		return (-1);
-	// split de la commande a chaque "/" 
-	// si cmd[1] == '/' && last split == a un builtin
-	// alors retrurn (10); !! gerer pour ne pas l'executer apres ! 
+
 	len_cmd = ft_strlen(cmd);
 	if (ft_strnstr(cmd, "cd", len_cmd) == cmd)
 		return (CD);
@@ -44,4 +38,47 @@ int	cmd_type(char *cmd)
 	if (ft_strnstr(cmd, "echo", len_cmd) == cmd)
 		return (ECHO);
 	return (0);
+}
+
+void free_split(char **spl)
+{
+	int	i;
+
+	i = 0;
+	while (spl[i] != NULL)
+	{
+		free(spl[i]);
+		i++;
+	}
+	free(spl);
+}
+
+int	cmd_type(char *cmd)
+{
+	char	**spl;
+	int		i;
+	char	*lst_wrd;
+
+	if (cmd == NULL)
+		return (-1);
+	// split de la commande a chaque "/" 
+	// si cmd[1] == '/' && last split == a un builtin
+	// alors retrurn (1); !! gerer pour ne pas l'executer apres ! 
+	if (cmd[0] == '/')
+	{
+		spl = ft_split(cmd, '/');
+		i = 0;
+		while (spl[i] != NULL)
+			i++;
+		if (i == 0)
+			return (0);
+		lst_wrd = spl[i - 1];
+		i = builtin_val(lst_wrd);
+		free_split(spl);
+		if (i > 0)
+			return (99);
+		return (0);
+	}
+	else
+		return (builtin_val(cmd));
 }

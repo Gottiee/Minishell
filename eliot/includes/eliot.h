@@ -36,6 +36,7 @@ typedef struct s_list_pipex
 {
 	struct s_list_pipex	*next;
 	t_str				*str_pipex;
+	
 	int					type; // stock ce que c'est : here doc ... avec le define la haut
 	int					quote_here_doc;
 	int					fd;

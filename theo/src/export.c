@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 20:39:25 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/14 13:12:41 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/19 12:40:58 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,30 @@ int		correct_syntax(char *cmd)
 	return (1);
 }
 
+/*
+export =ters
+bash: export: `': not a valid identifier
+*/
+int err_export(char *cmd)
+{
+	t_str	*name_tstr;
+	char	*name;
 
-//pourvoir export plusieurs choses
+	if (cmd[0] == '=')
+	{
+		printf("bash: export: `%s': not a valid identifier\n", cmd);
+		return (1);
+	}
+	name_tstr = NULL;
+	while (*cmd && *cmd != '=')
+		add_back_tstr(&name_tstr, create_tstr(*cmd++));
+	name = get_str_with_tstr(name_tstr);
+	printf("bash: export: `%s': not a valid identifier\n", name);
+	free(name);
+	return (1);
+}
+
+
 int	cmd_export(char **cmd)
 {
 	t_lcl_var	*var;
@@ -119,10 +141,7 @@ int	cmd_export(char **cmd)
 				add_back_lclvar(&envvar, var);
 		}
 		else if (correct_syntax(cmd[i]) == -1)
-		{
-			printf("Error syntax\n");//bash: export: `=trt': not a valid identifier
-			return (1);
-		}
+			return (err_export(cmd[i]));
 		i++;
 	}
 	return (0);
