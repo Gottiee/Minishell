@@ -80,25 +80,24 @@ char	*get_txt(char *cmd)
 char *trad_cmd(char *cmd)
 {
 	t_str	*tstr;
+	int		quotes;
+	int		hrdc;
 
 	tstr = NULL;
 	quotes = 0;
+	hrdc = 0;
 	while (*cmd)
 	{
 		if (quotes == 0 && (*cmd == '"' || *cmd == '\''))
-		{
-			quotes = *(cmd++);
-			continue;
-		}
+			quotes = *cmd;
 		else if (quotes > 0 && *cmd == quotes)
-		{
 			quotes = 0;
-			continue;
-		}
-		else if (*cmd == ' ' && quotes == 0)
-			break;
-		if (quotes == '\'' || *cmd != '$')
-			add_back_tstr(&tstr, create_tstr(*cmd++));
+		if (*cmd == '<' && *(cmd + 1) == '<')
+			hrdc = 1;
+		else if (hrdc && *cmd == ' ' && *(cmd - 1) != '<')
+			hrdc = 0;
+		if (quotes == '\'' || *cmd != '$' || hrdc)
+			add_back_tstr(&tstr, create_tstr(*(cmd++)));
 		else
 		{
 			cmd++;
