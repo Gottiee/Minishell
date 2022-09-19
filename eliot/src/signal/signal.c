@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 11:10:56 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/14 10:41:51 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/19 14:47:30 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	prompt_signal(int sig)
 
 void	signal_exit(int sig)
 {
-	if (sig == SIGQUIT)		
+	if (sig == SIGQUIT)
 	{
 		free_lclvar(generate_envvar_list(NULL));
 		rl_clear_history();
@@ -36,17 +36,11 @@ void	signal_exit(int sig)
 void	signal_handle_fork(int sig)
 {
 	if (sig == SIGINT)
-	{
-		//g_return_value = SIG;
 		printf("\n");
-	}
 }
 
 void	signal_handle(void)
 {
-	// si ctrl-c alors nouveaux prompt
 	signal(SIGINT, &prompt_signal);
-	// si ctrl-\ alors il est ignoree
-	//signal(SIGQUIT, &signal_exit);
 	signal(SIGQUIT, &signal_exit);
 }

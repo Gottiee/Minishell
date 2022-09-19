@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 14:41:48 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/14 14:19:23 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/19 14:59:03 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ void	do_builtins(int builtin, char **cmd_tab_exec)
 	if (builtin == PWD)
 		pwd();
 	if (builtin == ENV)
-		cmd_env(cmd_tab_exec);	
+		cmd_env(cmd_tab_exec);
 }

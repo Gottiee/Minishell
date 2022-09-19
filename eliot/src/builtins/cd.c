@@ -6,37 +6,20 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:13:30 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/14 14:39:21 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/19 14:59:28 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eliot.h"
 
-int	cd(char **directory)
+void	free_path_cd(char *buff, char *path)
 {
-	char		*buff;
-	char		*path;
-	t_lcl_var	*envvar;
-	t_lcl_var	*envhome;
+	free(path);
+	free(buff);
+}
 
-	buff = get_current_path();
-	if (!buff)
-		return (-1);
-	if (!directory[1])
-	{
-		//fonction pour recuperer la liste chainee des variables d'env
-		envvar = generate_envvar_list(NULL);
-		//fonction qui cherche dans envvar une var d'env nomme HOME, envoie NULL si il trouve pas
-		envhome = get_lclvar_by_name(&envvar, "HOME");
-		if (envhome)
-		{
-			chdir(envhome->val);//val c'est la valeur de la variable d'env
-			return (0);
-		}
-		else
-			write(2, "bash: cd: HOME not set\n", 23);
-		return (1);
-	}
+int	cd2(char **directory, char *buff, char *path)
+{
 	if (directory[2])
 	{
 		write(2, "bash: cd: too many arguments\n", 29);
@@ -56,11 +39,40 @@ int	cd(char **directory)
 		write(2, directory[1], ft_strlen(directory[1]));
 		write(2, ": ", 2);
 		perror("");
+		free_path_cd(buff, path);
 		return (1);
 	}
-	free(path);
-	free(buff);
+	free_path_cd(buff, path);
 	return (0);
+}
+
+int	cd(char **directory)
+{
+	char		*buff;
+	char		*path;
+	t_lcl_var	*envvar;
+	t_lcl_var	*envhome;
+
+	path = NULL;
+	buff = get_current_path();
+	if (!buff)
+		return (-1);
+	if (!directory[1])
+	{
+		envvar = generate_envvar_list(NULL);
+		envhome = get_lclvar_by_name(&envvar, "HOME");
+		if (envhome)
+		{
+			chdir(envhome->val);
+			free(buff);
+			return (0);
+		}
+		else
+			write(2, "bash: cd: HOME not set\n", 23);
+		free(buff);
+		return (1);
+	}
+	return (cd2(directory, buff, path));
 }
 
 char	*conca_str(char *str1, char *str2)
@@ -72,13 +84,13 @@ char	*conca_str(char *str1, char *str2)
 	path = malloc(sizeof(char) * (ft_strlen(str1) + ft_strlen(str2) + 2));
 	if (!path)
 		return (NULL);
-	i = -1;	
+	i = -1;
 	j = -1;
 	while (str1[++i])
 		path[i] = str1[i];
 	path[i] = '/';
 	while (str2[++j])
 		path[++i] = str2[j];
-	path[i + 1]= '\0';
+	path[i + 1] = '\0';
 	return (path);
 }

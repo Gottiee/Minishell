@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 10:50:38 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/29 18:27:56 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/19 15:02:12 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ char	*concatenate_tstr(t_str *node)
 	tmp = node;
 	while (tmp)
 	{
-		count_char ++;	
+		count_char ++;
 		tmp = tmp->next;
 	}
 	str = malloc(sizeof(char) * count_char + 1);
@@ -168,28 +168,4 @@ char	*concatenate_tstr(t_str *node)
 		tmp = tmp->next;
 	}
 	return (str);
-}
-
-void	print_struc(t_list_pipex *start)
-{
-	t_list_pipex	*tmp;
-	t_str			*tmp_str;
-
-	tmp = start->next;
-
-	while (tmp)
-	{
-		tmp_str = tmp->str_pipex;			
-		printf("le numero de son type %d\n", tmp->type);
-		if (tmp->type == 1)
-			printf("valeur de bolo_quote %d\n", tmp->quote_here_doc);
-		printf("chaine de cara enregistre :");
-		while (tmp_str)
-		{
-			printf("%c",tmp_str->c);
-			tmp_str = tmp_str->next;
-		}
-		printf("\n\n"); 
-		tmp = tmp->next;
-	}
 }

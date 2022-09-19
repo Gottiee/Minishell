@@ -13,7 +13,6 @@ TRUC A FAIRE
 
 - fds
 
-
 done today:
 - valeur de retour sur cd en | 
 - valeur de retour here doc ctrl c
