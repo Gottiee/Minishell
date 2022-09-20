@@ -1,12 +1,12 @@
-
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/03 12:22:17 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/19 19:05:28 by eedy             ###   ########.fr       */
+/*   Created: 2022/09/20 17:18:07 by eedy              #+#    #+#             */
+/*   Updated: 2022/09/20 17:30:21 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,50 +320,19 @@ int	pipex2(char **env, int fd[2], t_pipex *pipex)
 
 int	manage_process(t_pipex *pipex, int index, char	**env)
 {
-	t_list_pipex	*tmp;
-	int				fd_infile;
-	int				fd_outfile;
-	char			*full_path;
-	int				builtin;
-	int				exec_status;
-	int				i;
+	t_manage	man;	
+	int			return_status;
 
-	exec_status = 0;
-	// actual pipe te remvoie un pointeur sur le premier element du pipe que gere le fork
-	tmp = actual_pipe(pipex->lexeur, index);
-	// ouvre les < un par un et modifie dup la bonne sortie; 
-	fd_infile = get_infile(tmp, index, pipex);
-	if (fd_infile < 0)
-		return (-1);
+	man.exec_status = 0;
+	return_status = manage_process1(&man, index, pipex);
+	if (return_status < 1)
+		return (return_status);
 
-	// ouvre les  > et les >> chacun son tour et redirige 
-	fd_outfile = get_outfile(tmp, index, pipex);
-	if (fd_outfile < 0)	
+
+	// contiuer a partir d'ici a mmetre dans des foncitions et appele les variables dans la struc
+	if (builtin && builtin != 99)
 	{
-		close(fd_infile);
-		return (-1);
-	}
-
-	close_all_fd(fd_outfile, fd_infile, pipex);
-
-	//creation du tableau de tableau pour execve
-	// la fonction return NULL si il n'y pas de commad dans le pipe
-	pipex->cmd_tab_exec = creat_tab_exec(tmp, pipex);
-	if (!pipex->cmd_tab_exec)
-	{
-		close(fd_outfile);
-		close(fd_infile);
-		close(1);
-		close(0);
-		return (0);
-		//exit(1);
-	}
-
-	//cherche les builtins qu'on a coder pour les exec ici 
-	builtin = cmd_type(pipex->cmd_tab_exec[0]);
-	if (builtin && builtin != 99) // si positif alors c'est un builtin
-	{
-		do_builtins(builtin, pipex->cmd_tab_exec); // selon la valeur de builtin appelle la bonne fnction
+		do_builtins(builtin, pipex->cmd_tab_exec);
 		pipex->cmd_with_path = NULL;
 	}
 	else if (builtin == 99)
@@ -402,13 +371,11 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 				pipex->cmd_tab_exec[1] = pipex->cmd_with_path;
 				pipex->cmd_tab_exec[2] = NULL;
 				execve("/usr/bin/bash", pipex->cmd_tab_exec, env);
-
 			}
 			else
 				execve(pipex->cmd_with_path, pipex->cmd_tab_exec, env);
 		}
 	}
-	// a la fin de la fonction il faut close le fichier si erreur < ou de command	
 	free_cmd_tab(pipex);
 	close(fd_outfile);
 	close(fd_infile);

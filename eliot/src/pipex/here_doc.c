@@ -6,35 +6,32 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 13:25:43 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/20 14:16:10 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/20 15:13:16 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eliot.h"
 
-int		here_doc(t_list_pipex *here)
+int	here_doc(t_list_pipex *here)
 {
-	char	buff[2];
 	int		i;
 	int		k;
 	char	*str_here_doc;
-	t_str	*user_input;
 
 	i = 0;
 	k = i;
-	user_input = malloc(sizeof(t_str));
-	user_input->c = '\0';
+	here->user_input = malloc(sizeof(t_str));
+	here->user_input->c = '\0';
 	str_here_doc = concatenate_tstr(here->str_pipex);
-	if (!user_input || !str_here_doc)
+	if (!here->user_input || !str_here_doc)
 	{
 		free(str_here_doc);
-		free(user_input);
+		free(here->user_input);
 		return (-1);
 	}
-	user_input->c = '\0';
-	read_here_doc(&i, &k, str_here_doc);
-	free(str_here_doc);
-	return (manage_filename(here, user_input, k, i));
+	here->user_input->c = '\0';
+	read_here_doc(&i, &k, str_here_doc, here->user_input);
+	return (manage_filename(here, str_here_doc, k));
 }
 
 void	write_inside_file(t_str *user_input, int fd, int k)
@@ -69,10 +66,10 @@ int	gen_char(void)
 	char	buff[4];
 	int		nbr;
 	int		fd;
-	
+
 	fd = open("/dev/urandom", O_RDONLY);
 	if (fd < -1)
-		return(-1);
+		return (-1);
 	read(fd, buff, 4);
 	nbr = *(int *)buff;
 	if (!nbr)
@@ -90,12 +87,10 @@ int	cmp(char *s1, t_str *start, int k)
 
 	i = -1;
 	tmp = start;
-	// verifie que user exist
 	if (!start)
 		return (0);
-	// se place sur le debut de la lettre
 	while (++i < k)
-		tmp = tmp->next;	
+		tmp = tmp->next;
 	i = 0;
 	while (s1[i])
 	{

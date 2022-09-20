@@ -10,10 +10,15 @@ BONUS_SRC_DIR = src_bonus/
 
 SRC_FILES = pipex/main \
 pipex/pipex \
+pipex/pipex2 \
 pipex/end_and_free \
 pipex/lexeur_pipex \
+pipex/lexeur_pipex2 \
 pipex/fork_process \
+pipex/fork_process2 \
+pipex/get_file \
 pipex/struct_manage_pipex \
+pipex/struc_manage2 \
 pipex/pipex_parsing \
 pipex/here_doc \
 pipex/her_doc2 \

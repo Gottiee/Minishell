@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 10:50:38 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/19 16:55:46 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/20 14:44:09 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_list_pipex	*init_struct_pipex(void)
 {
 	t_list_pipex	*new;
-	
+
 	new = malloc(sizeof(t_list_pipex));
 	if (!new)
 		return (NULL);
@@ -44,7 +44,6 @@ int	add_struct_pipex(t_list_pipex *start, int type)
 	if (!new)
 		return (-1);
 	tmp = start;
-
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
@@ -60,8 +59,8 @@ int	add_struct_pipex(t_list_pipex *start, int type)
 void	del_list_pipex(t_list_pipex *start, int ok)
 {
 	t_list_pipex	*tmp;
-	(void)ok;
 
+	(void)ok;
 	while (start)
 	{
 		tmp = start;
@@ -80,19 +79,6 @@ void	del_list_pipex(t_list_pipex *start, int ok)
 		free(tmp);
 	}
 }
-/*
-void	free_tstr(t_str *tstr)
-{
-	t_str	*tmp;
-
-	tmp = tstr;
-	while (tstr)
-	{
-		tmp = tstr;
-		tstr = tstr->next;
-		free(tmp);
-	}
-}*/
 
 int	add_char_pipex(t_list_pipex *start, char char_p)
 {
@@ -106,7 +92,6 @@ int	add_char_pipex(t_list_pipex *start, char char_p)
 	tmp_p = start;
 	while (tmp_p ->next)
 		tmp_p = tmp_p->next;
-	
 	tmp = tmp_p->str_pipex;
 	if (!tmp)
 	{
@@ -121,57 +106,4 @@ int	add_char_pipex(t_list_pipex *start, char char_p)
 	new->next = NULL;
 	new->c = char_p;
 	return (0);
-}
-
-int	add_char_here_doc(t_str *start, char char_p)
-{
-	t_str	*new;
-	t_str	*tmp;
-
-	tmp = start;
-	if (!tmp->c)
-	{
-		tmp->c = char_p;
-		tmp->next = NULL;
-		return (0);
-	}
-	new = malloc(sizeof(t_str));
-	if (!new)
-		return (-1);
-	
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
-	new->next = NULL;
-	new->c = char_p;
-	return (0);
-}
-
-
-char	*concatenate_tstr(t_str *node)
-{
-	t_str	*tmp;
-	int		count_char;
-	char	*str;
-	int		i;
-
-	i = -1;
-	count_char = 0;
-	tmp = node;
-	while (tmp)
-	{
-		count_char ++;
-		tmp = tmp->next;
-	}
-	str = malloc(sizeof(char) * count_char + 1);
-	if (!str)
-		return (NULL);
-	str[count_char] = '\0';
-	tmp = node;
-	while (++i < count_char)
-	{
-		str[i] = tmp->c;
-		tmp = tmp->next;
-	}
-	return (str);
 }

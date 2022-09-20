@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 13:08:06 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/19 15:51:04 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/20 16:13:15 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,15 @@ void	free_all_path(char **path)
 void	close_all_fd(int fd_outfile, int fd_infile, t_pipex *pipex)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < pipex->nbr_of_pipe - 1)
 	{
-		if (pipex->fd_pipe[i][0] != fd_infile && pipex->fd_pipe[i][0] != fd_outfile)
+		if (pipex->fd_pipe[i][0] != fd_infile &&
+			pipex->fd_pipe[i][0] != fd_outfile)
 			close(pipex->fd_pipe[i][0]);
-		if (pipex->fd_pipe[i][1] != fd_infile && pipex->fd_pipe[i][1] != fd_outfile)
+		if (pipex->fd_pipe[i][1] != fd_infile &&
+			pipex->fd_pipe[i][1] != fd_outfile)
 			close(pipex->fd_pipe[i][1]);
 		i++;
 	}

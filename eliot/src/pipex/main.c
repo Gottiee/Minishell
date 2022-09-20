@@ -6,13 +6,13 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 02:30:59 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/12 12:52:48 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/20 15:25:29 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eliot.h"
 
-int g_return_value;
+int	g_return_value;
 
 int	main(int argc, char **argv, char **envp)
 {

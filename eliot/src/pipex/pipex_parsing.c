@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 11:56:37 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/20 14:18:00 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/20 14:36:47 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	parsing_pipex2(t_list_pipex *tmp)
 	}
 	if (tmp->type == HERE_DOC)
 	{
-			if (here_doc(tmp) == -1)
-				return -1;
+		if (here_doc(tmp) == -1)
+			return (-1);
 	}
 	return (0);
 }
