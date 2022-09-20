@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 11:10:56 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/29 19:49:08 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/08 10:08:30 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	prompt_signal(int sig)
 	{
 		printf("\n");
 		rl_on_new_line();
-		rl_replace_line("", 0);
+	/**/	
 		rl_redisplay();
 	}
 }

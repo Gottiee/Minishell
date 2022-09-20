@@ -16,6 +16,7 @@ pipex/fork_process \
 pipex/struct_manage_pipex \
 pipex/pipex_parsing \
 pipex/here_doc \
+pipex/her_doc2 \
 builtins/cd \
 builtins/utils \
 builtins/pwd \

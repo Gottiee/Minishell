@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:37:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/29 20:02:50 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/08 10:07:38 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	start_prompt(char **envp)
 		{
 			free(res);
 			free_lclvar(generate_envvar_list(NULL));
-			rl_clear_history();
+			/**/clear_history();
 			break;
 		}
 		add_history(res);
