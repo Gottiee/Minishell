@@ -6,7 +6,11 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:37:35 by tokerman          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/08 10:07:38 by eedy             ###   ########.fr       */
+=======
+/*   Updated: 2022/09/14 11:23:19 by tokerman         ###   ########.fr       */
+>>>>>>> 8c078d449d8fc89e042fa3d0b769a73a48d0d7f6
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +56,22 @@ char	**get_envp(char **envp)
 	return (res);
 }
 
+t_lcl_var	*create_rtrn_val(void)
+{
+	t_lcl_var	*rtrn_val;
+	char		*tmp;		
+
+	rtrn_val = ft_calloc(1, sizeof(t_lcl_var));
+	rtrn_val->next = NULL;
+	tmp = ft_calloc(2, sizeof(char));
+	tmp[0] = '?';
+	rtrn_val->name = tmp;
+	tmp = ft_calloc(2, sizeof(char));
+	tmp[0] = '0';
+	rtrn_val->val = tmp;
+	return (rtrn_val);
+}
+
 t_lcl_var	*generate_envvar_list(char **envp)
 {
 	int	i;
@@ -66,6 +86,7 @@ t_lcl_var	*generate_envvar_list(char **envp)
 			add_back_lclvar(&res, create_lclvar(envp[i]));
 			i++;
 		}
+		add_back_lclvar(&res, create_rtrn_val());
 	}
 	return (res);
 }
@@ -100,8 +121,12 @@ void	start_prompt(char **envp)
 		path = get_rdln_message();
 		res = readline(path);
 		free(path);
-		if (cmd_type(res) == EXIT)
+		if (!res || cmd_type(res) == EXIT)
 		{
+			if (!res)
+				printf("\n");
+			else
+				printf("exit\n");
 			free(res);
 			free_lclvar(generate_envvar_list(NULL));
 			/**/clear_history();

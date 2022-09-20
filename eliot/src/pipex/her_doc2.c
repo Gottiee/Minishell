@@ -6,33 +6,37 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 13:51:34 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/20 14:05:56 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/20 14:15:37 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eliot.h"
 
-void	read_here_doc(int *i, )
+void	read_here_doc(int *i, int *k, char *str_here_doc)
 {
-	while (*i == 0 || !cmp(str_here_doc, user_input, k))
+	while (*i == 0 || !cmp(str_here_doc, user_input, *k))
 	{
-		k = *i;
+		*k = *i;
 		buff[0] = '\0';
 		write(1, "> ", 2);
 		while (buff[0] != '\n')
 		{
-			if (read(0, buff, 1) == -1)
+			read_status = read(0, buff, 1);
+			if (read_status == -1)
 			{
 				perror("");
 				return ;
-				*i = -1;
+			}
+			if (read_status == 0)
+			{
+				printf("bash: warning: here-document delimited by end-of-file (wanted `%s')\n", str_here_doc);
+				return ;
 			}
 			add_char_here_doc(user_input, buff[0]);
-			(*i) ++;
+			*i += 1;
 		}
-		if (*i == -1)
-			break;
 	}
+
 }
 
 int	manage_filename(t_list_pipex *here, t_str *user_input, k, i)
@@ -46,16 +50,21 @@ int	manage_filename(t_list_pipex *here, t_str *user_input, k, i)
 	here->fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (here->quote_here_doc == 1)
 		write_inside_file(user_input, here->fd, k);
-	else
+	else if (user_input->c)
 	{
 		user_in = concatenate_tstr(user_input);
 		expend = get_txt(user_in);
-		write(here->fd, expend, ft_strlen(expend) - (i - k));
+		free(user_in);
+		user_in = get_txt(str_here_doc);
+		write(here->fd, expend, ft_strlen(expend) - ft_strlen(user_in) - 1);
 		free(user_in);
 		free(expend);
 	}
 	close(here->fd);
 	here->fd = open(file_name, O_RDONLY, 0644);
-	free_tstr(user_input);
+	if (!user_input->c)
+		free(user_input);
+	else
+		free_tstr(user_input);
 	return (0);
 }

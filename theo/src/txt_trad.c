@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 20:39:31 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/27 20:39:31 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/19 17:21:55 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ char	*get_var_name(char *cmd)
 
 	tstr = NULL;
 	start = cmd;
+	if (*cmd == '?')
+	{
+		start = ft_calloc(2, sizeof(char));
+		start[0] = '?';
+		return (start);
+	}
 	while (*cmd && (ft_isalnum(*cmd) || *cmd == '_'))
 	{
 		add_back_tstr(&tstr, create_tstr(*cmd));
@@ -47,6 +53,7 @@ t_str	*get_var_val(char *cmd)
 	envvar = generate_envvar_list(NULL);
 	name = get_var_name(cmd);
 	temp_env = get_lclvar_by_name(&envvar, name);
+	free(name);
 	if (temp_env)
 		return (get_tstr_with_str(temp_env->val));
 	return (NULL);
@@ -58,32 +65,55 @@ traduit les variables dans une chaine de charactere donnée
 char	*get_txt(char *cmd)
 {	
 	t_str	*tstr;
-	int		quotes;
+	char	*var_name;
 
 	tstr = NULL;
-	quotes = 0;
 	while (*cmd)
 	{
-		if (quotes == 0 && (*cmd == '"' || *cmd == '\''))
-		{
-			quotes = *(cmd++);
-			continue;
-		}
-		else if (quotes > 0 && *cmd == quotes)
-		{
-			quotes = 0;
-			continue;
-		}
-		else if (*cmd == ' ' && quotes == 0)
-			break;
-		if (quotes == '\'' || *cmd != '$')
+		if (*cmd != '$')
 			add_back_tstr(&tstr, create_tstr(*cmd++));
 		else
 		{
 			cmd++;
 			add_back_tstr(&tstr, get_var_val(cmd));
-			while (*cmd && (ft_isalnum(*cmd) || *cmd == '_'))
-				cmd++;
+			var_name = get_var_name(cmd);
+			cmd += ft_strlen(var_name);
+			free(var_name);
+		}
+	}
+	return (get_str_with_tstr(tstr));
+}
+
+
+char *trad_cmd(char *cmd)
+{
+	t_str	*tstr;
+	int		quotes;
+	int		hrdc;
+	char	*var_name;
+
+	tstr = NULL;
+	quotes = 0;
+	hrdc = 0;
+	while (*cmd)
+	{
+		if (quotes == 0 && (*cmd == '"' || *cmd == '\''))
+			quotes = *cmd;
+		else if (quotes > 0 && *cmd == quotes)
+			quotes = 0;
+		if (*cmd == '<' && *(cmd + 1) == '<')
+			hrdc = 1;
+		else if (hrdc && *cmd == ' ' && *(cmd - 1) != '<')
+			hrdc = 0;
+		if (quotes == '\'' || *cmd != '$' || hrdc)
+			add_back_tstr(&tstr, create_tstr(*(cmd++)));
+		else
+		{
+			cmd++;
+			add_back_tstr(&tstr, get_var_val(cmd));
+			var_name = get_var_name(cmd);
+			cmd += ft_strlen(var_name);
+			free(var_name);
 		}
 	}
 	return (get_str_with_tstr(tstr));

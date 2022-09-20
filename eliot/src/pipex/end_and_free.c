@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 13:08:06 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/30 16:06:10 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/19 15:51:04 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	free_all_pipex(t_pipex *pipex)
 	free(pipex->pipe_splited);
 }
 
-int	del_list(t_pipex *pipex)
+int	del_list(t_pipex *pipex, int ok)
 {
-	del_list_pipex(pipex->lexeur);
+	del_list_pipex(pipex->lexeur, ok);
 	return (-1);
 }
 
@@ -36,7 +36,8 @@ void	free_cmd_tab(t_pipex *pipex)
 	while (++i < pipex->nbr_cmd)
 		free(pipex->cmd_tab_exec[i]);
 	free(pipex->cmd_tab_exec);
-	free(pipex->cmd_with_path);
+	if (pipex->cmd_with_path)
+		free(pipex->cmd_with_path);
 }
 
 void	free_all_path(char **path)

@@ -21,6 +21,8 @@
 # define DBL_OUTFILE 4
 # define CMD 5
 # define PIPE 6
+# define HERE 7
+# define SIG -2
 
 /*	stucture pipex	*/
 
@@ -34,6 +36,7 @@ typedef struct s_list_pipex
 {
 	struct s_list_pipex	*next;
 	t_str				*str_pipex;
+	
 	int					type; // stock ce que c'est : here doc ... avec le define la haut
 	int					quote_here_doc;
 	int					fd;
@@ -50,7 +53,7 @@ typedef struct s_pipex
 	char	**cmd_tab_exec;
 	int		nbr_cmd;
 	char	*cmd_path;
-	int		return_value_var_global;
+	//int		return_value_var_global;
 	char	*cmd_with_path;
 
 	//parsing de la cmd
@@ -62,13 +65,14 @@ typedef struct s_pipex
 /*          --- Fonctions qui gere pipex ---     */
 
 /*Fichier: pipex.c*/
+int		pipex2(char **env, int fd[2], t_pipex *pipex);
 int		pipex(char *cmd, char **env);
 int		manage_process(t_pipex *pipex, int index, char	**env);
 int		how_many_pipe(char **cmd);
 
 /*Fichier: end_and_free.c*/
 void	free_all_pipex(t_pipex *pipex);
-int		del_list(t_pipex *pipex);
+int		del_list(t_pipex *pipex, int ok);
 void	free_cmd_tab(t_pipex *pipex);
 void	free_all_path(char **path);
 void	close_all_fd(int fd_outfile, int fd_infile, t_pipex *pipex);
@@ -76,7 +80,7 @@ void	close_all_fd(int fd_outfile, int fd_infile, t_pipex *pipex);
 /*Fichier: stuct_manage_pipex.c*/
 t_list_pipex	*init_struct_pipex(void);
 int	add_struct_pipex(t_list_pipex *start, int type);
-void	del_list_pipex(t_list_pipex *start);
+void	del_list_pipex(t_list_pipex *start, int ok);
 void	free_tstr(t_str *tstr);
 int	add_char_pipex(t_list_pipex *start, char char_p);
 void	print_struc(t_list_pipex *start);
@@ -90,7 +94,7 @@ void	lexeur_front_chevron(t_pipex *pipex, char *cmd, int *i);
 void	lexeur_back_chevron(t_pipex *pipex, char *cmd, int *i);
 void	lexeur_cmd(t_pipex *pipex, char *cmd, int *i);
 void	pipe_lexeur(t_pipex *pipex, char *cmd, int *i, t_pipe_lexeur lex);
-void	quote_add_char(t_pipex *pipex, char *cmd, int *i, int quote);
+int		quote_add_char(t_pipex *pipex, char *cmd, int *i, int quote);
 
 /*Fichier: parsing_pipex.c*/
 int	paring_pipex(t_list_pipex *start);
@@ -104,6 +108,10 @@ int	cmp(char *s1, t_str *start, int k);
 int	gen_char(void);
 char	*random_file_name(void);
 void	write_inside_file(t_str *user_input, int fd, int k);
+
+/*Fichier: her_doc2.c*/
+void	read_here_doc(int *i, int *k, char *str_here_doc);
+int	manage_filename(t_list_pipex *here, t_str *user_input, k, i);
 
 /*Fichier: fork_process.c*/
 t_list_pipex	*actual_pipe(t_list_pipex *lexeur, int index);
@@ -139,4 +147,5 @@ void	do_builtins(int builtin, char **cmd_tab_exec);
 /*Fichier: signal.c*/
 void	signal_handle(void);
 void	prompt_signal(int sig);
+void	signal_handle_fork(int sig);
 #endif

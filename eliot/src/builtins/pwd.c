@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 19:09:29 by eedy              #+#    #+#             */
-/*   Updated: 2022/08/23 19:33:48 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/19 17:42:54 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	pwd(void)
 	pwd = get_current_path();
 	if (!pwd)
 		return (-1);
-	printf("\n%s\n", pwd);
+	printf("%s\n", pwd);
+	free(pwd);
 	return (0);
 }

@@ -30,7 +30,9 @@ signal/signal \
 ../../theo/src/t_str \
 ../../theo/src/utils \
 ../../theo/src/echo \
-../../theo/src/export 
+../../theo/src/export \
+../../theo/src/env \
+../../theo/src/unset 
 
 BONUS_SRC_FILES = 
 

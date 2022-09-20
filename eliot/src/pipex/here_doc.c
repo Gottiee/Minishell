@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 13:25:43 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/20 14:04:19 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/20 14:16:10 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int		here_doc(t_list_pipex *here)
 	i = 0;
 	k = i;
 	user_input = malloc(sizeof(t_str));
+	user_input->c = '\0';
 	str_here_doc = concatenate_tstr(here->str_pipex);
 	if (!user_input || !str_here_doc)
 	{
@@ -31,7 +32,7 @@ int		here_doc(t_list_pipex *here)
 		return (-1);
 	}
 	user_input->c = '\0';
-	read_here_doc();
+	read_here_doc(&i, &k, str_here_doc);
 	free(str_here_doc);
 	return (manage_filename(here, user_input, k, i));
 }
@@ -56,7 +57,7 @@ char	*random_file_name(void)
 	int		i;
 
 	i = -1;
-	file_name = malloc(sizeof(char) * 11);
+	file_name = ft_calloc(11, (sizeof(char)));
 	file_name[10] = '\0';
 	while (++i < 10)
 		file_name[i] = (char)gen_char();
@@ -103,7 +104,7 @@ int	cmp(char *s1, t_str *start, int k)
 		i ++;
 		tmp = tmp->next;
 	}
-	if (tmp->c == '\n')
+	if (!tmp || tmp->c == '\n')
 		return (1);
 	return (0);
 }

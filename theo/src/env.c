@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_manage.c                                  :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/29 14:41:48 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/19 14:59:03 by eedy             ###   ########.fr       */
+/*   Created: 2022/09/14 09:30:54 by tokerman          #+#    #+#             */
+/*   Updated: 2022/09/19 14:56:32 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/eliot.h"
+#include "../includes/theo.h"
 
-void	do_builtins(int builtin, char **cmd_tab_exec)
+int	cmd_env(char **cmd_tab_exec)
 {
-	if (builtin == CD)
-		return ;
-	if (builtin == ECHO)
-		cmd_echo(cmd_tab_exec);
-	if (builtin == EXPORT)
-		return ;
-	if (builtin == UNSET)
-		return ;
-	if (builtin == PWD)
-		pwd();
-	if (builtin == ENV)
-		cmd_env(cmd_tab_exec);
+	t_lcl_var	*env_lst;
+	t_lcl_var	*temp;
+
+	env_lst = generate_envvar_list(NULL);
+	temp = env_lst;
+	while (temp)
+	{
+		if (ft_strlen(temp->name) > 1 || temp->name[0] != '?')
+			printf("%s=%s\n", temp->name, temp->val);
+		temp = temp->next;
+	}
+	(void)cmd_tab_exec;
+	return (0);
 }
