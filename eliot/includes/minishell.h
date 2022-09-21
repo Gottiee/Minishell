@@ -1,25 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/29 02:30:59 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/21 18:54:12 by eedy             ###   ########.fr       */
+/*   Created: 2022/09/21 18:44:53 by eedy              #+#    #+#             */
+/*   Updated: 2022/09/21 18:55:14 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/eliot.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-int	g_return_value;
-
-int	main(int argc, char **argv, char **envp)
-{
-	(void)argc;
-	(void)argv;
-	g_return_value = 0;
-	signal_handle();
-	start_prompt(envp);
-	return (0);
-}
+extern int	g_return_value;
+#endif

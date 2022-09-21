@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 17:43:55 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/21 17:54:14 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/21 18:54:58 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <dirent.h>
 # include <signal.h>
 # include "../../theo/includes/theo.h"
+# include "minishell.h"
 
 # define HERE_DOC 1
 # define INFILE 2
@@ -115,7 +116,7 @@ typedef struct s_cd
 	int				cmd_status;
 }	t_cd;
 
-int				g_return_value;
+//extern int		g_return_value;
 
 /*          --- Fonctions qui gere pipex ---     */
 
@@ -202,7 +203,7 @@ int				find_path(char *full_path, t_pipex *pipex);
 char			*is_path_exist(t_pipex	*pipex);
 
 /*Fichier: fork_process2.c*/
-int				hile_find_path(int path_size, \
+int				while_find_path(int path_size, \
 char **all_path, t_pipex *pipex, char *path);
 char			**cmd_tab_exec_length(int *cmd, t_list_pipex *tmp);
 int				infile_type2(int *count_infile, int id, t_list_pipex *tmp);

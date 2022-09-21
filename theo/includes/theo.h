@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:53:30 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/21 17:55:05 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/21 18:56:01 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "../../eliot/includes/minishell.h"
 
 # define CD 7
 # define ECHO 8
