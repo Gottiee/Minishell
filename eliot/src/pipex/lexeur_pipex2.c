@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 16:30:45 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/20 16:56:18 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/21 17:40:51 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,14 @@ int	lexeur_pipex(t_pipex *pipex, char *cmd)
 			i ++;
 	}
 	return (0);
+}
+
+int	how_many_pipe(char **cmd)
+{
+	int	i;	
+
+	i = 0;
+	while (cmd[i])
+		i ++;
+	return (i);
 }

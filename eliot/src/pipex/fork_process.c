@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 11:16:05 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/20 15:22:33 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/21 15:20:07 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ char	*testing_path(t_list_pipex *lexeur)
 	cpy = cmd;
 	if (cpy[0] == '.')
 		return (cmd);
-	if (access(cpy, X_OK) == 0)
-		return (cmd);
+	if (cpy[0] == '/')
+		if (access(cpy, X_OK) == 0)
+			return (cmd);
 	free(cmd);
 	return (NULL);
 }

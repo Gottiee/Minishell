@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:13:30 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/19 14:59:28 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/21 17:18:18 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	free_path_cd(char *buff, char *path)
 	free(buff);
 }
 
-int	cd2(char **directory, char *buff, char *path)
+int	cd_ext(char **directory, char *buff, char *path)
 {
 	if (directory[2])
 	{
@@ -46,7 +46,7 @@ int	cd2(char **directory, char *buff, char *path)
 	return (0);
 }
 
-int	cd(char **directory)
+int	ft_cd(char **directory)
 {
 	char		*buff;
 	char		*path;
@@ -72,7 +72,7 @@ int	cd(char **directory)
 		free(buff);
 		return (1);
 	}
-	return (cd2(directory, buff, path));
+	return (cd_ext(directory, buff, path));
 }
 
 char	*conca_str(char *str1, char *str2)

@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/19 14:54:41 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/19 14:54:42 by tokerman         ###   ########.fr       */
+/*   Created: 2022/09/21 17:52:08 by eedy              #+#    #+#             */
+/*   Updated: 2022/09/21 17:53:15 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-int	return_value;
 
 #endif

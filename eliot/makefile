@@ -11,6 +11,8 @@ BONUS_SRC_DIR = src_bonus/
 SRC_FILES = pipex/main \
 pipex/pipex \
 pipex/pipex2 \
+pipex/pipex3 \
+pipex/pipex4 \
 pipex/end_and_free \
 pipex/lexeur_pipex \
 pipex/lexeur_pipex2 \
