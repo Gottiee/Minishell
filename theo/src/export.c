@@ -6,16 +6,32 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 20:39:25 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/19 17:55:07 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/22 16:20:05 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/theo.h"
 
+int	check_isalnum(char *name, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		if (ft_isalnum(name[i]) == 0 && name[i] != '_')
+		{
+			free(name);
+			return (-1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	correct_syntax(char *cmd)
 {
 	t_str	*name_tstr;
-	int		i;
 	int		size;
 	char	*name;
 
@@ -35,16 +51,8 @@ int	correct_syntax(char *cmd)
 		free(name);
 		return (-1);
 	}
-	i = 0;
-	while (i < size)
-	{
-		if (ft_isalnum(name[i]) == 0 && name[i] != '_')
-		{
-			free(name);
-			return (-1);
-		}
-		i++;
-	}
+	if (check_isalnum(name, size) == -1)
+		return (-1);
 	free(name);
 	return (1);
 }
@@ -53,7 +61,7 @@ int	correct_syntax(char *cmd)
 export =ters
 bash: export: `': not a valid identifier
 */
-int err_export(char *cmd)
+int	err_export(char *cmd)
 {
 	t_str	*name_tstr;
 	char	*name;
@@ -72,6 +80,12 @@ int err_export(char *cmd)
 	return (1);
 }
 
+void	update_var_val(t_lcl_var *dst, t_lcl_var *src)
+{
+	free(dst->val);
+	dst->val = ft_strdup(src->val);
+	free_lclvar(src);
+}
 
 int	cmd_export(char **cmd)
 {
@@ -89,11 +103,7 @@ int	cmd_export(char **cmd)
 			var = create_lclvar(cmd[i]);
 			temp_env = get_lclvar_by_name(&envvar, var->name);
 			if (temp_env != NULL)
-			{
-				free(temp_env->val);
-				temp_env->val = ft_strdup(var->val);
-				free_lclvar(var);
-			}
+				update_var_val(temp_env, var);
 			else
 				add_back_lclvar(&envvar, var);
 		}

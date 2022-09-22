@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:53:30 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/21 18:56:01 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/22 16:04:08 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int			cmd_type(char *cmd);
 
 //prompt
 void		start_prompt(char **envp);
-t_lcl_var	*generate_envvar_list(char **envp);
 
 //unset
 int			cmd_unset(char **cmd_tab_exec);
@@ -90,6 +89,7 @@ void		free_lclvar(t_lcl_var *var);
 void		add_back_lclvar(t_lcl_var **first, t_lcl_var *new);
 t_lcl_var	*get_lclvar_by_name(t_lcl_var **lclvar, char *tofind);
 void		change_envvar_val(char *name, char *new_val);
+t_lcl_var	*generate_envvar_list(char **envp);
 
 //txt_trad
 char		*get_txt(char *cmd);

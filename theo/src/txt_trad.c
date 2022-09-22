@@ -14,7 +14,8 @@
 
 /*
 retourne la chaine de charactere correspondant au nom de la var
-cette chaine de charactere et delimiter par un charactere speciale ou la fin de la ligne
+cette chaine de charactere et delimiter par un 
+charactere speciale ou la fin de la ligne
 */
 char	*get_var_name(char *cmd)
 {
@@ -46,9 +47,9 @@ cherche dans les variables locale et environnementale avec le nim de la variable
 */
 t_str	*get_var_val(char *cmd)
 {
-	char	*name;
-	t_lcl_var *temp_env;
-	t_lcl_var *envvar;
+	char		*name;
+	t_lcl_var	*temp_env;
+	t_lcl_var	*envvar;
 
 	envvar = generate_envvar_list(NULL);
 	name = get_var_name(cmd);
@@ -84,8 +85,19 @@ char	*get_txt(char *cmd)
 	return (get_str_with_tstr(tstr));
 }
 
+void	quotes_hrdc(char *cmd, int *quotes, int *hrdc)
+{
+	if (*quotes == 0 && (*cmd == '"' || *cmd == '\''))
+		*quotes = *cmd;
+	else if (*quotes > 0 && *cmd == *quotes)
+		*quotes = 0;
+	if (*cmd == '<' && *(cmd + 1) == '<')
+		*hrdc = 1;
+	else if (*hrdc && *cmd == ' ' && *(cmd - 1) != '<')
+		*hrdc = 0;
+}
 
-char *trad_cmd(char *cmd)
+char	*trad_cmd(char *cmd)
 {
 	t_str	*tstr;
 	int		quotes;
@@ -97,14 +109,7 @@ char *trad_cmd(char *cmd)
 	hrdc = 0;
 	while (*cmd)
 	{
-		if (quotes == 0 && (*cmd == '"' || *cmd == '\''))
-			quotes = *cmd;
-		else if (quotes > 0 && *cmd == quotes)
-			quotes = 0;
-		if (*cmd == '<' && *(cmd + 1) == '<')
-			hrdc = 1;
-		else if (hrdc && *cmd == ' ' && *(cmd - 1) != '<')
-			hrdc = 0;
+		quotes_hrdc(cmd, &quotes, &hrdc);
 		if (quotes == '\'' || *cmd != '$' || hrdc)
 			add_back_tstr(&tstr, create_tstr(*(cmd++)));
 		else

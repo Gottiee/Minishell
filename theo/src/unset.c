@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 09:41:36 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/14 14:23:33 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/21 13:05:43 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 void	copy_envvar(t_lcl_var *dest, t_lcl_var *src)
 {
+	src = dest->next;
 	free(dest->name);
 	free(dest->val);
 	dest->name = ft_strdup(src->name);
 	dest->val = ft_strdup(src->val);
 	dest->next = src->next;
+	src->next = NULL;
+	free_lclvar(src);
 }
 
 t_lcl_var	*remove_envvar_by_name(t_lcl_var *env_lst, char *name)
@@ -34,12 +37,7 @@ t_lcl_var	*remove_envvar_by_name(t_lcl_var *env_lst, char *name)
 			&& ft_strlen(name) == ft_strlen(temp->name))
 		{
 			if (prev == NULL)
-			{
-				prev = temp->next;
 				copy_envvar(temp, prev);
-				prev->next = NULL;
-				free_lclvar(prev);
-			}
 			else
 			{
 				prev->next = temp->next;

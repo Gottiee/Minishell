@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 14:34:15 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/09 16:54:26 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:06:33 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,21 +82,6 @@ t_str	*get_tstr_with_str(char *txt)
 	{
 		add_back_tstr(&res, create_tstr(*txt));
 		txt++;
-	}
-	return (res);
-}
-
-int	tstr_len(t_str *tstr)
-{
-	int	res;
-	t_str	*temp;
-
-	res = 0;
-	temp = tstr;
-	while (temp)
-	{
-		res++;
-		temp = temp->next;
 	}
 	return (res);
 }

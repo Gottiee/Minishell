@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 03:47:02 by tokerman          #+#    #+#             */
-/*   Updated: 2022/08/09 03:59:18 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:12:13 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*remove_dquotes(char *str)
 {
 	t_str	*tstr;
-	
+
 	tstr = NULL;
 	while (*str)
 	{

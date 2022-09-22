@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 18:57:58 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/21 18:52:35 by eedy             ###   ########.fr       */
+/*   Updated: 2022/09/22 16:11:58 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ int	check_spe_char(char *cmd)
 fonction qui va verifier si il n'y pas d'erreur
 	et qui va clean la cmd
 */
-char *parsing(char *cmd, char **envp)
+char	*parsing(char *cmd, char **envp)
 {
 	t_lcl_var	*temp;
 	t_lcl_var	*envlst;
 	char		*cmd_expended;
-	
+
 	if (check_spe_char(cmd) == 0)
 	{
 		envlst = generate_envvar_list(NULL);
@@ -63,7 +63,6 @@ char *parsing(char *cmd, char **envp)
 	}
 	else
 	{
-		//traduire tout sauf le heredoc
 		cmd_expended = trad_cmd(cmd);
 		g_return_value = pipex(cmd_expended, envp);
 		free(cmd_expended);

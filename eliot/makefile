@@ -34,7 +34,9 @@ signal/signal \
 ../../theo/src/parsing \
 ../../theo/src/txt_trad \
 ../../theo/src/t_local_var \
+../../theo/src/t_local_var2 \
 ../../theo/src/t_str \
+../../theo/src/t_str2 \
 ../../theo/src/utils \
 ../../theo/src/echo \
 ../../theo/src/export \
