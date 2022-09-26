@@ -8,8 +8,7 @@ LIB			= libft/libft.a
 
 SRC_DIR		= src/
 OBJ_DIR		= obj/
-OBJ_DIR2	= ../theo/obj/ 
-SUBDIR		= obj/pipex obj/builtins obj/signal
+SUBDIR		= obj/pipex obj/builtins obj/signal obj/parsing_theo obj/struct
 #BONUS_DIR	= src_bonus/
 
 CC			= gcc
@@ -42,18 +41,20 @@ builtins/cd \
 builtins/utils \
 builtins/pwd \
 builtins/builtins_manage \
+builtins/echo \
+builtins/env \
+builtins/unset \
+builtins/export \
 signal/signal \
-../../theo/src/prompt \
-../../theo/src/cmd_type \
-../../theo/src/parsing \
-../../theo/src/txt_trad \
-../../theo/src/t_local_var \
-../../theo/src/t_str \
-../../theo/src/utils \
-../../theo/src/echo \
-../../theo/src/export \
-../../theo/src/env \
-../../theo/src/unset
+parsing_theo/cmd_type \
+parsing_theo/parsing \
+parsing_theo/txt_trad \
+parsing_theo/utils \
+struct/prompt \
+struct/t_local_var2 \
+struct/t_local_var \
+struct/t_str2 \
+struct/t_str 
 
 C_FILES		=	$(addsuffix .c, $(SRC_FILES))
 SRCS		=	$(addprefix $(SRC_DIR), $(C_FILES))
@@ -65,15 +66,14 @@ C_BONUS			=	$(addsuffix _bonus.c, $(SRC_FILES_BONUS))
 SRCS_BONUS		=	$(addprefix $(BONUS_DIR), $(C_BONUS))
 OBJS_BONUS		=	$(addprefix $(OBJ_DIR), $(C_BONUS:.c=.o))
 DEPS_BONUS		=	$(OBJS_BONUS:.o=.d)
-[14:04]
 
 #	 MANDATORY
 all:		 $(LIB) obj $(NAME)
 			
 
 $(NAME):	$(OBJS)
-			@$(CC) $(CFLAGS) $(ADDFLAGS) $^ -o $@ $(LIB)
-			@echo "$(RED)$(NAME) compiled !$(CYAN)"
+			@$(CC) $(CFLAGS) $^ -o $@ $(LIB) $(ADDFLAGS) 
+			@echo "$(RED)$(NAME) compiled !$(DEF_COLOR)"
 
 $(OBJ_DIR)%.o:	 $(SRC_DIR)%.c 
 			@$(CC) $(CFLAGS) $(ADDFLAGS) -c -o $@ $< 
@@ -87,8 +87,9 @@ $(NAME_BONUS): $(OBJS_BONUS)
 			@echo "$(RED)$(NAME_BONUS) BONUS compiled !$(CYAN)"
 
 $(OBJ_DIR)%.o:	 $(BONUS_DIR)%.c 
+			tamere
 			@mkdir -p $(OBJ_DIR)
-			@$(CC) $(CFLAGS) $(ADDFLAGS) -c -o $@ $< 
+			@$(CC) $(CFLAGS) -c -o $@ $< 
 			@echo "$(BLUE)Creating object file -> $(WHITE)$(notdir $@)... $(RED)[Done]$(NOC)"
 
 $(LIB):
@@ -98,7 +99,6 @@ $(LIB):
 #	 RULES
 obj:
 			@mkdir -p $(OBJ_DIR)
-			@mkdir -p $(OBJ_DIR2)
 			@mkdir -p $(SUBDIR)
 
 clean:
@@ -115,7 +115,6 @@ re:			fclean
 			@make all
 			@echo "$(GREEN)Cleaned and rebuilt everything for $(NAME)!$(DEF_COLOR)"
 
-[14:04]
 .PHONY: all clean fclean re	
 
 .SILENT: lib
