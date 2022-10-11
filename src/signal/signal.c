@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 11:10:56 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/21 17:37:33 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/11 16:40:34 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	prompt_signal(int sig)
 	{
 		printf("\n");
 		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -26,9 +27,9 @@ void	signal_exit(int sig)
 {
 	if (sig == SIGQUIT)
 	{
-		free_lclvar(generate_envvar_list(NULL));
-		rl_clear_history();
-		exit(1);
+		g_return_value = 131;
+		write(2, "Quit (core dumped)\n", 20);
+		exit(131);
 	}
 }
 
@@ -41,5 +42,5 @@ void	signal_handle_fork(int sig)
 void	signal_handle(void)
 {
 	signal(SIGINT, &prompt_signal);
-	signal(SIGQUIT, &signal_exit);
+	signal(SIGQUIT, SIG_IGN);
 }

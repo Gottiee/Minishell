@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 17:43:55 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/26 12:10:15 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/11 17:24:30 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,9 @@ int				cd1(t_pipex *pipex, t_cd *cd);
 void			cd2(t_pipex *pipex, t_cd *cd);
 void			export_expend(t_pipex *pipex, t_cd *cd);
 
+/*Fichier: pipex5.c*/
+int				expend_first(t_man3 *man);
+
 /*Fichier: end_and_free.c*/
 void			free_all_pipex(t_pipex *pipex);
 int				del_list(t_pipex *pipex, int ok);
@@ -238,4 +241,5 @@ void			do_builtins(int builtin, char **cmd_tab_exec);
 void			signal_handle(void);
 void			prompt_signal(int sig);
 void			signal_handle_fork(int sig);
+void			signal_exit(int sig);
 #endif

@@ -26,6 +26,7 @@ pipex/pipex \
 pipex/pipex2 \
 pipex/pipex3 \
 pipex/pipex4 \
+pipex/pipex5 \
 pipex/end_and_free \
 pipex/lexeur_pipex \
 pipex/lexeur_pipex2 \

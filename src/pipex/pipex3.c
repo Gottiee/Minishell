@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:50:54 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/21 17:43:30 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/11 17:23:25 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,12 @@ int	first_fork(t_man3 *man, char *cmd, t_pipex *pipex, char **env)
 	{
 		close(man->fd[0]);
 		signal(SIGINT, SIG_DFL);
-		pipex2(env, man->fd, pipex);
+		if (pipex2(env, man->fd, pipex) == -1)
+			exit(2);
 	}
 	else
-	{
-		close(man->fd[1]);
-		signal(SIGINT, &signal_handle_fork);
-		waitpid(man->pid, &man->wstatus, 0);
-	}
+		if (expend_first(man) == -1)
+			return (-1);
 	return (0);
 }
 
@@ -120,6 +118,10 @@ int	creat_proccess(t_man2 *man, t_pipex *pipex, char **env)
 	if (man->id[man->i] == 0)
 	{
 		signal(SIGINT, SIG_DFL);
+		if (pipex->nbr_of_pipe == 1)
+			signal(SIGQUIT, &signal_exit);
+		else
+			signal(SIGQUIT, &signal_exit);
 		man->exit_status = manage_process(pipex, man->index_process, env);
 	}
 	return (0);

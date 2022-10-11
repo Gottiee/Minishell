@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 17:18:07 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/21 17:41:41 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/11 17:10:23 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	pipex(char *cmd, char **env)
 	int		i;
 
 	if (first_fork(&man, cmd, &pipex, env) == -1)
-		return (-1);
+		return (2);
 	return_status = wait_child_do_cd(&man, &pipex);
 	if (return_status != -80)
 		return (return_status);
