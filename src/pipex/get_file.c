@@ -31,7 +31,7 @@ int	get_infile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 		}
 		id_tmp = infile_type(tmp);
 	}
-	if (id_tmp != -1)
+	if (id_tmp != -2)
 			id = id_tmp;
 	return (id);
 }
@@ -41,7 +41,7 @@ int	infile_type(t_list_pipex *tmp)
 	int	id;	
 	int	count_infile;
 
-	id = -1;
+	id = -2;
 	count_infile = 0;
 	while (tmp && tmp->type != PIPE)
 	{
@@ -76,7 +76,7 @@ int	get_outfile(t_list_pipex *lexeur, int index, t_pipex *pipex)
 		id = pipex->fd_pipe[index][1];
 		id_tmp = outfile_type(tmp);
 	}
-	if (id_tmp != -1)
+	if (id_tmp != -2)
 		id = id_tmp;
 	return (id);
 }
@@ -107,7 +107,7 @@ int	outfile_type(t_list_pipex *tmp)
 	char	*file_name;
 
 	count_file = 0;
-	id = -1;
+	id = -2;
 	while (tmp && tmp->type != PIPE)
 	{
 		if (tmp->type == OUTFILE || tmp->type == DBL_OUTFILE)
@@ -123,7 +123,7 @@ int	outfile_type(t_list_pipex *tmp)
 		}
 		tmp = tmp->next;
 	}
-	if (id != -1)
+	if (id != -2)
 		dup2(id, 1);
 	return (id);
 }

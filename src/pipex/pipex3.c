@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:50:54 by eedy              #+#    #+#             */
-/*   Updated: 2022/10/11 17:23:25 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/12 10:29:26 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ void	wait_process(t_pipex *pipex, t_man2 *man)
 					man->status = 128 + WTERMSIG(man->wstatus);
 			}
 		}
+		if (man->status == 139)
+			man->status = 2;
 		man->i--;
 	}
 }

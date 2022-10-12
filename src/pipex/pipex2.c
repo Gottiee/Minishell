@@ -96,12 +96,12 @@ int	manage_process1(t_manage *man, int index, t_pipex *pipex)
 	man->tmp = actual_pipe(pipex->lexeur, index);
 	man->fd_infile = get_infile(man->tmp, index, pipex);
 	if (man->fd_infile < 0)
-		return (-1);
+		return (1);
 	man->fd_outfile = get_outfile(man->tmp, index, pipex);
 	if (man->fd_outfile < 0)
 	{
 		close(man->fd_infile);
-		return (-1);
+		return (1);
 	}
 	close_all_fd(man->fd_outfile, man->fd_infile, pipex);
 	pipex->cmd_tab_exec = creat_tab_exec(man->tmp, pipex);

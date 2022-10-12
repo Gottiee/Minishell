@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 17:18:07 by eedy              #+#    #+#             */
-/*   Updated: 2022/10/11 17:10:23 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/12 10:07:44 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,14 @@ int	pipex2(char **env, int fd[2], t_pipex *pipex)
 	}
 	if (man.status == 1)
 		man.status = 127;
+	else if (man.status == 2)
+		man.status = 1;
 	man.status_char = ft_itoa(man.status);
 	write(fd[1], man.status_char, ft_strlen(man.status_char));
 	free(man.status_char);
 	free(man.id);
-	return (0);
+	//return (0);
+	exit(0);
 }
 
 int	manage_process(t_pipex *pipex, int index, char	**env)
