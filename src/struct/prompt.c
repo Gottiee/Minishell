@@ -85,17 +85,17 @@ void	start_prompt(char **envp)
 		res = get_rdln_message();
 		if (!res || cmd_type(res) == EXIT)
 		{
-			if (!res)
-				printf("\n");
-			else
-				printf("exit\n");
+			printf("exit\n");
 			free(res);
 			free_lclvar(generate_envvar_list(NULL));
 			clear_history();
 			break ;
 		}
-		add_history(res);
-		parsing(res, envp);
-		free(res);
+		if (ft_strlen(res) > 0)
+		{
+			add_history(res);
+			parsing(res, envp);
+		}
+ 		free(res);
 	}	
 }

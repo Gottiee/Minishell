@@ -52,6 +52,7 @@ void	manage_exp(char *user_in, t_list_pipex *here, char *str_here_doc)
 	user_in = get_txt(str_here_doc);
 	write(here->fd, expend, ft_strlen(expend) - ft_strlen(user_in) - 1);
 	free(expend);
+	free(user_in);
 }
 
 int	manage_filename(t_list_pipex *here, char *str_here_doc, int k)

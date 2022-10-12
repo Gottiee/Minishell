@@ -21,6 +21,7 @@ int	lexeur(char *cmd, t_pipex *pipex)
 		printf("error malloc\n");
 		return (-1);
 	}
+	free_all_pipex(pipex);
 	return (0);
 }
 
@@ -31,7 +32,12 @@ int	wait_child_do_cd(t_man3 *man, t_pipex *pipex)
 		close(man->fd[0]);
 		close(man->fd[1]);
 		del_list(pipex, man->pid);
-		free_all_pipex(pipex);
+		// free_all_pipex(pipex);
+		//
+		free_lclvar(generate_envvar_list(NULL));
+		free(pipex->cmd);
+		close_all_fd(-1, -1, pipex);
+		//
 		exit(1);
 	}
 	if (!WIFEXITED(man->wstatus))
@@ -42,7 +48,7 @@ int	wait_child_do_cd(t_man3 *man, t_pipex *pipex)
 	signal(SIGINT, &prompt_signal);
 	man->cd_status = do_cd(pipex);
 	del_list(pipex, man->pid);
-	free_all_pipex(pipex);
+	// free_all_pipex(pipex);
 	if (man->cd_status >= 0)
 	{
 		close(man->fd[0]);
@@ -69,7 +75,15 @@ int	first_fork(t_man3 *man, char *cmd, t_pipex *pipex, char **env)
 		close(man->fd[0]);
 		signal(SIGINT, SIG_DFL);
 		if (pipex2(env, man->fd, pipex) == -1)
+		{
+			//
+			free_lclvar(generate_envvar_list(NULL));
+			free(pipex->cmd);
+			del_list(pipex, 0);
+			close_all_fd(-1, -1, pipex);
+			//
 			exit(2);
+		}
 	}
 	else
 		if (expend_first(man) == -1)

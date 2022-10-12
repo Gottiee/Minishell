@@ -62,6 +62,7 @@ int	pipex(char *cmd, char **env)
 	int		return_status;
 	int		i;
 
+	pipex.cmd = cmd;
 	if (first_fork(&man, cmd, &pipex, env) == -1)
 		return (2);
 	return_status = wait_child_do_cd(&man, &pipex);
@@ -89,8 +90,21 @@ int	pipex2(char **env, int fd[2], t_pipex *pipex)
 	wait_process(pipex, &man);
 	if (man.id[man.i] == 0)
 	{
-		free_all_pipex(pipex);
+		// free_all_pipex(pipex);
 		del_list(pipex, 0);
+		//
+		free_lclvar(generate_envvar_list(NULL));
+		free(pipex->cmd);
+		close_all_fd(-1, -1, pipex);
+		free(man.id);
+		int i = -1;
+		if (pipex->fd_pipe)
+		{
+			while (pipex->fd_pipe[++i])
+				free(pipex->fd_pipe[i]);
+			free(pipex->fd_pipe);
+		}
+		//
 		close(fd[0]);
 		close(fd[1]);
 		exit(man.exit_status);
@@ -103,7 +117,19 @@ int	pipex2(char **env, int fd[2], t_pipex *pipex)
 	write(fd[1], man.status_char, ft_strlen(man.status_char));
 	free(man.status_char);
 	free(man.id);
-	//return (0);
+	//
+		free_lclvar(generate_envvar_list(NULL));
+		free(pipex->cmd);
+		del_list(pipex, 0);
+		close_all_fd(-1, -1, pipex);
+		int i = -1;
+		if (pipex->fd_pipe)
+		{
+			while (pipex->fd_pipe[++i])
+				free(pipex->fd_pipe[i]);
+			free(pipex->fd_pipe);
+		}
+	//
 	exit(0);
 }
 
@@ -125,8 +151,9 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 	{
 		write(2, "bash: ", 6);
 		write(2, pipex->cmd_tab_exec[0], ft_strlen(pipex->cmd_tab_exec[0]));
-		write(2, ": wrong man.builtin call\n", 21);
+		write(2, ": wrong builtin call\n", 21);
 		man.exec_status = 127;
+		pipex->cmd_with_path = NULL;
 	}
 	else
 		manage_process2(pipex, &man, env);

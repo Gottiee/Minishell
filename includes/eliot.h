@@ -58,6 +58,7 @@ typedef struct s_list_pipex
 typedef struct s_pipex
 {
 	char			**pipe_splited;
+	char			*cmd;
 	int				nbr_of_pipe;
 	int				**fd_pipe;
 	char			**cmd_tab_exec;
