@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:08:57 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/21 17:39:15 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/13 11:43:54 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,10 @@ void	cd_expend(t_pipex *pipex, t_cd *cd)
 	{
 		cd->cd_status = ft_cd(pipex->cmd_tab_exec);
 		free(pipex->cmd_tab_exec);
-		//
 		free_lclvar(generate_envvar_list(NULL));
 		free(pipex->cmd);
 		del_list(pipex, 0);
 		close_all_fd(-1, -1, pipex);
-		//
 		exit(cd->cd_status);
 	}
 }
@@ -88,5 +86,4 @@ void	ty_nor(t_man3 *man, t_pipex *pipex)
 	close(man->fd[0]);
 	close(man->fd[1]);
 	del_list(pipex, man->pid);
-	// free_all_pipex(pipex);
 }

@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:50:54 by eedy              #+#    #+#             */
-/*   Updated: 2022/10/12 10:29:26 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/13 11:56:30 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,9 @@ int	wait_child_do_cd(t_man3 *man, t_pipex *pipex)
 		close(man->fd[0]);
 		close(man->fd[1]);
 		del_list(pipex, man->pid);
-		// free_all_pipex(pipex);
-		//
 		free_lclvar(generate_envvar_list(NULL));
 		free(pipex->cmd);
 		close_all_fd(-1, -1, pipex);
-		//
 		exit(1);
 	}
 	if (!WIFEXITED(man->wstatus))
@@ -48,7 +45,6 @@ int	wait_child_do_cd(t_man3 *man, t_pipex *pipex)
 	signal(SIGINT, &prompt_signal);
 	man->cd_status = do_cd(pipex);
 	del_list(pipex, man->pid);
-	// free_all_pipex(pipex);
 	if (man->cd_status >= 0)
 	{
 		close(man->fd[0]);
@@ -76,12 +72,7 @@ int	first_fork(t_man3 *man, char *cmd, t_pipex *pipex, char **env)
 		signal(SIGINT, SIG_DFL);
 		if (pipex2(env, man->fd, pipex) == -1)
 		{
-			//
-			free_lclvar(generate_envvar_list(NULL));
-			free(pipex->cmd);
-			del_list(pipex, 0);
-			close_all_fd(-1, -1, pipex);
-			//
+			free_var_cmd_list(pipex);
 			exit(2);
 		}
 	}

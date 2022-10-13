@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 17:43:55 by eedy              #+#    #+#             */
-/*   Updated: 2022/10/11 17:24:30 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/13 11:54:52 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,9 @@ void			export_expend(t_pipex *pipex, t_cd *cd);
 
 /*Fichier: pipex5.c*/
 int				expend_first(t_man3 *man);
+void			free_fd_pipe(t_pipex *pipex);
+void			free_stuf(t_pipex *pipex, t_man2 *man);
+void			free_var_cmd_list(t_pipex *pipex);
 
 /*Fichier: end_and_free.c*/
 void			free_all_pipex(t_pipex *pipex);

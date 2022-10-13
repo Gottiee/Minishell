@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 17:18:07 by eedy              #+#    #+#             */
-/*   Updated: 2022/10/12 10:07:44 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/13 11:51:24 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,21 +90,7 @@ int	pipex2(char **env, int fd[2], t_pipex *pipex)
 	wait_process(pipex, &man);
 	if (man.id[man.i] == 0)
 	{
-		// free_all_pipex(pipex);
-		del_list(pipex, 0);
-		//
-		free_lclvar(generate_envvar_list(NULL));
-		free(pipex->cmd);
-		close_all_fd(-1, -1, pipex);
-		free(man.id);
-		int i = -1;
-		if (pipex->fd_pipe)
-		{
-			while (pipex->fd_pipe[++i])
-				free(pipex->fd_pipe[i]);
-			free(pipex->fd_pipe);
-		}
-		//
+		free_stuf(pipex, &man);
 		close(fd[0]);
 		close(fd[1]);
 		exit(man.exit_status);
@@ -116,20 +102,7 @@ int	pipex2(char **env, int fd[2], t_pipex *pipex)
 	man.status_char = ft_itoa(man.status);
 	write(fd[1], man.status_char, ft_strlen(man.status_char));
 	free(man.status_char);
-	free(man.id);
-	//
-		free_lclvar(generate_envvar_list(NULL));
-		free(pipex->cmd);
-		del_list(pipex, 0);
-		close_all_fd(-1, -1, pipex);
-		int i = -1;
-		if (pipex->fd_pipe)
-		{
-			while (pipex->fd_pipe[++i])
-				free(pipex->fd_pipe[i]);
-			free(pipex->fd_pipe);
-		}
-	//
+	free_stuf(pipex, &man);
 	exit(0);
 }
 

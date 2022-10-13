@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:37:35 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/26 12:07:29 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/13 11:57:08 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,6 @@ void	start_prompt(char **envp)
 			add_history(res);
 			parsing(res, envp);
 		}
- 		free(res);
+		free(res);
 	}	
 }
