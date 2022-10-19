@@ -46,6 +46,7 @@ builtins/echo \
 builtins/env \
 builtins/unset \
 builtins/export \
+builtins/exit \
 signal/signal \
 parsing_theo/cmd_type \
 parsing_theo/parsing \

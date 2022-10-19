@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 17:43:55 by eedy              #+#    #+#             */
-/*   Updated: 2022/10/13 11:54:52 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/19 15:39:41 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ int				creat_proccess(t_man2 *man, t_pipex *pipex, char **env);
 void			wait_process(t_pipex *pipex, t_man2 *man);
 int				wait_child_do_cd(t_man3 *man, t_pipex *pipex);
 int				first_fork(t_man3 *man, char *cmd, t_pipex *pipex, char **env);
+void			cd_expend(t_pipex *pipex, t_cd *cd);
 
 /*Fichier: pipex4.c*/
 void			ty_nor(t_man3 *man, t_pipex *pipex);
@@ -152,6 +153,8 @@ int				expend_first(t_man3 *man);
 void			free_fd_pipe(t_pipex *pipex);
 void			free_stuf(t_pipex *pipex, t_man2 *man);
 void			free_var_cmd_list(t_pipex *pipex);
+int				parent_builtin(t_pipex *pipex, t_cd *cd);
+void			child_builtin(t_pipex *pipex, t_cd *cd);
 
 /*Fichier: end_and_free.c*/
 void			free_all_pipex(t_pipex *pipex);
@@ -235,6 +238,7 @@ char			*get_current_path(void);
 
 /*Fichier: pwd.c*/
 int				pwd(void);
+int				cmd_exit(char **cmd, int bolo, t_pipex *pipex);
 
 /*Fichier: builtins_manage.c*/
 void			do_builtins(int builtin, char **cmd_tab_exec);

@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 11:02:38 by tokerman          #+#    #+#             */
-/*   Updated: 2022/05/11 11:04:11 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:53:26 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,7 @@ int	ft_atoi(const char *str)
 		res += negative * (*str - 48);
 		str++;
 	}
+	if (*str && !ft_isdigit(*str))
+		return (-2147483646);
 	return (res);
 }

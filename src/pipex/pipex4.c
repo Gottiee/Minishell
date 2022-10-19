@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:08:57 by eedy              #+#    #+#             */
-/*   Updated: 2022/10/13 11:43:54 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/19 16:15:21 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	export_expend(t_pipex *pipex, t_cd *cd)
 {
-	if (cd->index_process + 1 == pipex->nbr_of_pipe)
-		cd->bolo = 1;
 	if (cd->builtin == EXPORT)
-		cd->cmd_status = cmd_export(pipex->cmd_tab_exec);
+		cd->cd_status = cmd_export(pipex->cmd_tab_exec);
 	if (cd->builtin == UNSET)
-		cd->cmd_status = cmd_unset(pipex->cmd_tab_exec);
+		cd->cd_status = cmd_unset(pipex->cmd_tab_exec);
+	if (cd->builtin == EXIT)
+		cd->cd_status = cmd_exit(pipex->cmd_tab_exec, 0, pipex);
 }
 
 void	cd_expend(t_pipex *pipex, t_cd *cd)
@@ -29,17 +29,21 @@ void	cd_expend(t_pipex *pipex, t_cd *cd)
 	cd->pid2 = fork();
 	if (cd->pid2 == 0)
 	{
-		cd->cd_status = ft_cd(pipex->cmd_tab_exec);
+		if (cd->builtin == CD)
+			cd->cd_status = ft_cd(pipex->cmd_tab_exec);
+		export_expend(pipex, cd);
+		cd->i = -1;
+		while (pipex->cmd_tab_exec[++cd->i])
+			free(pipex->cmd_tab_exec[cd->i]);
 		free(pipex->cmd_tab_exec);
 		free_lclvar(generate_envvar_list(NULL));
 		free(pipex->cmd);
 		del_list(pipex, 0);
-		close_all_fd(-1, -1, pipex);
 		exit(cd->cd_status);
 	}
 }
 
-void	cd2(t_pipex *pipex, t_cd *cd)
+void	child_builtin(t_pipex *pipex, t_cd *cd)
 {
 	cd->index_process = -1;
 	while (++cd->index_process < pipex->nbr_of_pipe)
@@ -47,7 +51,8 @@ void	cd2(t_pipex *pipex, t_cd *cd)
 		cd->tmp = actual_pipe(pipex->lexeur, cd->index_process);
 		pipex->cmd_tab_exec = creat_tab_exec(cd->tmp, pipex);
 		cd->builtin = cmd_type(pipex->cmd_tab_exec[0]);
-		if (cd->builtin == CD)
+		if (cd->builtin == CD || cd->builtin == EXPORT
+			|| cd->builtin == UNSET || cd->builtin == EXIT)
 		{
 			cd_expend(pipex, cd);
 			if (cd->pid2 != 0)
@@ -61,24 +66,6 @@ void	cd2(t_pipex *pipex, t_cd *cd)
 			free(pipex->cmd_tab_exec[cd->i]);
 		free(pipex->cmd_tab_exec);
 	}
-}
-
-int	cd1(t_pipex *pipex, t_cd *cd)
-{
-	pipex->cmd_tab_exec = creat_tab_exec(pipex->lexeur, pipex);
-	if (!pipex->cmd_tab_exec)
-		return (-2);
-	cd->builtin = cmd_type(pipex->cmd_tab_exec[0]);
-	if (cd->builtin == CD)
-	{
-		cd->bolo = 1;
-		cd->cd_status = ft_cd(pipex->cmd_tab_exec);
-	}
-	cd->i = -1;
-	while (pipex->cmd_tab_exec[++cd->i])
-		free(pipex->cmd_tab_exec[cd->i]);
-	free(pipex->cmd_tab_exec);
-	return (0);
 }
 
 void	ty_nor(t_man3 *man, t_pipex *pipex)

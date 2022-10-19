@@ -12,29 +12,29 @@
 
 #include "../../includes/eliot.h"
 
-int	do_exp_uns(t_pipex *pipex)
-{
-	t_cd	cd;
+// int	do_exp_uns(t_pipex *pipex)
+// {
+// 	t_cd	cd;
 
-	cd.status = -1;
-	cd.index_process = -1;
-	cd.bolo = 0;
-	while (++cd.index_process < pipex->nbr_of_pipe)
-	{
-		cd.tmp = actual_pipe(pipex->lexeur, cd.index_process);
-		pipex->cmd_tab_exec = creat_tab_exec(cd.tmp, pipex);
-		cd.builtin = cmd_type(pipex->cmd_tab_exec[0]);
-		if (cd.builtin == EXPORT || cd.builtin == UNSET)
-			export_expend(pipex, &cd);
-		cd.i = -1;
-		while (pipex->cmd_tab_exec[++cd.i])
-			free(pipex->cmd_tab_exec[cd.i]);
-		free(pipex->cmd_tab_exec);
-	}
-	if (cd.bolo == 1)
-		cd.status = cd.cmd_status;
-	return (cd.status);
-}
+// 	cd.status = -1;
+// 	cd.index_process = -1;
+// 	cd.bolo = 0;
+// 	while (++cd.index_process < pipex->nbr_of_pipe)
+// 	{
+// 		cd.tmp = actual_pipe(pipex->lexeur, cd.index_process);
+// 		pipex->cmd_tab_exec = creat_tab_exec(cd.tmp, pipex);
+// 		cd.builtin = cmd_type(pipex->cmd_tab_exec[0]);
+// 		if (cd.builtin == EXPORT || cd.builtin == UNSET)
+// 			export_expend(pipex, &cd);
+// 		cd.i = -1;
+// 		while (pipex->cmd_tab_exec[++cd.i])
+// 			free(pipex->cmd_tab_exec[cd.i]);
+// 		free(pipex->cmd_tab_exec);
+// 	}
+// 	if (cd.bolo == 1)
+// 		cd.status = cd.cmd_status;
+// 	return (cd.status);
+// }
 
 int	do_cd(t_pipex *pipex)
 {
@@ -44,12 +44,11 @@ int	do_cd(t_pipex *pipex)
 	cd.cd_status = -1;
 	if (pipex->nbr_of_pipe == 1)
 	{
-		if (cd1(pipex, &cd) == -2)
+		if (parent_builtin(pipex, &cd) == -2)
 			return (-2);
 	}
 	else
-		cd2(pipex, &cd);
-	cd.status = do_exp_uns(pipex);
+		child_builtin(pipex, &cd);
 	if (cd.bolo == 1)
 		return (cd.cd_status);
 	return (-1);
