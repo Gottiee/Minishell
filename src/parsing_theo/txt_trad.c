@@ -76,6 +76,11 @@ char	*get_txt(char *cmd)
 		else
 		{
 			cmd++;
+			if (*cmd == '\0' || *cmd == ' ' || !(ft_isalnum(*cmd) || *cmd == '_'))
+			{
+				add_back_tstr(&tstr, create_tstr(*(cmd - 1)));
+				continue ;
+			}
 			add_back_tstr(&tstr, get_var_val(cmd));
 			var_name = get_var_name(cmd);
 			cmd += ft_strlen(var_name);
@@ -115,6 +120,11 @@ char	*trad_cmd(char *cmd)
 		else
 		{
 			cmd++;
+			if (*cmd == '\0' || *cmd == ' ' || !(ft_isalnum(*cmd) || *cmd == '_'))
+			{
+				add_back_tstr(&tstr, create_tstr(*(cmd - 1)));
+				continue ;
+			}
 			add_back_tstr(&tstr, get_var_val(cmd));
 			var_name = get_var_name(cmd);
 			cmd += ft_strlen(var_name);
