@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:53:30 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/26 12:03:31 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/20 17:42:49 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,13 @@ t_lcl_var	*generate_envvar_list(char **envp);
 //txt_trad
 char		*get_txt(char *cmd);
 char		*trad_cmd(char *cmd);
+char		*get_var_name(char *cmd);
+t_str		*get_var_val(char *cmd);
+int			trad_dollar(char *cmd, t_str **tstr);
+
+//trad_dquotes
+char		*add_quotes(char *cmd);
+int			trad_after_file(char *cmd, t_str **tstr);
 
 // renvoie un pointeur sur chaine de caractere malloc contenant le path actuell 
 char		*get_current_path(void);

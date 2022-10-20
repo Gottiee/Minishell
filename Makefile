@@ -56,7 +56,8 @@ struct/prompt \
 struct/t_local_var2 \
 struct/t_local_var \
 struct/t_str2 \
-struct/t_str 
+struct/t_str \
+struct/trad_dquotes
 
 C_FILES		=	$(addsuffix .c, $(SRC_FILES))
 SRCS		=	$(addprefix $(SRC_DIR), $(C_FILES))

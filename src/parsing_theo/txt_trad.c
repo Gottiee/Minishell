@@ -50,13 +50,19 @@ t_str	*get_var_val(char *cmd)
 	char		*name;
 	t_lcl_var	*temp_env;
 	t_lcl_var	*envvar;
+	t_str		*res;
 
 	envvar = generate_envvar_list(NULL);
 	name = get_var_name(cmd);
 	temp_env = get_lclvar_by_name(&envvar, name);
 	free(name);
 	if (temp_env)
-		return (get_tstr_with_str(temp_env->val));
+	{
+		name = add_quotes(temp_env->val);
+		res = get_tstr_with_str(name);
+		free(name);
+		return (res);
+	}
 	return (NULL);
 }
 
@@ -66,7 +72,6 @@ traduit les variables dans une chaine de charactere donnée
 char	*get_txt(char *cmd)
 {	
 	t_str	*tstr;
-	char	*var_name;
 
 	tstr = NULL;
 	while (*cmd)
@@ -74,18 +79,7 @@ char	*get_txt(char *cmd)
 		if (*cmd != '$')
 			add_back_tstr(&tstr, create_tstr(*cmd++));
 		else
-		{
-			cmd++;
-			if (*cmd == '\0' || *cmd == ' ' || !(ft_isalnum(*cmd) || *cmd == '_'))
-			{
-				add_back_tstr(&tstr, create_tstr(*(cmd - 1)));
-				continue ;
-			}
-			add_back_tstr(&tstr, get_var_val(cmd));
-			var_name = get_var_name(cmd);
-			cmd += ft_strlen(var_name);
-			free(var_name);
-		}
+			cmd += trad_dollar(cmd, &tstr);
 	}
 	return (get_str_with_tstr(tstr));
 }
@@ -107,7 +101,6 @@ char	*trad_cmd(char *cmd)
 	t_str	*tstr;
 	int		quotes;
 	int		hrdc;
-	char	*var_name;
 
 	tstr = NULL;
 	quotes = 0;
@@ -118,18 +111,7 @@ char	*trad_cmd(char *cmd)
 		if (quotes == '\'' || *cmd != '$' || hrdc)
 			add_back_tstr(&tstr, create_tstr(*(cmd++)));
 		else
-		{
-			cmd++;
-			if (*cmd == '\0' || *cmd == ' ' || !(ft_isalnum(*cmd) || *cmd == '_'))
-			{
-				add_back_tstr(&tstr, create_tstr(*(cmd - 1)));
-				continue ;
-			}
-			add_back_tstr(&tstr, get_var_val(cmd));
-			var_name = get_var_name(cmd);
-			cmd += ft_strlen(var_name);
-			free(var_name);
-		}
+			cmd += trad_dollar(cmd, &tstr);
 	}
 	return (get_str_with_tstr(tstr));
 }
