@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 17:05:55 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/26 12:34:26 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/20 15:46:56 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,11 @@ void	manage_process2(t_pipex *pipex, t_manage *man, char **env)
 		if (man->full_path)
 		{
 			if (find_path(man->full_path, pipex) == 0)
+			{
 				execve(pipex->cmd_path, pipex->cmd_tab_exec, env);
+				write(2, "'': command not found\n", 23);
+				man->exec_status = 127;
+			}
 			else
 				man->exec_status = 127;
 		}
@@ -96,12 +100,12 @@ int	manage_process1(t_manage *man, int index, t_pipex *pipex)
 	man->tmp = actual_pipe(pipex->lexeur, index);
 	man->fd_infile = get_infile(man->tmp, index, pipex);
 	if (man->fd_infile < 0)
-		return (1);
+		return (2);
 	man->fd_outfile = get_outfile(man->tmp, index, pipex);
 	if (man->fd_outfile < 0)
 	{
 		close(man->fd_infile);
-		return (1);
+		return (2);
 	}
 	close_all_fd(man->fd_outfile, man->fd_infile, pipex);
 	pipex->cmd_tab_exec = creat_tab_exec(man->tmp, pipex);
@@ -114,5 +118,5 @@ int	manage_process1(t_manage *man, int index, t_pipex *pipex)
 		return (0);
 	}
 	man->builtin = cmd_type(pipex->cmd_tab_exec[0]);
-	return (1);
+	return (3);
 }
