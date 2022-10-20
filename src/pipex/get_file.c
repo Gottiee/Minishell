@@ -89,9 +89,7 @@ int	outfile_type2(int id, char *file_name, int *count_file, t_list_pipex *tmp)
 		id = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (id == -1)
 	{
-		write(2, "-bash: ", 7);
-		write(2, file_name, ft_strlen(file_name));
-		perror(":");
+		printf("-bash: %s: %s\n", file_name, strerror(errno));
 		free(file_name);
 		return (-1);
 	}

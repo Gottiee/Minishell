@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:43:53 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/20 17:03:42 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/20 15:55:39 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ int	quote_add_char(t_pipex *pipex, char *cmd, int *i, int quote)
 		if (*i == 0 || (cmd[*i -1] == ' ' || cmd[*i -1] == '|'
 				|| cmd[*i -1] == '>' || cmd[*i -1] == '<'))
 		{
-			add_char_pipex(pipex->lexeur, 39);
-			add_char_pipex(pipex->lexeur, 39);
+			add_char_pipex(pipex->lexeur, '\0');
 			*i += 2;
 			return (1);
 		}

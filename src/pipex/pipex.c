@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 17:18:07 by eedy              #+#    #+#             */
-/*   Updated: 2022/10/13 11:51:24 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/20 15:45:19 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	manage_process(t_pipex *pipex, int index, char	**env)
 
 	man.exec_status = 0;
 	return_status = manage_process1(&man, index, pipex);
-	if (return_status < 1)
+	if (return_status < 3)
 		return (return_status);
 	if (man.builtin && man.builtin != 99)
 	{
