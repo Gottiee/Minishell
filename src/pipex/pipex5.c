@@ -12,7 +12,7 @@
 
 #include "../../includes/eliot.h"
 
-int	parent_builtin(t_pipex *pipex, t_cd *cd)
+int	parent_builtin(t_pipex *pipex, t_cd *cd, t_man3 *man)
 {
 	pipex->cmd_tab_exec = creat_tab_exec(pipex->lexeur, pipex);
 	if (!pipex->cmd_tab_exec)
@@ -28,7 +28,7 @@ int	parent_builtin(t_pipex *pipex, t_cd *cd)
 	if (cd->builtin == UNSET)
 		cd->cd_status = cmd_unset(pipex->cmd_tab_exec);
 	if (cd->builtin == EXIT)
-		cmd_exit(pipex->cmd_tab_exec, 1, pipex);
+		cd->cd_status = cmd_exit(pipex->cmd_tab_exec, 1, pipex, man);
 	cd->i = -1;
 	while (pipex->cmd_tab_exec[++cd->i])
 		free(pipex->cmd_tab_exec[cd->i]);
@@ -39,13 +39,13 @@ int	parent_builtin(t_pipex *pipex, t_cd *cd)
 void	free_var_cmd_list(t_pipex *pipex)
 {
 	del_list(pipex, 0);
-	close_all_fd(-1, -1, pipex);
 	free(pipex->cmd);
 	free_lclvar(generate_envvar_list(NULL));
 }
 
 void	free_stuf(t_pipex *pipex, t_man2 *man)
 {
+	close_all_fd(-1, -1, pipex);
 	free_var_cmd_list(pipex);
 	free(man->id);
 	free_fd_pipe(pipex);
@@ -64,14 +64,16 @@ void	free_fd_pipe(t_pipex *pipex)
 	}
 }
 
-int	expend_first(t_man3 *man)
+int	expend_first(t_man3 *man, t_pipex *pipex)
 {
 	close(man->fd[1]);
 	signal(SIGINT, &signal_handle_fork);
 	waitpid(man->pid, &man->wstatus, 0);
 	if (WEXITSTATUS(man->wstatus) == 2)
 	{
+		del_list(pipex, 0);
 		signal(SIGINT, &prompt_signal);
+		close(man->fd[0]);
 		return (-1);
 	}
 	return (0);

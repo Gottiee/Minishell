@@ -33,7 +33,7 @@ int	extend_exit(char **cmd, int *status)
 	return (0);
 }
 
-int	cmd_exit(char **cmd, int bolo, t_pipex *pipex)
+int	cmd_exit(char **cmd, int bolo, t_pipex *pipex, t_man3 *man)
 {
 	int	status;	
 	int	i;
@@ -49,6 +49,8 @@ int	cmd_exit(char **cmd, int bolo, t_pipex *pipex)
 			free(pipex->cmd_tab_exec[i]);
 		free(pipex->cmd_tab_exec);
 		free_var_cmd_list(pipex);
+		close(man->fd[1]);
+		close(man->fd[0]);
 		write(2, "exit\n", 5);
 		exit(status);
 	}

@@ -36,7 +36,7 @@
 // 	return (cd.status);
 // }
 
-int	do_cd(t_pipex *pipex)
+int	do_cd(t_pipex *pipex, t_man3 *man)
 {
 	t_cd	cd;
 
@@ -44,13 +44,17 @@ int	do_cd(t_pipex *pipex)
 	cd.cd_status = -1;
 	if (pipex->nbr_of_pipe == 1)
 	{
-		if (parent_builtin(pipex, &cd) == -2)
+		if (parent_builtin(pipex, &cd, man) == -2)
 			return (-2);
 	}
 	else
-		child_builtin(pipex, &cd);
+		child_builtin(pipex, &cd, man);
 	if (cd.bolo == 1)
+	{
+		close(man->fd[0]);
+		close(man->fd[1]);
 		return (cd.cd_status);
+	}
 	return (-1);
 }
 
@@ -94,13 +98,11 @@ int	pipex2(char **env, int fd[2], t_pipex *pipex)
 		close(fd[1]);
 		exit(man.exit_status);
 	}
-	if (man.status == 1)
-		man.status = 127;
-	else if (man.status == 2)
-		man.status = 1;
 	man.status_char = ft_itoa(man.status);
 	write(fd[1], man.status_char, ft_strlen(man.status_char));
 	free(man.status_char);
+	close(fd[1]);
+	close(fd[0]);
 	free_stuf(pipex, &man);
 	exit(0);
 }

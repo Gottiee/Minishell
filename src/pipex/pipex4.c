@@ -19,10 +19,10 @@ void	export_expend(t_pipex *pipex, t_cd *cd)
 	if (cd->builtin == UNSET)
 		cd->cd_status = cmd_unset(pipex->cmd_tab_exec);
 	if (cd->builtin == EXIT)
-		cd->cd_status = cmd_exit(pipex->cmd_tab_exec, 0, pipex);
+		cd->cd_status = cmd_exit(pipex->cmd_tab_exec, 0, pipex, NULL);
 }
 
-void	cd_expend(t_pipex *pipex, t_cd *cd)
+void	cd_expend(t_pipex *pipex, t_cd *cd, t_man3 *man)
 {
 	if (cd->index_process + 1 == pipex->nbr_of_pipe)
 		cd->bolo = 1;
@@ -39,11 +39,12 @@ void	cd_expend(t_pipex *pipex, t_cd *cd)
 		free_lclvar(generate_envvar_list(NULL));
 		free(pipex->cmd);
 		del_list(pipex, 0);
+		close(man->fd[0]);
 		exit(cd->cd_status);
 	}
 }
 
-void	child_builtin(t_pipex *pipex, t_cd *cd)
+void	child_builtin(t_pipex *pipex, t_cd *cd, t_man3 *man)
 {
 	cd->index_process = -1;
 	while (++cd->index_process < pipex->nbr_of_pipe)
@@ -54,7 +55,7 @@ void	child_builtin(t_pipex *pipex, t_cd *cd)
 		if (cd->builtin == CD || cd->builtin == EXPORT
 			|| cd->builtin == UNSET || cd->builtin == EXIT)
 		{
-			cd_expend(pipex, cd);
+			cd_expend(pipex, cd, man);
 			if (cd->pid2 != 0)
 			{
 				waitpid(-1, &cd->wstatus, 0);

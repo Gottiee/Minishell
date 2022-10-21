@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 17:43:55 by eedy              #+#    #+#             */
-/*   Updated: 2022/10/19 15:39:41 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/21 12:40:09 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int				pipex2(char **env, int fd[2], t_pipex *pipex);
 int				pipex(char *cmd, char **env);
 int				manage_process(t_pipex *pipex, int index, char	**env);
 int				how_many_pipe(char **cmd);
-int				do_cd(t_pipex *pipex);
+int				do_cd(t_pipex *pipex, t_man3 *man);
 
 /*Fichier: pipex2.c*/
 void			manage_process2(t_pipex *pipex, t_manage *man, char **env);
@@ -140,7 +140,7 @@ int				creat_proccess(t_man2 *man, t_pipex *pipex, char **env);
 void			wait_process(t_pipex *pipex, t_man2 *man);
 int				wait_child_do_cd(t_man3 *man, t_pipex *pipex);
 int				first_fork(t_man3 *man, char *cmd, t_pipex *pipex, char **env);
-void			cd_expend(t_pipex *pipex, t_cd *cd);
+void			cd_expend(t_pipex *pipex, t_cd *cd, t_man3 *man);
 
 /*Fichier: pipex4.c*/
 void			ty_nor(t_man3 *man, t_pipex *pipex);
@@ -149,12 +149,12 @@ void			cd2(t_pipex *pipex, t_cd *cd);
 void			export_expend(t_pipex *pipex, t_cd *cd);
 
 /*Fichier: pipex5.c*/
-int				expend_first(t_man3 *man);
+int				expend_first(t_man3 *man, t_pipex *pipex);
 void			free_fd_pipe(t_pipex *pipex);
 void			free_stuf(t_pipex *pipex, t_man2 *man);
 void			free_var_cmd_list(t_pipex *pipex);
-int				parent_builtin(t_pipex *pipex, t_cd *cd);
-void			child_builtin(t_pipex *pipex, t_cd *cd);
+int				parent_builtin(t_pipex *pipex, t_cd *cd, t_man3 *man);
+void			child_builtin(t_pipex *pipex, t_cd *cd, t_man3 *man);
 
 /*Fichier: end_and_free.c*/
 void			free_all_pipex(t_pipex *pipex);
@@ -238,7 +238,7 @@ char			*get_current_path(void);
 
 /*Fichier: pwd.c*/
 int				pwd(void);
-int				cmd_exit(char **cmd, int bolo, t_pipex *pipex);
+int				cmd_exit(char **cmd, int bolo, t_pipex *pipex, t_man3 *man);
 
 /*Fichier: builtins_manage.c*/
 void			do_builtins(int builtin, char **cmd_tab_exec);

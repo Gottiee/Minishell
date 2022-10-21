@@ -6,7 +6,7 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 17:05:55 by eedy              #+#    #+#             */
-/*   Updated: 2022/10/20 15:46:56 by eedy             ###   ########.fr       */
+/*   Updated: 2022/10/21 14:02:18 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ int	lex_pipe(t_pipex *pipex, t_man2 *man, int fd[2])
 int	free_man(t_manage *man, t_pipex *pipex)
 {
 	free_cmd_tab(pipex);
-	close(man->fd_outfile);
-	close(man->fd_infile);
+	close_all_fd(-1, -1, pipex);
 	close(0);
 	close(1);
 	return (man->exec_status);
@@ -100,12 +99,12 @@ int	manage_process1(t_manage *man, int index, t_pipex *pipex)
 	man->tmp = actual_pipe(pipex->lexeur, index);
 	man->fd_infile = get_infile(man->tmp, index, pipex);
 	if (man->fd_infile < 0)
-		return (2);
+		return (1);
 	man->fd_outfile = get_outfile(man->tmp, index, pipex);
 	if (man->fd_outfile < 0)
 	{
 		close(man->fd_infile);
-		return (2);
+		return (1);
 	}
 	close_all_fd(man->fd_outfile, man->fd_infile, pipex);
 	pipex->cmd_tab_exec = creat_tab_exec(man->tmp, pipex);
