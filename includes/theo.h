@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:53:30 by tokerman          #+#    #+#             */
-/*   Updated: 2022/10/20 17:42:49 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/10/24 16:36:05 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ t_lcl_var	*generate_envvar_list(char **envp);
 char		*get_txt(char *cmd);
 char		*trad_cmd(char *cmd);
 char		*get_var_name(char *cmd);
-t_str		*get_var_val(char *cmd);
+t_str		*get_var_val(char *cmd, int addquotes);
 int			trad_dollar(char *cmd, t_str **tstr);
 
 //trad_dquotes

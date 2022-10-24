@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:09:56 by tokerman          #+#    #+#             */
-/*   Updated: 2022/10/20 17:57:38 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/10/24 16:36:19 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,15 +104,17 @@ int	trad_dollar(char *cmd, t_str **tstr)
 	{
 		cmd += toadd;
 		res += toadd;
+		return (res);
 	}
-	if ((*(cmd + 1) == '\0' || *(cmd + 1) == ' ' || !(ft_isalnum(*(cmd + 1))
-				|| *(cmd + 1) == '_')) && *(cmd + 1) != '?')
+	else if ((*(cmd + 1) == '\0' || *(cmd + 1) == ' '
+			|| !(ft_isalnum(*(cmd + 1)) || *(cmd + 1) == '_'))
+		&& *(cmd + 1) != '?')
 	{
 		add_back_tstr(tstr, create_tstr(*cmd));
 		return (1);
 	}
 	cmd++;
-	add_back_tstr(tstr, get_var_val(cmd));
+	add_back_tstr(tstr, get_var_val(cmd, 1));
 	var_name = get_var_name(cmd);
 	res += 1 + ft_strlen(var_name);
 	free(var_name);

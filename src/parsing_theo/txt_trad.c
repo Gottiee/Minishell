@@ -45,7 +45,7 @@ cherche dans les variables locale et environnementale avec le nim de la variable
 	et retourne la valeur de cette derniere si elle existe et retourne NULL
 		si elle n'existe pas
 */
-t_str	*get_var_val(char *cmd)
+t_str	*get_var_val(char *cmd, int addquotes)
 {
 	char		*name;
 	t_lcl_var	*temp_env;
@@ -58,6 +58,8 @@ t_str	*get_var_val(char *cmd)
 	free(name);
 	if (temp_env)
 	{
+		if (addquotes == 0)
+			return (get_tstr_with_str(temp_env->val));
 		name = add_quotes(temp_env->val);
 		res = get_tstr_with_str(name);
 		free(name);
@@ -79,7 +81,22 @@ char	*get_txt(char *cmd)
 		if (*cmd != '$')
 			add_back_tstr(&tstr, create_tstr(*cmd++));
 		else
-			cmd += trad_dollar(cmd, &tstr);
+		{
+			if ((*(cmd + 1) == '\0' || *(cmd + 1) == ' '
+			|| !(ft_isalnum(*(cmd + 1)) || *(cmd + 1) == '_'))
+				&& *(cmd + 1) != '?')
+				add_back_tstr(&tstr, create_tstr(*cmd++));
+			else
+			{
+				char	*var_name;
+
+				cmd++;
+				add_back_tstr(&tstr, get_var_val(cmd, 0));
+				var_name = get_var_name(cmd);
+				cmd += ft_strlen(var_name);
+				free(var_name);
+			}
+		}
 	}
 	return (get_str_with_tstr(tstr));
 }
