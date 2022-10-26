@@ -12,6 +12,8 @@
 
 #include "../../includes/eliot.h"
 
+//faire une fonction qui cheaue dans manage exp si le dernier mot et le user in si non il ne faut pas le retirer du print
+
 void	read_here_doc(int *i, int *k, char *str_here_doc, t_str *user_input)
 {
 	char	buff[2];

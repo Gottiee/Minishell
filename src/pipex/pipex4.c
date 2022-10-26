@@ -51,6 +51,8 @@ void	child_builtin(t_pipex *pipex, t_cd *cd, t_man3 *man)
 	{
 		cd->tmp = actual_pipe(pipex->lexeur, cd->index_process);
 		pipex->cmd_tab_exec = creat_tab_exec(cd->tmp, pipex);
+		if (!pipex->cmd_tab_exec)
+			continue;
 		cd->builtin = cmd_type(pipex->cmd_tab_exec[0]);
 		if (cd->builtin == CD || cd->builtin == EXPORT
 			|| cd->builtin == UNSET || cd->builtin == EXIT)
