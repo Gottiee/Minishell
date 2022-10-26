@@ -74,6 +74,7 @@ traduit les variables dans une chaine de charactere donnée
 char	*get_txt(char *cmd)
 {	
 	t_str	*tstr;
+	char	*var_name;
 
 	tstr = NULL;
 	while (*cmd)
@@ -83,13 +84,11 @@ char	*get_txt(char *cmd)
 		else
 		{
 			if ((*(cmd + 1) == '\0' || *(cmd + 1) == ' '
-			|| !(ft_isalnum(*(cmd + 1)) || *(cmd + 1) == '_'))
+					|| !(ft_isalnum(*(cmd + 1)) || *(cmd + 1) == '_'))
 				&& *(cmd + 1) != '?')
 				add_back_tstr(&tstr, create_tstr(*cmd++));
 			else
 			{
-				char	*var_name;
-
 				cmd++;
 				add_back_tstr(&tstr, get_var_val(cmd, 0));
 				var_name = get_var_name(cmd);
