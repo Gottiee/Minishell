@@ -37,14 +37,14 @@ void	add_back_lclvar(t_lcl_var **first, t_lcl_var *new)
 retourne l'element de la liste chainee lclvar qui a le meme nom que tofind
 si il n'y en pas dans la liste chainee, retourne null
 */
-t_lcl_var	*get_lclvar_by_name(t_lcl_var **lclvar, char *tofind)
+t_lcl_var	*get_lclvar_by_name(t_lcl_var *lclvar, char *tofind)
 {
 	t_lcl_var	*res;
 
 	res = NULL;
 	if (lclvar)
 	{
-		res = *lclvar;
+		res = lclvar;
 		while (res)
 		{
 			if (ft_strnstr(res->name, tofind, ft_strlen(res->name)) != NULL)

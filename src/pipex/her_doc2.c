@@ -6,13 +6,11 @@
 /*   By: eedy <eliot.edy@icloud.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 13:51:34 by eedy              #+#    #+#             */
-/*   Updated: 2022/09/20 16:23:54 by eedy             ###   ########.fr       */
+/*   Updated: 2022/11/07 15:03:14 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eliot.h"
-
-//faire une fonction qui cheaue dans manage exp si le dernier mot et le user in si non il ne faut pas le retirer du print
 
 void	read_here_doc(int *i, int *k, char *str_here_doc, t_str *user_input)
 {
@@ -52,7 +50,11 @@ void	manage_exp(char *user_in, t_list_pipex *here, char *str_here_doc)
 	expend = get_txt(user_in);
 	free(user_in);
 	user_in = get_txt(str_here_doc);
-	write(here->fd, expend, ft_strlen(expend) - ft_strlen(user_in) - 1);
+	if (ft_strlen(str_here_doc) != ft_strlen(user_in))
+		write(here->fd, expend, ft_strlen(expend) - ft_strlen(user_in) - 1);
+	else
+		write(here->fd, expend, ft_strlen(expend) - \
+ft_strlen(str_here_doc) - 1);
 	free(expend);
 	free(user_in);
 }

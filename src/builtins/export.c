@@ -101,7 +101,7 @@ int	cmd_export(char **cmd)
 		if (correct_syntax(cmd[i]) == 1)
 		{
 			var = create_lclvar(cmd[i]);
-			temp_env = get_lclvar_by_name(&envvar, var->name);
+			temp_env = get_lclvar_by_name(envvar, var->name);
 			if (temp_env != NULL)
 				update_var_val(temp_env, var);
 			else

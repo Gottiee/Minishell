@@ -18,6 +18,41 @@ void	free_path_cd(char *buff, char *path)
 	free(buff);
 }
 
+int	move(char **directory, char *buff, char *path)
+{
+	if (path[0] == '~')
+	{
+		if (get_lclvar_by_name(generate_envvar_list(NULL), "HOME"))
+		{
+			if (path[1] == '\0')
+			{
+				free(path);
+				return (move(directory, buff, ft_strdup(get_lclvar_by_name(generate_envvar_list(NULL), "HOME")->val)));
+			}
+			int res = move(directory, buff, ft_strjoin(ft_strdup(get_lclvar_by_name(generate_envvar_list(NULL), "HOME")->val), &(path[1])));
+			free(path);
+			return (res);
+		}
+		else
+		{
+			write(2, "bash: cd: HOME not set\n", 23);
+			free_path_cd(buff, path);
+			return (1);
+		}
+	}
+	if (chdir(path) == -1)
+	{
+		write(2, "bash: cd: ", 11);
+		write(2, directory[1], ft_strlen(directory[1]));
+		write(2, ": ", 2);
+		perror("");
+		free_path_cd(buff, path);
+		return (1);
+	}
+	free_path_cd(buff, path);
+	return (0);
+}
+
 int	cd_ext(char **directory, char *buff, char *path)
 {
 	if (directory[2])
@@ -30,20 +65,12 @@ int	cd_ext(char **directory, char *buff, char *path)
 		chdir("/mnt");
 		return (0);
 	}
+	if (directory[1][0] == '/' || directory[1][0] == '~')
+		return (move(directory, buff, ft_strdup(directory[1])));
 	path = conca_str(buff, directory[1]);
 	if (!path)
 		return (-1);
-	if (chdir(path) == -1)
-	{
-		write(2, "bash: cd: ", 11);
-		write(2, directory[1], ft_strlen(directory[1]));
-		write(2, ": ", 2);
-		perror("");
-		free_path_cd(buff, path);
-		return (1);
-	}
-	free_path_cd(buff, path);
-	return (0);
+	return (move(directory, buff, path));
 }
 
 int	ft_cd(char **directory)
@@ -60,7 +87,7 @@ int	ft_cd(char **directory)
 	if (!directory[1])
 	{
 		envvar = generate_envvar_list(NULL);
-		envhome = get_lclvar_by_name(&envvar, "HOME");
+		envhome = get_lclvar_by_name(envvar, "HOME");
 		if (envhome)
 		{
 			chdir(envhome->val);

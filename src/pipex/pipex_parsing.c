@@ -76,3 +76,19 @@ int	print_error_syntax(t_list_pipex *tmp)
 		printf("-bash: syntax error near unexpected token `|'\n");
 	return (-1);
 }
+
+int	check_executable(char *cmd)
+{
+	if (ft_strnstr(cmd, "./", ft_strlen(cmd)))
+	{
+		if (ft_strnstr(cmd, "./", ft_strlen(cmd)) != cmd)
+		{
+			if (*(ft_strnstr(cmd, "./", ft_strlen(cmd)) - 1) != '.')
+				return (1);
+			else
+				return (0);
+		}
+		return (1);
+	}
+	return (0);
+}

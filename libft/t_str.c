@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/04 14:34:15 by tokerman          #+#    #+#             */
-/*   Updated: 2022/09/26 12:07:41 by eedy             ###   ########.fr       */
+/*   Created: 2022/10/24 03:36:04 by tokerman          #+#    #+#             */
+/*   Updated: 2022/11/07 17:11:28 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/theo.h"
+#include "libft.h"
 
-t_str	*create_tstr(char c)
+t_str	*new_tstr(char c)
 {
 	t_str	*res;
 
@@ -22,41 +22,55 @@ t_str	*create_tstr(char c)
 	return (res);
 }
 
-char	*get_str_with_tstr(t_str *first)
+void	add_back_tstr(t_str **list, t_str *new)
 {
-	int		size;
-	t_str	*temp;
-	char	*res;
+	t_str	*tmp;
 
-	size = 0;
-	temp = first;
-	while (temp)
+	if (list)
 	{
-		size++;
-		temp = temp->next;
+		if (*list)
+		{
+			tmp = *list;
+			while (tmp->next != NULL)
+				tmp = tmp->next;
+			tmp->next = new;
+		}
+		else
+			*list = new;
 	}
-	res = ft_calloc(size + 1, sizeof(char));
-	size = 0;
-	temp = first;
-	while (temp)
-	{
-		res[size] = temp->c;
-		size++;
-		temp = temp->next;
-	}
-	free_tstr(first);
-	return (res);
 }
 
-t_str	*get_tstr_with_str(char *txt)
+void	free_tstr(t_str *tstr)
 {
-	t_str	*res;
-
-	res = NULL;
-	while (*txt)
+	if (tstr != NULL)
 	{
-		add_back_tstr(&res, create_tstr(*txt));
-		txt++;
+		if (tstr->next != NULL)
+			free_tstr(tstr->next);
+		free(tstr);
 	}
+}
+
+char	*get_str_from_tstr(t_str *tstr)
+{
+	t_str	*tmp;
+	int		len;
+	char	*res;
+
+	len = 0;
+	tmp = tstr;
+	while (tmp)
+	{
+		len++;
+		tmp = tmp->next;
+	}
+	res = ft_calloc(len + 1, sizeof(char));
+	len = 0;
+	tmp = tstr;
+	while (tmp)
+	{
+		res[len++] = tmp->c;
+		tmp = tmp->next;
+	}
+	free_tstr(tstr);
 	return (res);
 }

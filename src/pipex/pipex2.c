@@ -87,7 +87,7 @@ void	manage_process2(t_pipex *pipex, t_manage *man, char **env)
 	}
 	else
 	{
-		if (pipex->cmd_with_path[0] == '.')
+		if (check_executable(pipex->cmd_with_path))
 			exec_file(pipex, env);
 		else
 			execve(pipex->cmd_with_path, pipex->cmd_tab_exec, env);

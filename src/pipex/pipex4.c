@@ -6,7 +6,7 @@
 /*   By: eedy <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:08:57 by eedy              #+#    #+#             */
-/*   Updated: 2022/10/19 16:15:21 by eedy             ###   ########.fr       */
+/*   Updated: 2022/11/07 14:53:29 by eedy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	child_builtin(t_pipex *pipex, t_cd *cd, t_man3 *man)
 		cd->tmp = actual_pipe(pipex->lexeur, cd->index_process);
 		pipex->cmd_tab_exec = creat_tab_exec(cd->tmp, pipex);
 		if (!pipex->cmd_tab_exec)
-			continue;
+			continue ;
 		cd->builtin = cmd_type(pipex->cmd_tab_exec[0]);
 		if (cd->builtin == CD || cd->builtin == EXPORT
 			|| cd->builtin == UNSET || cd->builtin == EXIT)

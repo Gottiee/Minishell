@@ -22,7 +22,7 @@ char	*get_current_path(void)
 	if (buffer == NULL)
 	{
 		envvar = generate_envvar_list(NULL);
-		envpwd = get_lclvar_by_name(&envvar, "PWD");
+		envpwd = get_lclvar_by_name(envvar, "PWD");
 		if (envpwd)
 		{
 			buffer = ft_strdup(envpwd->val);

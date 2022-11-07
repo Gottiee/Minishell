@@ -72,7 +72,7 @@ char	*testing_path(t_list_pipex *lexeur)
 		tmp = tmp->next;
 	cmd = concatenate_tstr(tmp->str_pipex);
 	cpy = cmd;
-	if (cpy[0] == '.')
+	if (check_executable(cpy) == 1)
 		return (cmd);
 	if (cpy[0] == '/')
 		if (access(cpy, X_OK) == 0)
@@ -87,7 +87,7 @@ char	*is_path_exist(t_pipex	*pipex)
 	t_lcl_var	*envpath;
 
 	envar = generate_envvar_list(NULL);
-	envpath = get_lclvar_by_name(&envar, "PATH");
+	envpath = get_lclvar_by_name(envar, "PATH");
 	if (!envpath)
 	{
 		write(2, "bash: ", 6);

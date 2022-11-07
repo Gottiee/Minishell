@@ -56,7 +56,7 @@ char	*parsing(char *cmd, char **envp)
 	if (check_spe_char(cmd) == 0)
 	{
 		envlst = generate_envvar_list(NULL);
-		temp = get_lclvar_by_name(&envlst, "?");
+		temp = get_lclvar_by_name(envlst, "?");
 		free(temp->val);
 		temp->val = ft_strdup("2");
 		printf("bash: error syntax\n");
@@ -67,7 +67,7 @@ char	*parsing(char *cmd, char **envp)
 		g_return_value = pipex(cmd_expended, envp);
 		free(cmd_expended);
 		envlst = generate_envvar_list(NULL);
-		temp = get_lclvar_by_name(&envlst, "?");
+		temp = get_lclvar_by_name(envlst, "?");
 		free(temp->val);
 		temp->val = ft_itoa(g_return_value);
 	}

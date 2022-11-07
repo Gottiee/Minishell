@@ -15,7 +15,7 @@
 int	extend_exit(char **cmd, int *status)
 {
 	if (!cmd[1])
-		*status = 0;
+		*status = g_return_value;
 	else if (ft_atoi(cmd[1]) != -2147483646 && !cmd[2])
 		*status = ft_atoi(cmd[1]);
 	else if (ft_atoi(cmd[1]) != -2147483646 && cmd[2])

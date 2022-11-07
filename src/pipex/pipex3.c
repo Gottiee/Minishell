@@ -14,7 +14,7 @@
 
 int	lexeur(char *cmd, t_pipex *pipex)
 {
-	pipex->pipe_splited = ft_split(cmd, '|');
+	pipex->pipe_splited = smart_split(cmd);
 	pipex->nbr_of_pipe = how_many_pipe(pipex->pipe_splited);
 	if (lexeur_pipex(pipex, cmd) == -1)
 	{

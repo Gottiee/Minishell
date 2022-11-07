@@ -29,12 +29,6 @@
 # define ENV 12
 # define EXIT 13
 
-typedef struct s_str
-{
-	char			c;
-	struct s_str	*next;
-}	t_str;
-
 typedef struct s_lcl_var
 {
 	char				*name;
@@ -87,7 +81,7 @@ int			get_type_val(char *text);
 t_lcl_var	*create_lclvar(char	*cmd);
 void		free_lclvar(t_lcl_var *var);
 void		add_back_lclvar(t_lcl_var **first, t_lcl_var *new);
-t_lcl_var	*get_lclvar_by_name(t_lcl_var **lclvar, char *tofind);
+t_lcl_var	*get_lclvar_by_name(t_lcl_var *lclvar, char *tofind);
 void		change_envvar_val(char *name, char *new_val);
 t_lcl_var	*generate_envvar_list(char **envp);
 
@@ -107,4 +101,7 @@ char		*get_current_path(void);
 
 /*Fichier: pipex.c*/
 int			pipex(char *cmd, char **env);
+
+int			check_executable(char *cmd);
+
 #endif

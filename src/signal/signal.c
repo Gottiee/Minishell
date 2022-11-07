@@ -16,6 +16,8 @@ void	prompt_signal(int sig)
 {
 	if (sig == SIGINT)
 	{
+		g_return_value = 130;
+		change_envvar_val("?", "130");
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);

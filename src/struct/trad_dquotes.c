@@ -52,7 +52,7 @@ int	trad_after_file(char *cmd, t_str **tstr)
 	name = get_var_name(cmd + 1);
 	if (name == NULL)
 		return (0);
-	temp_env = get_lclvar_by_name(&envvar, name);
+	temp_env = get_lclvar_by_name(envvar, name);
 	res = 1 + ft_strlen(name);
 	free(name);
 	if (temp_env)

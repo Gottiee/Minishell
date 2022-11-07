@@ -54,7 +54,7 @@ t_str	*get_var_val(char *cmd, int addquotes)
 
 	envvar = generate_envvar_list(NULL);
 	name = get_var_name(cmd);
-	temp_env = get_lclvar_by_name(&envvar, name);
+	temp_env = get_lclvar_by_name(envvar, name);
 	free(name);
 	if (temp_env)
 	{
