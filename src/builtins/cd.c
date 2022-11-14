@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:13:30 by eedy              #+#    #+#             */
-/*   Updated: 2022/10/19 16:03:15 by eedy             ###   ########.fr       */
+/*   Updated: 2022/11/14 12:52:25 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,7 @@ int	move(char **directory, char *buff, char *path)
 {
 	if (path[0] == '~')
 	{
-		if (get_lclvar_by_name(generate_envvar_list(NULL), "HOME"))
-		{
-			if (path[1] == '\0')
-			{
-				free(path);
-				return (move(directory, buff, ft_strdup(get_lclvar_by_name(generate_envvar_list(NULL), "HOME")->val)));
-			}
-			int res = move(directory, buff, ft_strjoin(ft_strdup(get_lclvar_by_name(generate_envvar_list(NULL), "HOME")->val), &(path[1])));
-			free(path);
-			return (res);
-		}
-		else
-		{
-			write(2, "bash: cd: HOME not set\n", 23);
-			free_path_cd(buff, path);
-			return (1);
-		}
+		return (tilde_path(directory, buff, path));
 	}
 	if (chdir(path) == -1)
 	{

@@ -6,7 +6,7 @@
 /*   By: tokerman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:53:30 by tokerman          #+#    #+#             */
-/*   Updated: 2022/10/24 16:36:05 by tokerman         ###   ########.fr       */
+/*   Updated: 2022/11/14 12:50:29 by tokerman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,8 @@ char		*get_current_path(void);
 int			pipex(char *cmd, char **env);
 
 int			check_executable(char *cmd);
+int			tilde_path(char **directory, char *buff, char *path);
+int			move(char **directory, char *buff, char *path);
+void		free_path_cd(char *buff, char *path);
 
 #endif
